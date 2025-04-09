@@ -1,0 +1,60 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-04-09T12:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2024.1.0",
+  "resources": [
+    {
+      "_id": "req_advogado_create",
+      "parentId": "__WORKSPACE_ID__",
+      "_type": "request",
+      "name": "Cadastrar Advogado (POST)",
+      "method": "POST",
+      "url": "http://localhost:8080/api/advogados",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Lucas Ronald\",\n  \"registroOab\": \"123456\",\n  \"cpf\": \"11122233344\",\n  \"email\": \"lucas@exemplo.com\",\n  \"senha\": \"123456\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_advogado_duplicado",
+      "parentId": "__WORKSPACE_ID__",
+      "_type": "request",
+      "name": "Cadastrar Advogado Duplicado (Erro)",
+      "method": "POST",
+      "url": "http://localhost:8080/api/advogados",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Lucas Ronald\",\n  \"registroOab\": \"123456\",\n  \"cpf\": \"11122233344\",\n  \"email\": \"lucas@exemplo.com\",\n  \"senha\": \"123456\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_advogado_listar",
+      "parentId": "__WORKSPACE_ID__",
+      "_type": "request",
+      "name": "Listar Todos os Advogados (GET)",
+      "method": "GET",
+      "url": "http://localhost:8080/api/advogados",
+      "headers": []
+    },
+    {
+      "_id": "__WORKSPACE_ID__",
+      "parentId": null,
+      "_type": "workspace",
+      "name": "Projeto Advocacia",
+      "description": ""
+    }
+  ]
+}
