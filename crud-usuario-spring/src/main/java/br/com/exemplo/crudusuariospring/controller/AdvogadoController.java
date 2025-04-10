@@ -1,7 +1,7 @@
 package br.com.exemplo.crudusuariospring.controller;
 
-import br.com.exemplo.crudusuariospring.dto.AdvogadoRequest;
-import br.com.exemplo.crudusuariospring.dto.AdvogadoResponse;
+import br.com.exemplo.crudusuariospring.dto.request.AdvogadoRequest;
+import br.com.exemplo.crudusuariospring.dto.response.AdvogadoResponse;
 import br.com.exemplo.crudusuariospring.service.AdvogadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

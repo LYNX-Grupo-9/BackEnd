@@ -1,4 +1,4 @@
-package br.com.exemplo.crudusuariospring.dto;
+package br.com.exemplo.crudusuariospring.dto.response;
 
 public class AdvogadoResponse {
 

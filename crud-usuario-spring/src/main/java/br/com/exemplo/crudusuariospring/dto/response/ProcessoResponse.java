@@ -1,10 +1,19 @@
-package br.com.exemplo.crudusuariospring.dto;
+package br.com.exemplo.crudusuariospring.dto.response;
 
-public class ProcessoRequest {
+public class ProcessoResponse {
 
+    private Long idProcesso;
     private String numeroProcesso;
     private String descricao;
     private String status;
+
+    public Long getIdProcesso() {
+        return idProcesso;
+    }
+
+    public void setIdProcesso(Long id) {
+        this.idProcesso = idProcesso;
+    }
 
     public String getNumeroProcesso() {
         return numeroProcesso;

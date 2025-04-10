@@ -1,7 +1,7 @@
 package br.com.exemplo.crudusuariospring.controller;
 
-import br.com.exemplo.crudusuariospring.dto.ProcessoRequest;
-import br.com.exemplo.crudusuariospring.dto.ProcessoResponse;
+import br.com.exemplo.crudusuariospring.dto.request.ProcessoRequest;
+import br.com.exemplo.crudusuariospring.dto.response.ProcessoResponse;
 import br.com.exemplo.crudusuariospring.service.ProcessoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,11 +1,12 @@
-package br.com.exemplo.crudusuariospring.dto;
+package br.com.exemplo.crudusuariospring.dto.request;
 
-public class ClienteRequest {
+public class AdvogadoRequest {
 
     private String nome;
+    private String registroOab;
     private String cpf;
     private String email;
-    private String telefone;
+    private String senha;
 
     public String getNome() {
         return nome;
@@ -13,6 +14,14 @@ public class ClienteRequest {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getRegistroOab() {
+        return registroOab;
+    }
+
+    public void setRegistroOab(String registroOab) {
+        this.registroOab = registroOab;
     }
 
     public String getCpf() {
@@ -31,11 +40,11 @@ public class ClienteRequest {
         this.email = email;
     }
 
-    public String getTelefone() {
-        return telefone;
+    public String getSenha() {
+        return senha;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }
