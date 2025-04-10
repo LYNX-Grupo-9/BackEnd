@@ -23,8 +23,8 @@ public class EventoService {
         evento.setDataHora(request.getDataHora());
         evento.setLocal(request.getLocal());
 
-        Evento eventtoSalvo = eventoRepository.save(evento);
-        return new EventoResponse(eventtoSalvo);
+        Evento eventoSalvo = eventoRepository.save(evento);
+        return new EventoResponse(eventoSalvo);
     }
 
     public List<EventoResponse> listarTodos() {
