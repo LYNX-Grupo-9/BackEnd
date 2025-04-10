@@ -17,12 +17,12 @@ public class ClienteController {
     private ClienteService service;
 
     @PostMapping
-    public ClienteResponse cadastrar(@RequestBody ClienteRequest request) {
+    public ClienteResponse cadastrarClientes(@RequestBody ClienteRequest request) {
         return service.salvar(request);
     }
 
     @GetMapping
-    public List<ClienteResponse> listar() {
+    public List<ClienteResponse> listarClientes() {
         return service.listarTodos();
     }
 

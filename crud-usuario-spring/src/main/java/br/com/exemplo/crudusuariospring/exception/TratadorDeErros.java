@@ -14,6 +14,12 @@ public class TratadorDeErros {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> tratarErroGeral(Exception ex) {
+        String nomeDaClasse = ex.getClass().getName();
+
+        if (nomeDaClasse.startsWith("org.springdoc") || nomeDaClasse.startsWith("org.springframework")) {
+            throw new RuntimeException(ex);
+        }
+
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Erro inesperado: " + ex.getMessage());
     }

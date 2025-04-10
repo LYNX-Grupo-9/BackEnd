@@ -16,12 +16,12 @@ public class AdvogadoController {
     private AdvogadoService service;
 
     @PostMapping
-    public AdvogadoResponse cadastrar(@RequestBody AdvogadoRequest request) {
+    public AdvogadoResponse cadastrarAdvogados(@RequestBody AdvogadoRequest request) {
         return service.salvar(request);
     }
 
     @GetMapping
-    public List<AdvogadoResponse> listar() {
+    public List<AdvogadoResponse> listarAdvogados() {
         return service.listarTodos();
     }
 }
