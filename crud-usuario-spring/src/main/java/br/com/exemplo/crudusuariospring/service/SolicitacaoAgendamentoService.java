@@ -31,13 +31,11 @@ public class SolicitacaoAgendamentoService {
         return new SolicitacaoAgendamentoResponse(solicitacaoSalva);
     }
 
-    @GetMapping
-    public ResponseEntity<List<SolicitacaoAgendamentoResponse>> listarTodas() {
+    public List<SolicitacaoAgendamentoResponse> listarTodas() {
         List<SolicitacaoAgendamento> solicitacoes = solicitacaoAgendamentoRepository.findAll();
-        List<SolicitacaoAgendamentoResponse> responseList = solicitacoes.stream()
+        return solicitacoes.stream()
                 .map(SolicitacaoAgendamentoResponse::new)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(responseList);
     }
 
 }
