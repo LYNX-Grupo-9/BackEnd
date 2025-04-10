@@ -1,7 +1,7 @@
 package br.com.exemplo.crudusuariospring.service;
 
-import br.com.exemplo.crudusuariospring.dto.ClienteRequest;
-import br.com.exemplo.crudusuariospring.dto.ClienteResponse;
+import br.com.exemplo.crudusuariospring.dto.request.ClienteRequest;
+import br.com.exemplo.crudusuariospring.dto.response.ClienteResponse;
 import br.com.exemplo.crudusuariospring.model.Cliente;
 import br.com.exemplo.crudusuariospring.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;

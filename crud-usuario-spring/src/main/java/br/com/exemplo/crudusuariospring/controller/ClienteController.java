@@ -1,8 +1,7 @@
 package br.com.exemplo.crudusuariospring.controller;
 
-import br.com.exemplo.crudusuariospring.dto.ClienteRequest;
-import br.com.exemplo.crudusuariospring.dto.ClienteResponse;
-import br.com.exemplo.crudusuariospring.model.Cliente;
+import br.com.exemplo.crudusuariospring.dto.request.ClienteRequest;
+import br.com.exemplo.crudusuariospring.dto.response.ClienteResponse;
 import br.com.exemplo.crudusuariospring.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +16,12 @@ public class ClienteController {
     private ClienteService service;
 
     @PostMapping
-    public ClienteResponse cadastrar(@RequestBody ClienteRequest request) {
+    public ClienteResponse cadastrarClientes(@RequestBody ClienteRequest request) {
         return service.salvar(request);
     }
 
     @GetMapping
-    public List<ClienteResponse> listar() {
+    public List<ClienteResponse> listarClientes() {
         return service.listarTodos();
     }
 
