@@ -1,12 +1,21 @@
 package br.com.exemplo.crudusuariospring.dto.request;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+
+
 import java.time.LocalDateTime;
 
 public class EventoRequest {
 
+    @NotBlank(message = "O tipo é obrigatório")
     private String tipo;
+    @NotBlank(message = "A descrição é obrigatória")
     private String descricao;
+    @NotBlank(message = "A data e hora são obrigatórias.")
     private LocalDateTime dataHora;
+    @NotBlank (message = "O local é obrigatório")
     private String local;
 
     public String getTipo() {

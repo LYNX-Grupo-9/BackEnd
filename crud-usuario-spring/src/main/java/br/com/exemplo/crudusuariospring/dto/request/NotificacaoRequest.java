@@ -1,10 +1,17 @@
 package br.com.exemplo.crudusuariospring.dto.request;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+
 import java.time.LocalDateTime;
 
 public class NotificacaoRequest {
 
+    @NotBlank(message = "O titulo é obrigatório")
     private String titulo;
+    @NotBlank(message = "A mensagem é obrigatória")
     private String mensagem;
     private LocalDateTime dataHora;
     private boolean lida;
