@@ -1,8 +1,6 @@
 package br.com.exemplo.crudusuariospring.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +15,12 @@ public class Notificacao {
     private String mensagem;
     private LocalDateTime dataHora;
     private boolean lida;
+
+    // RELACIONAMENTOS
+    @ManyToOne
+    @JoinColumn(name = "idAdvogado")
+    private Advogado advogado;
+
 
     public Long getIdNotificacao() {
         return idNotificacao;
@@ -56,5 +60,13 @@ public class Notificacao {
 
     public void setLida(boolean lida) {
         this.lida = lida;
+    }
+
+    public Advogado getAdvogado() {
+        return advogado;
+    }
+
+    public void setAdvogado(Advogado advogado) {
+        this.advogado = advogado;
     }
 }

@@ -1,8 +1,6 @@
 package br.com.exemplo.crudusuariospring.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Lead {
@@ -16,6 +14,12 @@ public class Lead {
     private String email;
     private String assunto;
     private String mensagem;
+
+    // RELACIONAMENTOS
+    @ManyToOne
+    @JoinColumn(name = "idAdvogado")
+    private Advogado advogado;
+
 
     public Long getIdLead() {
         return idLead;
@@ -63,5 +67,13 @@ public class Lead {
 
     public void setMensagem(String mensagem) {
         this.mensagem = mensagem;
+    }
+
+    public Advogado getAdvogado() {
+        return advogado;
+    }
+
+    public void setAdvogado(Advogado advogado) {
+        this.advogado = advogado;
     }
 }

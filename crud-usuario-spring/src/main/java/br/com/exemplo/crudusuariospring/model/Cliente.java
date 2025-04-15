@@ -2,6 +2,8 @@ package br.com.exemplo.crudusuariospring.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Cliente {
 
@@ -13,6 +15,17 @@ public class Cliente {
     private String cpf;
     private String email;
     private String telefone;
+
+    // RELACIONAMENTOS
+    @ManyToOne
+    @JoinColumn(name = "idAdvogado")
+    private Advogado advogado;
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Processo> processos;
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Anexo> anexos;
 
     public Integer getIdCliente() {
         return idCliente;
@@ -52,5 +65,29 @@ public class Cliente {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public Advogado getAdvogado() {
+        return advogado;
+    }
+
+    public void setAdvogado(Advogado advogado) {
+        this.advogado = advogado;
+    }
+
+    public List<Processo> getProcessos() {
+        return processos;
+    }
+
+    public void setProcessos(List<Processo> processos) {
+        this.processos = processos;
+    }
+
+    public List<Anexo> getAnexos() {
+        return anexos;
+    }
+
+    public void setAnexos(List<Anexo> anexos) {
+        this.anexos = anexos;
     }
 }
