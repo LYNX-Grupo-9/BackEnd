@@ -3,6 +3,9 @@ package br.com.exemplo.crudusuariospring.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+import java.util.List;
 
 @Entity
 public class Advogado {
@@ -16,6 +19,28 @@ public class Advogado {
     private String cpf;
     private String email;
     private String senha;
+
+    // RELACIONAMENTOS
+    @OneToMany(mappedBy = "advogado")
+    private List<Cliente> clientes;
+
+    @OneToMany(mappedBy = "advogado")
+    private List<Processo> processos;
+
+    @OneToMany(mappedBy = "advogado")
+    private List<Evento> eventos;
+
+    @OneToMany(mappedBy = "advogado")
+    private List<Lead> leads;
+
+    @OneToMany(mappedBy = "advogado")
+    private List<SolicitacaoAgendamento> solicitacoesAgendamento;
+
+    @OneToMany(mappedBy = "advogado")
+    private List<Notificacao> notificacoes;
+
+    @OneToMany(mappedBy = "advogado")
+    private List<CategoriaEvento> categoriasEvento;
 
     public Integer getIdAdvogado() {
         return idAdvogado;
@@ -63,5 +88,61 @@ public class Advogado {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public List<Cliente> getClientes() {
+        return clientes;
+    }
+
+    public void setClientes(List<Cliente> clientes) {
+        this.clientes = clientes;
+    }
+
+    public List<Processo> getProcessos() {
+        return processos;
+    }
+
+    public void setProcessos(List<Processo> processos) {
+        this.processos = processos;
+    }
+
+    public List<Evento> getEventos() {
+        return eventos;
+    }
+
+    public void setEventos(List<Evento> eventos) {
+        this.eventos = eventos;
+    }
+
+    public List<Lead> getLeads() {
+        return leads;
+    }
+
+    public void setLeads(List<Lead> leads) {
+        this.leads = leads;
+    }
+
+    public List<SolicitacaoAgendamento> getSolicitacoesAgendamento() {
+        return solicitacoesAgendamento;
+    }
+
+    public void setSolicitacoesAgendamento(List<SolicitacaoAgendamento> solicitacoesAgendamento) {
+        this.solicitacoesAgendamento = solicitacoesAgendamento;
+    }
+
+    public List<Notificacao> getNotificacoes() {
+        return notificacoes;
+    }
+
+    public void setNotificacoes(List<Notificacao> notificacoes) {
+        this.notificacoes = notificacoes;
+    }
+
+    public List<CategoriaEvento> getCategoriasEvento() {
+        return categoriasEvento;
+    }
+
+    public void setCategoriasEvento(List<CategoriaEvento> categoriasEvento) {
+        this.categoriasEvento = categoriasEvento;
     }
 }
