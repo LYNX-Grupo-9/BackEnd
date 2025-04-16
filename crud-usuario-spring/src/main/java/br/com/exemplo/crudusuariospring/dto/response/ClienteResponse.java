@@ -1,11 +1,16 @@
 package br.com.exemplo.crudusuariospring.dto.response;
 
+import br.com.exemplo.crudusuariospring.model.Advogado;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
 public class ClienteResponse {
 
     private Integer idCliente;
     private String nome;
     private String email;
     private String telefone;
+    private String nomeAdvogado;
 
     public Integer getIdCliente() {
         return idCliente;
@@ -37,5 +42,13 @@ public class ClienteResponse {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public String getNomeAdvogado() {
+        return nomeAdvogado;
+    }
+
+    public void setNomeAdvogado(String nomeAdvogado) {
+        this.nomeAdvogado = nomeAdvogado;
     }
 }

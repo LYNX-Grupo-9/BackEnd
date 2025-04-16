@@ -1,6 +1,8 @@
 package br.com.exemplo.crudusuariospring.model;
 
+import br.com.exemplo.crudusuariospring.repository.AdvogadoRepository;
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class Cliente {
 
     // RELACIONAMENTOS
     @ManyToOne
-    @JoinColumn(name = "idAdvogado")
+    @JoinColumn(name = "id_advogado")
     private Advogado advogado;
 
     @OneToMany(mappedBy = "cliente")

@@ -3,6 +3,10 @@ package br.com.exemplo.crudusuariospring.service;
 import br.com.exemplo.crudusuariospring.dto.request.ClienteRequest;
 import br.com.exemplo.crudusuariospring.dto.response.ClienteResponse;
 import br.com.exemplo.crudusuariospring.model.Cliente;
+import br.com.exemplo.crudusuariospring.observer.CadastroClienteSubject;
+import br.com.exemplo.crudusuariospring.observer.EmailObserver;
+import br.com.exemplo.crudusuariospring.observer.LogObserver;
+import br.com.exemplo.crudusuariospring.repository.AdvogadoRepository;
 import br.com.exemplo.crudusuariospring.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +19,22 @@ public class ClienteService {
 
     @Autowired
     private ClienteRepository repository;
+
+    @Autowired
+    private AdvogadoRepository advogadoRepository;
+
+    private CadastroClienteSubject subject;
+
+    public ClienteService() {
+        subject = new CadastroClienteSubject();
+        subject.adicionarObserver(new EmailObserver());
+        subject.adicionarObserver(new LogObserver() );
+    }
+
     public ClienteResponse salvar(ClienteRequest request) {
+        var advogado = advogadoRepository.findById(request.getIdAdvogado())
+                .orElseThrow(() -> new RuntimeException("Advogado não encontrado."));
+
         if (repository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Cliente com este CPF já está cadastrado.");
         }
@@ -25,6 +44,7 @@ public class ClienteService {
         cliente.setCpf(request.getCpf());
         cliente.setEmail(request.getEmail());
         cliente.setTelefone(request.getTelefone());
+        cliente.setAdvogado(advogado);
 
         Cliente salvo = repository.save(cliente);
 
@@ -33,6 +53,10 @@ public class ClienteService {
         response.setNome(salvo.getNome());
         response.setEmail(salvo.getEmail());
         response.setTelefone(salvo.getTelefone());
+        response.setNomeAdvogado(advogado.getNome());
+
+        String nomeCliente = salvo.getNome();
+        subject.notificarTodos("Novo cliente cadastrado: " + nomeCliente);
 
         return response;
     }

@@ -18,6 +18,8 @@ public class ClienteRequest {
     @Pattern(regexp = "^\\(?\\d{2}\\)?\\s?9?\\d{4}-?\\d{4}$", message = "O telefone deve estar no formato 11912345678.")
     private String telefone;
 
+    private Integer idAdvogado;
+
     public String getNome() {
         return nome;
     }
@@ -48,5 +50,13 @@ public class ClienteRequest {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public Integer getIdAdvogado() {
+        return idAdvogado;
+    }
+
+    public void setIdAdvogado(Integer idAdvogado) {
+        this.idAdvogado = idAdvogado;
     }
 }
