@@ -11,6 +11,7 @@ public class ClienteResponse {
     private String email;
     private String telefone;
     private String nomeAdvogado;
+    private Integer qtdProcessos;
 
     public Integer getIdCliente() {
         return idCliente;
@@ -50,5 +51,13 @@ public class ClienteResponse {
 
     public void setNomeAdvogado(String nomeAdvogado) {
         this.nomeAdvogado = nomeAdvogado;
+    }
+
+    public Integer getQtdProcessos() {
+        return qtdProcessos;
+    }
+
+    public void setQtdProcessos(Integer qtdProcessos) {
+        this.qtdProcessos = qtdProcessos;
     }
 }

@@ -11,6 +11,7 @@ public class EventoResponse {
     private String descricao;
     private LocalDateTime dataHora;
     private String local;
+    private String nomeCliente;
 
     public EventoResponse(Evento evento){
         this.idEvento = evento.getIdEvento();
@@ -18,6 +19,10 @@ public class EventoResponse {
         this.descricao = evento.getDescricao();
         this.dataHora = evento.getDataHora();
         this.local = evento.getLocal();
+
+        if (evento.getCliente() != null) {
+            this.nomeCliente = evento.getCliente().getNome();
+        }
     }
 
     public Long getIdEvento() {
@@ -58,5 +63,13 @@ public class EventoResponse {
 
     public void setLocal(String local) {
         this.local = local;
+    }
+
+    public String getNomeCliente() {
+        return nomeCliente;
+    }
+
+    public void setNomeCliente(String nomeCliente) {
+        this.nomeCliente = nomeCliente;
     }
 }

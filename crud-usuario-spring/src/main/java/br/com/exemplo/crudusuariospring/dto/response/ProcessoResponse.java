@@ -1,13 +1,30 @@
 package br.com.exemplo.crudusuariospring.dto.response;
 
-public class ProcessoResponse {
+import br.com.exemplo.crudusuariospring.model.Processo;
 
+public class ProcessoResponse {
+    
     private Long idProcesso;
     private String numeroProcesso;
     private String descricao;
     private String status;
-    private AdvogadoResponse advogado;
-    private ClienteResponse cliente;
+    private String nomeAdvogado;
+    private String nomeCliente;
+
+    public ProcessoResponse(Processo processo) {
+        this.idProcesso = processo.getIdProcesso();
+        this.numeroProcesso = processo.getNumeroProcesso();
+        this.descricao = processo.getDescricao();
+        this.status = processo.getStatus();
+
+        if (processo.getAdvogado() != null) {
+            this.nomeAdvogado = processo.getAdvogado().getNome();
+        }
+
+        if (processo.getCliente() != null) {
+            this.nomeCliente = processo.getCliente().getNome();
+        }
+    }
 
     public Long getIdProcesso() {
         return idProcesso;
@@ -41,19 +58,19 @@ public class ProcessoResponse {
         this.status = status;
     }
 
-    public AdvogadoResponse getAdvogado() {
-        return advogado;
+    public String getNomeAdvogado() {
+        return nomeAdvogado;
     }
 
-    public void setAdvogado(AdvogadoResponse advogado) {
-        this.advogado = advogado;
+    public void setNomeAdvogado(String nomeAdvogado) {
+        this.nomeAdvogado = nomeAdvogado;
     }
 
-    public ClienteResponse getCliente() {
-        return cliente;
+    public String getNomeCliente() {
+        return nomeCliente;
     }
 
-    public void setCliente(ClienteResponse cliente) {
-        this.cliente = cliente;
+    public void setNomeCliente(String nomeCliente) {
+        this.nomeCliente = nomeCliente;
     }
 }

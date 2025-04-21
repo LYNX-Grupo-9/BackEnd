@@ -8,6 +8,7 @@ import br.com.exemplo.crudusuariospring.observer.EmailObserver;
 import br.com.exemplo.crudusuariospring.observer.LogObserver;
 import br.com.exemplo.crudusuariospring.repository.AdvogadoRepository;
 import br.com.exemplo.crudusuariospring.repository.ClienteRepository;
+import br.com.exemplo.crudusuariospring.repository.ProcessoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,12 @@ public class ClienteService {
     private AdvogadoRepository advogadoRepository;
 
     private CadastroClienteSubject subject;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
+    private ProcessoRepository processoRepository;
 
     public ClienteService() {
         subject = new CadastroClienteSubject();
@@ -72,4 +79,22 @@ public class ClienteService {
         }).collect(Collectors.toList());
     }
 
+    public ClienteResponse buscarClienteComQuantidadeProcessos(Integer idCliente) {
+        Cliente cliente = clienteRepository.findById(idCliente)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+
+        // Contando os processos do cliente
+        Integer qtdProcessos = processoRepository.countByCliente_IdCliente(idCliente);
+
+        // Criando o ClienteResponse
+        ClienteResponse clienteResponse = new ClienteResponse();
+        clienteResponse.setIdCliente(cliente.getIdCliente());
+        clienteResponse.setNome(cliente.getNome());
+        clienteResponse.setEmail(cliente.getEmail());
+        clienteResponse.setTelefone(cliente.getTelefone());
+        clienteResponse.setNomeAdvogado(cliente.getAdvogado() != null ? cliente.getAdvogado().getNome() : "Não atribuído");
+        clienteResponse.setQtdProcessos(qtdProcessos);
+
+        return clienteResponse;
+    }
 }

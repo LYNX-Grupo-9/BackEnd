@@ -18,19 +18,19 @@ public class Evento {
 
     // RELACIONAMENTOS
     @ManyToOne
-    @JoinColumn(name = "idAdvogado")
+    @JoinColumn(name = "id_advogado")
     private Advogado advogado;
 
     @ManyToOne
-    @JoinColumn(name = "idCliente")
+    @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
     @ManyToOne
-    @JoinColumn(name = "idCategoria")
+    @JoinColumn(name = "id_categoria")
     private CategoriaEvento categoria;
 
     @ManyToOne
-    @JoinColumn(name = "idProcesso")
+    @JoinColumn(name = "id_processo")
     private Processo processo;
 
 

@@ -17,11 +17,11 @@ public class Processo {
 
     // RELACIONAMENTOS
     @ManyToOne
-    @JoinColumn(name = "idAdvogado")
+    @JoinColumn(name = "id_advogado")
     private Advogado advogado;
 
     @ManyToOne
-    @JoinColumn(name = "idCliente")
+    @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
     @OneToMany(mappedBy = "processo")

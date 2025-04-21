@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface ProcessoRepository extends JpaRepository<Processo, Integer> {
     List<Processo> findByCliente_IdCliente(Integer idCliente);
+    Integer countByCliente_IdCliente(Integer clienteId);
 }
 

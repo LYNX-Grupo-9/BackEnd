@@ -24,25 +24,17 @@ public class ProcessoService {
 
         Processo processoSalvo = processoRepository.save(processo);
 
-        ProcessoResponse processoResponse = new ProcessoResponse();
-        processoResponse.setIdProcesso(processoSalvo.getIdProcesso());
-        processoResponse.setNumeroProcesso(processoSalvo.getNumeroProcesso());
-        processoResponse.setDescricao(processoSalvo.getDescricao());
-        processoResponse.setStatus(processoSalvo.getStatus());
+        ProcessoResponse processoResponse = new ProcessoResponse(processoSalvo);
 
         return processoResponse;
     }
 
     public List<ProcessoResponse> listarTodos() {
-        return processoRepository.findAll().stream().map(p -> {
-            ProcessoResponse response = new ProcessoResponse();
-            response.setIdProcesso(p.getIdProcesso());
-            response.setNumeroProcesso(p.getNumeroProcesso());
-            response.setDescricao(p.getDescricao());
-            response.setStatus(p.getStatus());
-            return response;
-        }).collect(Collectors.toList());
+        return processoRepository.findAll().stream()
+                .map(p -> new ProcessoResponse(p))
+                .collect(Collectors.toList());
     }
+
 
     public List<Processo> listarPorCliente(Integer idCliente) {
         return processoRepository.findByCliente_IdCliente(idCliente);

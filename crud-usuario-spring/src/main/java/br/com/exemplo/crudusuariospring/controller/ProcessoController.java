@@ -36,36 +36,17 @@ public class ProcessoController {
         List<Processo> processos = processoService.listarPorCliente(idCliente);
 
         List<ProcessoResponse> resposta = processos.stream().map(processo -> {
-            ProcessoResponse pr = new ProcessoResponse();
-            pr.setIdProcesso(processo.getIdProcesso());
-            pr.setNumeroProcesso(processo.getNumeroProcesso());
-            pr.setDescricao(processo.getDescricao());
-            pr.setStatus(processo.getStatus());
+            ProcessoResponse processoR = new ProcessoResponse(processo);
 
-            // Advogado
             if (processo.getAdvogado() != null) {
-                AdvogadoResponse adv = new AdvogadoResponse();
-                adv.setIdAdvogado(processo.getAdvogado().getIdAdvogado());
-                adv.setNome(processo.getAdvogado().getNome());
-                adv.setEmail(processo.getAdvogado().getEmail());
-                adv.setRegistroOab(processo.getAdvogado().getRegistroOab());
-                pr.setAdvogado(adv);
+                processoR.setNomeAdvogado(processo.getAdvogado().getNome());
             }
 
-            // Cliente
             if (processo.getCliente() != null) {
-                ClienteResponse cli = new ClienteResponse();
-                cli.setIdCliente(processo.getCliente().getIdCliente());
-                cli.setNome(processo.getCliente().getNome());
-                cli.setEmail(processo.getCliente().getEmail());
-                cli.setTelefone(processo.getCliente().getTelefone());
-                if (processo.getCliente().getAdvogado() != null) {
-                    cli.setNomeAdvogado(processo.getCliente().getAdvogado().getNome());
-                }
-                pr.setCliente(cli);
+                processoR.setNomeCliente(processo.getCliente().getNome());
             }
 
-            return pr;
+            return processoR;
         }).toList();
 
         return ResponseEntity.ok(resposta);

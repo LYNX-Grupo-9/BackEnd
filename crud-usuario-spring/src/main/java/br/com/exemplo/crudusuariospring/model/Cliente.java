@@ -29,6 +29,9 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente")
     private List<Anexo> anexos;
 
+    @OneToMany(mappedBy = "cliente")
+    private List<Evento> eventos;
+
     public Integer getIdCliente() {
         return idCliente;
     }
@@ -91,5 +94,13 @@ public class Cliente {
 
     public void setAnexos(List<Anexo> anexos) {
         this.anexos = anexos;
+    }
+
+    public List<Evento> getEventos() {
+        return eventos;
+    }
+
+    public void setEventos(List<Evento> eventos) {
+        this.eventos = eventos;
     }
 }
