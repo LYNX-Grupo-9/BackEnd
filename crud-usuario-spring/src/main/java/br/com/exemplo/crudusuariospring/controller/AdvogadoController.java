@@ -3,8 +3,10 @@ package br.com.exemplo.crudusuariospring.controller;
 import br.com.exemplo.crudusuariospring.dto.AdvogadoMapper;
 import br.com.exemplo.crudusuariospring.dto.request.AdvogadoLogin;
 import br.com.exemplo.crudusuariospring.dto.request.AdvogadoRequest;
+import br.com.exemplo.crudusuariospring.dto.request.ClienteRequest;
 import br.com.exemplo.crudusuariospring.dto.response.AdvogadoResponse;
 import br.com.exemplo.crudusuariospring.dto.response.AdvogadoToken;
+import br.com.exemplo.crudusuariospring.dto.response.ClienteResponse;
 import br.com.exemplo.crudusuariospring.model.Advogado;
 import br.com.exemplo.crudusuariospring.service.AdvogadoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -45,5 +47,11 @@ public class AdvogadoController {
     public ResponseEntity<List<AdvogadoResponse>> listar() {
         List<AdvogadoResponse> advogados = this.advogadoService.listarTodosAdvogados();
         return ResponseEntity.ok(advogados);
+    }
+
+    @PostMapping("/clientes")
+    @SecurityRequirement(name = "Bearer")
+    public ClienteResponse cadastrarCliente(@RequestBody ClienteRequest clienteRequest) {
+        return this.advogadoService.cadastrarCliente(clienteRequest);
     }
 }

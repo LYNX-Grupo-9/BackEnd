@@ -44,4 +44,8 @@ public class ProcessoService {
         }).collect(Collectors.toList());
     }
 
+    public List<Processo> listarPorCliente(Integer idCliente) {
+        return processoRepository.findByCliente_IdCliente(idCliente);
+    }
+
 }

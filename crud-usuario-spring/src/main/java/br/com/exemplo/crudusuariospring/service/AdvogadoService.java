@@ -4,12 +4,16 @@ import br.com.exemplo.crudusuariospring.config.GerenciadorTokenJwt;
 import br.com.exemplo.crudusuariospring.dto.AdvogadoDetalhes;
 import br.com.exemplo.crudusuariospring.dto.AdvogadoMapper;
 import br.com.exemplo.crudusuariospring.dto.request.AdvogadoRequest;
+import br.com.exemplo.crudusuariospring.dto.request.ClienteRequest;
 import br.com.exemplo.crudusuariospring.dto.response.AdvogadoToken;
+import br.com.exemplo.crudusuariospring.dto.response.ClienteResponse;
 import br.com.exemplo.crudusuariospring.model.Advogado;
+import br.com.exemplo.crudusuariospring.model.Cliente;
 import br.com.exemplo.crudusuariospring.observer.CadastroAdvogadoSubject;
 import br.com.exemplo.crudusuariospring.observer.EmailObserver;
 import br.com.exemplo.crudusuariospring.observer.LogObserver;
 import br.com.exemplo.crudusuariospring.repository.AdvogadoRepository;
+import br.com.exemplo.crudusuariospring.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.*;
 import br.com.exemplo.crudusuariospring.dto.response.AdvogadoResponse;
 
@@ -18,6 +22,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -40,6 +45,9 @@ public class AdvogadoService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
 
     private CadastroAdvogadoSubject subject;
 
@@ -113,5 +121,51 @@ public class AdvogadoService {
         return advogadosEncontrados.stream()
                 .map(AdvogadoMapper::of)
                 .toList();
+    }
+
+    public AdvogadoResponse buscarPorEmail(String email) {
+        Advogado advogado = advogadoRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Advogado não encontrado"));
+        return AdvogadoMapper.of(advogado);
+    }
+
+    public ClienteResponse cadastrarCliente(ClienteRequest clienteRequest) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) principal;
+            String emailAdvogado = userDetails.getUsername();
+
+            Advogado advogado = advogadoRepository.findByEmail(emailAdvogado)
+                    .orElseThrow(() -> new RuntimeException("Advogado não encontrado"));
+
+            if (clienteRepository.existsByCpf(clienteRequest.getCpf())) {
+                throw new RuntimeException("Cliente com CPF já cadastrado");
+            }
+
+            if (clienteRepository.existsByEmail(clienteRequest.getEmail())) {
+                throw new RuntimeException("Cliente com email já cadastrado");
+            }
+
+            Cliente cliente = new Cliente();
+            cliente.setNome(clienteRequest.getNome());
+            cliente.setCpf(clienteRequest.getCpf());
+            cliente.setEmail(clienteRequest.getEmail());
+            cliente.setTelefone(clienteRequest.getTelefone());
+            cliente.setAdvogado(advogado);
+
+            Cliente clienteSalvo = clienteRepository.save(cliente);
+
+            ClienteResponse clienteResponse = new ClienteResponse();
+            clienteResponse.setIdCliente(clienteSalvo.getIdCliente());
+            clienteResponse.setNome(clienteSalvo.getNome());
+            clienteResponse.setEmail(clienteSalvo.getEmail());
+            clienteResponse.setTelefone(clienteSalvo.getTelefone());
+            clienteResponse.setNomeAdvogado(advogado.getNome());
+
+            return clienteResponse;
+        }
+
+        throw new RuntimeException("Não foi possível obter os dados do advogado autenticado");
     }
 }

@@ -6,12 +6,14 @@ public class ProcessoResponse {
     private String numeroProcesso;
     private String descricao;
     private String status;
+    private AdvogadoResponse advogado;
+    private ClienteResponse cliente;
 
     public Long getIdProcesso() {
         return idProcesso;
     }
 
-    public void setIdProcesso(Long id) {
+    public void setIdProcesso(Long idProcesso) {
         this.idProcesso = idProcesso;
     }
 
@@ -37,5 +39,21 @@ public class ProcessoResponse {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public AdvogadoResponse getAdvogado() {
+        return advogado;
+    }
+
+    public void setAdvogado(AdvogadoResponse advogado) {
+        this.advogado = advogado;
+    }
+
+    public ClienteResponse getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(ClienteResponse cliente) {
+        this.cliente = cliente;
     }
 }
