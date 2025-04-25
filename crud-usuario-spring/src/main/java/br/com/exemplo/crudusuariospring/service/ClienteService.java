@@ -24,18 +24,15 @@ public class ClienteService {
     @Autowired
     private AdvogadoRepository advogadoRepository;
 
-    private CadastroClienteSubject subject;
-
-    @Autowired
-    private ClienteRepository clienteRepository;
-
     @Autowired
     private ProcessoRepository processoRepository;
+
+    private CadastroClienteSubject subject;
 
     public ClienteService() {
         subject = new CadastroClienteSubject();
         subject.adicionarObserver(new EmailObserver());
-        subject.adicionarObserver(new LogObserver() );
+        subject.adicionarObserver(new LogObserver());
     }
 
     public ClienteResponse salvar(ClienteRequest request) {
@@ -43,14 +40,22 @@ public class ClienteService {
                 .orElseThrow(() -> new RuntimeException("Advogado não encontrado."));
 
         if (repository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Cliente com este CPF já está cadastrado.");
+            throw new RuntimeException("Cliente com este e-mail já está cadastrado.");
         }
 
         Cliente cliente = new Cliente();
         cliente.setNome(request.getNome());
-        cliente.setCpf(request.getCpf());
+        cliente.setDocumento(request.getDocumento());
         cliente.setEmail(request.getEmail());
         cliente.setTelefone(request.getTelefone());
+        cliente.setEndereco(request.getEndereco());
+        cliente.setEstadoCivil(request.getEstadoCivil());
+        cliente.setGenero(request.getGenero());
+        cliente.setProfissao(request.getProfissao());
+        cliente.setPassaporte(request.getPassaporte());
+        cliente.setCnh(request.getCnh()); // Mantendo cnh
+        cliente.setNaturalidade(request.getNaturalidade());
+        cliente.setDataNascimento(request.getDataNascimento());
         cliente.setAdvogado(advogado);
 
         Cliente salvo = repository.save(cliente);
@@ -60,7 +65,15 @@ public class ClienteService {
         response.setNome(salvo.getNome());
         response.setEmail(salvo.getEmail());
         response.setTelefone(salvo.getTelefone());
-        response.setNomeAdvogado(advogado.getNome());
+        response.setEndereco(salvo.getEndereco());
+        response.setEstadoCivil(salvo.getEstadoCivil());
+        response.setGenero(salvo.getGenero());
+        response.setProfissao(salvo.getProfissao());
+        response.setPassaporte(salvo.getPassaporte());
+        response.setCnh(salvo.getCnh()); // Mantendo cnh
+        response.setNaturalidade(salvo.getNaturalidade());
+        response.setDataNascimento(salvo.getDataNascimento());
+        response.setAdvogadoResponsavel(advogado.getNome());
 
         String nomeCliente = salvo.getNome();
         subject.notificarTodos("Novo cliente cadastrado: " + nomeCliente);
@@ -75,24 +88,39 @@ public class ClienteService {
             response.setNome(c.getNome());
             response.setEmail(c.getEmail());
             response.setTelefone(c.getTelefone());
+            response.setEndereco(c.getEndereco());
+            response.setEstadoCivil(c.getEstadoCivil());
+            response.setGenero(c.getGenero());
+            response.setProfissao(c.getProfissao());
+            response.setPassaporte(c.getPassaporte());
+            response.setCnh(c.getCnh());
+            response.setNaturalidade(c.getNaturalidade());
+            response.setDataNascimento(c.getDataNascimento());
+            response.setAdvogadoResponsavel(c.getAdvogado() != null ? c.getAdvogado().getNome() : "Não atribuído");
             return response;
         }).collect(Collectors.toList());
     }
 
     public ClienteResponse buscarClienteComQuantidadeProcessos(Integer idCliente) {
-        Cliente cliente = clienteRepository.findById(idCliente)
+        Cliente cliente = repository.findById(idCliente)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
-        // Contando os processos do cliente
         Integer qtdProcessos = processoRepository.countByCliente_IdCliente(idCliente);
 
-        // Criando o ClienteResponse
         ClienteResponse clienteResponse = new ClienteResponse();
         clienteResponse.setIdCliente(cliente.getIdCliente());
         clienteResponse.setNome(cliente.getNome());
         clienteResponse.setEmail(cliente.getEmail());
         clienteResponse.setTelefone(cliente.getTelefone());
-        clienteResponse.setNomeAdvogado(cliente.getAdvogado() != null ? cliente.getAdvogado().getNome() : "Não atribuído");
+        clienteResponse.setEndereco(cliente.getEndereco());
+        clienteResponse.setEstadoCivil(cliente.getEstadoCivil());
+        clienteResponse.setGenero(cliente.getGenero());
+        clienteResponse.setProfissao(cliente.getProfissao());
+        clienteResponse.setPassaporte(cliente.getPassaporte());
+        clienteResponse.setCnh(cliente.getCnh());
+        clienteResponse.setNaturalidade(cliente.getNaturalidade());
+        clienteResponse.setDataNascimento(cliente.getDataNascimento());
+        clienteResponse.setAdvogadoResponsavel(cliente.getAdvogado() != null ? cliente.getAdvogado().getNome() : "Não atribuído");
         clienteResponse.setQtdProcessos(qtdProcessos);
 
         return clienteResponse;

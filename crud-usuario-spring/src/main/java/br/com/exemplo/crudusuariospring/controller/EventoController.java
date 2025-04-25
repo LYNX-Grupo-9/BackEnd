@@ -24,12 +24,14 @@ public class EventoController {
     private EventoRepository eventoRepository;
 
     @PostMapping
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<EventoResponse> criarEvento(@RequestBody EventoRequest request) {
         EventoResponse eventoResponse = eventoService.criarEvento(request);
         return ResponseEntity.ok(eventoResponse);
     }
 
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<EventoResponse> buscarEventoPorId(@PathVariable Long id) {
         EventoResponse eventoResponse = eventoService.buscarPorId(id);
         return ResponseEntity.ok(eventoResponse);

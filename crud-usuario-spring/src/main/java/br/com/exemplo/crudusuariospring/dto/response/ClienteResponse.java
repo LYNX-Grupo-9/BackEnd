@@ -1,17 +1,33 @@
 package br.com.exemplo.crudusuariospring.dto.response;
 
-import br.com.exemplo.crudusuariospring.model.Advogado;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 public class ClienteResponse {
 
     private Integer idCliente;
     private String nome;
+    private String documento;
+    private String tipoDocumento;
     private String email;
     private String telefone;
-    private String nomeAdvogado;
+    private String endereco;
+    private String genero;
+
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDate dataNascimento;
+
+    private String estadoCivil;
+    private String profissao;
+    private String passaporte;
+    private String cnh;
+    private String naturalidade;
+
+    private String advogadoResponsavel;
     private Integer qtdProcessos;
+
+    // Getters e Setters
 
     public Integer getIdCliente() {
         return idCliente;
@@ -27,6 +43,22 @@ public class ClienteResponse {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
+
+    public String getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(String tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
     }
 
     public String getEmail() {
@@ -45,12 +77,76 @@ public class ClienteResponse {
         this.telefone = telefone;
     }
 
-    public String getNomeAdvogado() {
-        return nomeAdvogado;
+    public String getEndereco() {
+        return endereco;
     }
 
-    public void setNomeAdvogado(String nomeAdvogado) {
-        this.nomeAdvogado = nomeAdvogado;
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public String getEstadoCivil() {
+        return estadoCivil;
+    }
+
+    public void setEstadoCivil(String estadoCivil) {
+        this.estadoCivil = estadoCivil;
+    }
+
+    public String getProfissao() {
+        return profissao;
+    }
+
+    public void setProfissao(String profissao) {
+        this.profissao = profissao;
+    }
+
+    public String getPassaporte() {
+        return passaporte;
+    }
+
+    public void setPassaporte(String passaporte) {
+        this.passaporte = passaporte;
+    }
+
+    public String getCnh() {
+        return cnh;
+    }
+
+    public void setCnh(String cnh) {
+        this.cnh = cnh;
+    }
+
+    public String getNaturalidade() {
+        return naturalidade;
+    }
+
+    public void setNaturalidade(String naturalidade) {
+        this.naturalidade = naturalidade;
+    }
+
+    public String getAdvogadoResponsavel() {
+        return advogadoResponsavel;
+    }
+
+    public void setAdvogadoResponsavel(String advogadoResponsavel) {
+        this.advogadoResponsavel = advogadoResponsavel;
     }
 
     public Integer getQtdProcessos() {

@@ -21,11 +21,13 @@ public class ProcessoController {
     private ProcessoService processoService;
 
     @PostMapping
+    @SecurityRequirement(name = "Bearer")
     private ProcessoResponse cadastrarProcesso(@RequestBody ProcessoRequest processoRequest){
         return processoService.salvar(processoRequest);
     }
 
     @GetMapping
+    @SecurityRequirement(name = "Bearer")
     public List<ProcessoResponse> listarProcessos(){
         return processoService.listarTodos();
     }

@@ -35,7 +35,6 @@ public class AdvogadoController {
 
     @PostMapping("/login")
     public ResponseEntity<AdvogadoToken> login(@RequestBody AdvogadoLogin advogadoLogin) {
-
         final Advogado advogado = AdvogadoMapper.of(advogadoLogin);
         AdvogadoToken advogadoToken = this.advogadoService.autenticar(advogado);
 
@@ -49,9 +48,10 @@ public class AdvogadoController {
         return ResponseEntity.ok(advogados);
     }
 
-    @PostMapping("/clientes")
+    @PostMapping("/cadastrar/clientes")
     @SecurityRequirement(name = "Bearer")
-    public ClienteResponse cadastrarCliente(@RequestBody ClienteRequest clienteRequest) {
-        return this.advogadoService.cadastrarCliente(clienteRequest);
+    public ResponseEntity<ClienteResponse> cadastrarCliente(@RequestBody ClienteRequest clienteRequest) {
+        ClienteResponse clienteResponse = this.advogadoService.cadastrarCliente(clienteRequest);
+        return ResponseEntity.status(201).body(clienteResponse);
     }
 }

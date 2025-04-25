@@ -139,29 +139,48 @@ public class AdvogadoService {
             Advogado advogado = advogadoRepository.findByEmail(emailAdvogado)
                     .orElseThrow(() -> new RuntimeException("Advogado não encontrado"));
 
-            if (clienteRepository.existsByCpf(clienteRequest.getCpf())) {
-                throw new RuntimeException("Cliente com CPF já cadastrado");
-            }
-
+            // Verificando duplicidade de email e documento
             if (clienteRepository.existsByEmail(clienteRequest.getEmail())) {
                 throw new RuntimeException("Cliente com email já cadastrado");
             }
 
+            if (clienteRepository.existsByDocumento(clienteRequest.getDocumento())) {
+                throw new RuntimeException("Cliente com documento já cadastrado");
+            }
+
             Cliente cliente = new Cliente();
             cliente.setNome(clienteRequest.getNome());
-            cliente.setCpf(clienteRequest.getCpf());
+            cliente.setDocumento(clienteRequest.getDocumento());
+            cliente.setTipoDocumento(clienteRequest.getTipoDocumento());
             cliente.setEmail(clienteRequest.getEmail());
             cliente.setTelefone(clienteRequest.getTelefone());
+            cliente.setEndereco(clienteRequest.getEndereco());
+            cliente.setGenero(clienteRequest.getGenero());
+            cliente.setDataNascimento(clienteRequest.getDataNascimento());
+            cliente.setEstadoCivil(clienteRequest.getEstadoCivil());
+            cliente.setProfissao(clienteRequest.getProfissao());
+            cliente.setPassaporte(clienteRequest.getPassaporte());
+            cliente.setCnh(clienteRequest.getCnh());
+            cliente.setNaturalidade(clienteRequest.getNaturalidade());
             cliente.setAdvogado(advogado);
 
             Cliente clienteSalvo = clienteRepository.save(cliente);
 
+            // Mapear os dados para ClienteResponse
             ClienteResponse clienteResponse = new ClienteResponse();
             clienteResponse.setIdCliente(clienteSalvo.getIdCliente());
             clienteResponse.setNome(clienteSalvo.getNome());
             clienteResponse.setEmail(clienteSalvo.getEmail());
             clienteResponse.setTelefone(clienteSalvo.getTelefone());
-            clienteResponse.setNomeAdvogado(advogado.getNome());
+            clienteResponse.setEndereco(clienteSalvo.getEndereco());
+            clienteResponse.setGenero(clienteSalvo.getGenero());
+            clienteResponse.setDataNascimento(clienteSalvo.getDataNascimento());
+            clienteResponse.setEstadoCivil(clienteSalvo.getEstadoCivil());
+            clienteResponse.setProfissao(clienteSalvo.getProfissao());
+            clienteResponse.setPassaporte(clienteSalvo.getPassaporte());
+            clienteResponse.setCnh(clienteSalvo.getCnh());
+            clienteResponse.setNaturalidade(clienteSalvo.getNaturalidade());
+            clienteResponse.setAdvogadoResponsavel(advogado.getNome());
 
             return clienteResponse;
         }
