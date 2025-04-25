@@ -32,6 +32,7 @@ public class ClienteController {
     }
 
     @GetMapping
+    @SecurityRequirement(name = "Bearer")
     public List<ClienteResponse> listarClientes() {
         return clienteService.listarTodos();
     }
