@@ -16,15 +16,15 @@ public class CategoriaEventoService {
 
     public CategoriaEventoResponse criarCategoria(CategoriaEventoResponse categoriaEventoResponse) {
         CategoriaEvento categoriaEvento = new CategoriaEvento();
-        categoriaEvento.setNomeEvento(categoriaEventoResponse.getNomeEvento());
+        categoriaEvento.setNome(categoriaEventoResponse.getNomeEvento());
         categoriaEvento.setCor(categoriaEventoResponse.getCor());
         categoriaEvento = categoriaEventoRepository.save(categoriaEvento);
-        return new CategoriaEventoResponse(categoriaEvento.getIdCategoria(), categoriaEvento.getNomeEvento(), categoriaEvento.getCor());
+        return new CategoriaEventoResponse(categoriaEvento.getIdCategoria(), categoriaEvento.getNome(), categoriaEvento.getCor());
     }
 
     public List<CategoriaEventoResponse> buscarTodasCategorias() {
         List<CategoriaEvento> categorias = categoriaEventoRepository.findAll();
-        return categorias.stream().map(categoria -> new CategoriaEventoResponse(categoria.getIdCategoria(), categoria.getNomeEvento(), categoria.getCor())).toList();
+        return categorias.stream().map(categoria -> new CategoriaEventoResponse(categoria.getIdCategoria(), categoria.getNome(), categoria.getCor())).toList();
     }
 
 

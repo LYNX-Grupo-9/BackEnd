@@ -1,7 +1,6 @@
 package br.com.exemplo.crudusuariospring.model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,12 +10,13 @@ public class Evento {
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Long idEvento;
 
-    private String tipo;
+    private String nome;
     private String descricao;
-    private LocalDateTime dataHora;
     private String local;
+    private String linkReuniao;
+    private LocalDateTime dataHora;
 
-    // RELACIONAMENTOS
+    // RELACIONAMENTOS CORRIGIDOS
     @ManyToOne
     @JoinColumn(name = "id_advogado")
     private Advogado advogado;
@@ -33,7 +33,6 @@ public class Evento {
     @JoinColumn(name = "id_processo")
     private Processo processo;
 
-
     public Long getIdEvento() {
         return idEvento;
     }
@@ -42,12 +41,12 @@ public class Evento {
         this.idEvento = idEvento;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getNome() {
+        return nome;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getDescricao() {
@@ -58,14 +57,6 @@ public class Evento {
         this.descricao = descricao;
     }
 
-    public LocalDateTime getDataHora() {
-        return dataHora;
-    }
-
-    public void setDataHora(LocalDateTime dataHora) {
-        this.dataHora = dataHora;
-    }
-
     public String getLocal() {
         return local;
     }
@@ -74,6 +65,23 @@ public class Evento {
         this.local = local;
     }
 
+    public String getLinkReuniao() {
+        return linkReuniao;
+    }
+
+    public void setLinkReuniao(String linkReuniao) {
+        this.linkReuniao = linkReuniao;
+    }
+
+    public LocalDateTime getDataHora() {
+        return dataHora;
+    }
+
+    public void setDataHora(LocalDateTime dataHora) {
+        this.dataHora = dataHora;
+    }
+
+    // Métodos para os relacionamentos
     public Advogado getAdvogado() {
         return advogado;
     }

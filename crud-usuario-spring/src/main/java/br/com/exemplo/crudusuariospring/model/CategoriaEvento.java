@@ -11,7 +11,7 @@ public class CategoriaEvento {
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Long idCategoria;
 
-    private String nomeEvento;
+    private String nome;
     private String cor;
 
     // RELACIONAMENTOS
@@ -31,12 +31,12 @@ public class CategoriaEvento {
         this.idCategoria = idCategoria;
     }
 
-    public String getNomeEvento() {
-        return nomeEvento;
+    public String getNome() {
+        return nome;
     }
 
-    public void setNomeEvento(String nomeEvento) {
-        this.nomeEvento = nomeEvento;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getCor() {

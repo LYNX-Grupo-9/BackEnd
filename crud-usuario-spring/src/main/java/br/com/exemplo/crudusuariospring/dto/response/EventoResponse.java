@@ -7,22 +7,23 @@ import java.time.LocalDateTime;
 public class EventoResponse {
 
     private Long idEvento;
-    private String tipo;
+    private String nome;
     private String descricao;
-    private LocalDateTime dataHora;
     private String local;
+    private String linkReuniao;
+    private LocalDateTime dataHora;
+    private String nomeAdvogado;
     private String nomeCliente;
+    private String nomeCategoria;
+    private String numeroProcesso;
 
-    public EventoResponse(Evento evento){
+    public EventoResponse(Evento evento) {
         this.idEvento = evento.getIdEvento();
-        this.tipo = evento.getTipo();
+        this.nome = evento.getNome();
         this.descricao = evento.getDescricao();
-        this.dataHora = evento.getDataHora();
         this.local = evento.getLocal();
-
-        if (evento.getCliente() != null) {
-            this.nomeCliente = evento.getCliente().getNome();
-        }
+        this.linkReuniao = evento.getLinkReuniao();
+        this.dataHora = evento.getDataHora();
     }
 
     public Long getIdEvento() {
@@ -33,12 +34,12 @@ public class EventoResponse {
         this.idEvento = idEvento;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getNome() {
+        return nome;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getDescricao() {
@@ -49,14 +50,6 @@ public class EventoResponse {
         this.descricao = descricao;
     }
 
-    public LocalDateTime getDataHora() {
-        return dataHora;
-    }
-
-    public void setDataHora(LocalDateTime dataHora) {
-        this.dataHora = dataHora;
-    }
-
     public String getLocal() {
         return local;
     }
@@ -65,11 +58,51 @@ public class EventoResponse {
         this.local = local;
     }
 
+    public String getLinkReuniao() {
+        return linkReuniao;
+    }
+
+    public void setLinkReuniao(String linkReuniao) {
+        this.linkReuniao = linkReuniao;
+    }
+
+    public String getNomeAdvogado() {
+        return nomeAdvogado;
+    }
+
+    public void setNomeAdvogado(String nomeAdvogado) {
+        this.nomeAdvogado = nomeAdvogado;
+    }
+
     public String getNomeCliente() {
         return nomeCliente;
     }
 
     public void setNomeCliente(String nomeCliente) {
         this.nomeCliente = nomeCliente;
+    }
+
+    public String getNomeCategoria() {
+        return nomeCategoria;
+    }
+
+    public void setNomeCategoria(String nomeCategoria) {
+        this.nomeCategoria = nomeCategoria;
+    }
+
+    public String getNumeroProcesso() {
+        return numeroProcesso;
+    }
+
+    public void setNumeroProcesso(String numeroProcesso) {
+        this.numeroProcesso = numeroProcesso;
+    }
+
+    public LocalDateTime getDataHora() {
+        return dataHora;
+    }
+
+    public void setDataHora(LocalDateTime dataHora) {
+        this.dataHora = dataHora;
     }
 }
