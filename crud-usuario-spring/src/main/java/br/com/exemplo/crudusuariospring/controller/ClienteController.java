@@ -43,4 +43,24 @@ public class ClienteController {
         ClienteResponse clienteResponse = clienteService.buscarClienteComQuantidadeProcessos(id);
         return ResponseEntity.ok(clienteResponse);
     }
+
+    @GetMapping("/ordenado-nome")
+    public List<ClienteResponse> listarPorNome() {
+        return clienteService.listarOrdenadoPorNome();
+    }
+
+    @GetMapping("/ordenado-naturalidade")
+    public List<ClienteResponse> listarPorNaturalidade() {
+        return clienteService.listarOrdenadoPorNaturalidade();
+    }
+
+    @GetMapping("/ordenado-nascimento")
+    public List<ClienteResponse> listarPorNascimento() {
+        return clienteService.listarOrdenadoPorDataNascimento();
+    }
+
+    @GetMapping("/ordenado-processos")
+    public List<ClienteResponse> listarPorQtdProcessos() {
+        return clienteService.listarOrdenadoPorQuantidadeProcessos();
+    }
 }

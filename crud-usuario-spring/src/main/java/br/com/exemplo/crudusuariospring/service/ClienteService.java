@@ -125,4 +125,45 @@ public class ClienteService {
 
         return clienteResponse;
     }
+
+    private ClienteResponse mapToResponse(Cliente c) {
+        ClienteResponse response = new ClienteResponse();
+        response.setIdCliente(c.getIdCliente());
+        response.setNome(c.getNome());
+        response.setEmail(c.getEmail());
+        response.setTelefone(c.getTelefone());
+        response.setEndereco(c.getEndereco());
+        response.setEstadoCivil(c.getEstadoCivil());
+        response.setGenero(c.getGenero());
+        response.setProfissao(c.getProfissao());
+        response.setPassaporte(c.getPassaporte());
+        response.setCnh(c.getCnh());
+        response.setNaturalidade(c.getNaturalidade());
+        response.setDataNascimento(c.getDataNascimento());
+        response.setAdvogadoResponsavel(
+                c.getAdvogado() != null ? c.getAdvogado().getNome() : "Não atribuído"
+        );
+        return response;
+    }
+
+    public List<ClienteResponse> listarOrdenadoPorNome() {
+        return repository.findAllByOrderByNomeAsc().stream().map(this::mapToResponse).collect(Collectors.toList());
+    }
+
+    public List<ClienteResponse> listarOrdenadoPorNaturalidade() {
+        return repository.findAllByOrderByNaturalidadeAsc().stream().map(this::mapToResponse).collect(Collectors.toList());
+    }
+
+    public List<ClienteResponse> listarOrdenadoPorDataNascimento() {
+        return repository.findAllByOrderByDataNascimentoAsc().stream().map(this::mapToResponse).collect(Collectors.toList());
+    }
+
+    public List<ClienteResponse> listarOrdenadoPorQuantidadeProcessos() {
+        return repository.ordenarPorQuantidadeProcessos().stream().map(cliente -> {
+            ClienteResponse response = mapToResponse(cliente);
+            Integer qtd = processoRepository.countByCliente_IdCliente(cliente.getIdCliente());
+            response.setQtdProcessos(qtd);
+            return response;
+        }).collect(Collectors.toList());
+    }
 }
