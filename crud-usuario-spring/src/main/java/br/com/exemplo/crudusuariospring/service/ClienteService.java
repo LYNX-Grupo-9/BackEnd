@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class ClienteService {
 
     @Autowired
-    private ClienteRepository repository;
+    private ClienteRepository clienteRepository;
 
     @Autowired
     private AdvogadoRepository advogadoRepository;
@@ -39,7 +39,7 @@ public class ClienteService {
         var advogado = advogadoRepository.findById(request.getIdAdvogado())
                 .orElseThrow(() -> new RuntimeException("Advogado não encontrado."));
 
-        if (repository.existsByEmail(request.getEmail())) {
+        if (clienteRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Cliente com este e-mail já está cadastrado.");
         }
 
@@ -58,7 +58,7 @@ public class ClienteService {
         cliente.setDataNascimento(request.getDataNascimento());
         cliente.setAdvogado(advogado);
 
-        Cliente salvo = repository.save(cliente);
+        Cliente salvo = clienteRepository.save(cliente);
 
         ClienteResponse response = new ClienteResponse();
         response.setIdCliente(salvo.getIdCliente());
@@ -82,7 +82,7 @@ public class ClienteService {
     }
 
     public List<ClienteResponse> listarTodos() {
-        return repository.findAll().stream().map(c -> {
+        return clienteRepository.findAll().stream().map(c -> {
             ClienteResponse response = new ClienteResponse();
             response.setIdCliente(c.getIdCliente());
             response.setNome(c.getNome());
@@ -102,7 +102,7 @@ public class ClienteService {
     }
 
     public ClienteResponse buscarClienteComQuantidadeProcessos(Integer idCliente) {
-        Cliente cliente = repository.findById(idCliente)
+        Cliente cliente = clienteRepository.findById(idCliente)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
         Integer qtdProcessos = processoRepository.countByCliente_IdCliente(idCliente);
@@ -147,23 +147,28 @@ public class ClienteService {
     }
 
     public List<ClienteResponse> listarOrdenadoPorNome() {
-        return repository.findAllByOrderByNomeAsc().stream().map(this::mapToResponse).collect(Collectors.toList());
+        return clienteRepository.findAllByOrderByNomeAsc().stream().map(this::mapToResponse).collect(Collectors.toList());
     }
 
     public List<ClienteResponse> listarOrdenadoPorNaturalidade() {
-        return repository.findAllByOrderByNaturalidadeAsc().stream().map(this::mapToResponse).collect(Collectors.toList());
+        return clienteRepository.findAllByOrderByNaturalidadeAsc().stream().map(this::mapToResponse).collect(Collectors.toList());
     }
 
     public List<ClienteResponse> listarOrdenadoPorDataNascimento() {
-        return repository.findAllByOrderByDataNascimentoAsc().stream().map(this::mapToResponse).collect(Collectors.toList());
+        return clienteRepository.findAllByOrderByDataNascimentoAsc().stream().map(this::mapToResponse).collect(Collectors.toList());
     }
 
     public List<ClienteResponse> listarOrdenadoPorQuantidadeProcessos() {
-        return repository.ordenarPorQuantidadeProcessos().stream().map(cliente -> {
+        return clienteRepository.ordenarPorQuantidadeProcessos().stream().map(cliente -> {
             ClienteResponse response = mapToResponse(cliente);
             Integer qtd = processoRepository.countByCliente_IdCliente(cliente.getIdCliente());
             response.setQtdProcessos(qtd);
             return response;
         }).collect(Collectors.toList());
+    }
+
+    public List<ClienteResponse> buscarPorTexto(String termo) {
+        List<Cliente> clientes = clienteRepository.buscarPorTexto(termo);
+        return clientes.stream().map(this::mapToResponse).collect(Collectors.toList());
     }
 }

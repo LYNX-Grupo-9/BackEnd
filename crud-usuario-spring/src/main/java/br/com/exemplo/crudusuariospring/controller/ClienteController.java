@@ -45,22 +45,31 @@ public class ClienteController {
     }
 
     @GetMapping("/ordenado-nome")
+    @SecurityRequirement(name = "Bearer")
     public List<ClienteResponse> listarPorNome() {
         return clienteService.listarOrdenadoPorNome();
     }
 
     @GetMapping("/ordenado-naturalidade")
+    @SecurityRequirement(name = "Bearer")
     public List<ClienteResponse> listarPorNaturalidade() {
         return clienteService.listarOrdenadoPorNaturalidade();
     }
 
     @GetMapping("/ordenado-nascimento")
+    @SecurityRequirement(name = "Bearer")
     public List<ClienteResponse> listarPorNascimento() {
         return clienteService.listarOrdenadoPorDataNascimento();
     }
 
     @GetMapping("/ordenado-processos")
+    @SecurityRequirement(name = "Bearer")
     public List<ClienteResponse> listarPorQtdProcessos() {
         return clienteService.listarOrdenadoPorQuantidadeProcessos();
+    }
+
+    @GetMapping("/buscar")
+    public List<ClienteResponse> buscarPorTexto(@RequestParam String termo) {
+        return clienteService.buscarPorTexto(termo);
     }
 }
