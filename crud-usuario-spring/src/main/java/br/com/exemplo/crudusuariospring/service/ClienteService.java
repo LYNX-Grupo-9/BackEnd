@@ -168,7 +168,7 @@ public class ClienteService {
     }
 
     public List<ClienteResponse> buscarPorTexto(String termo) {
-        List<Cliente> clientes = clienteRepository.buscarPorTexto(termo);
+        List<Cliente> clientes = clienteRepository.findByNomeContainingIgnoreCaseOrEmailContainingIgnoreCaseOrTelefoneContaining(termo, termo, termo);
         return clientes.stream().map(this::mapToResponse).collect(Collectors.toList());
     }
 }
