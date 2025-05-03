@@ -2,6 +2,7 @@ package br.com.exemplo.crudusuariospring.dto.response;
 
 import br.com.exemplo.crudusuariospring.model.SolicitacaoAgendamento;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class SolicitacaoAgendamentoResponse {
@@ -11,8 +12,7 @@ public class SolicitacaoAgendamentoResponse {
     private String telefone;
     private String email;
     private String assunto;
-    private String mensagem;
-    private LocalDateTime dataSolicitacao;
+    private LocalDate dataSolicitacao;
 
     public SolicitacaoAgendamentoResponse(SolicitacaoAgendamento solicitacao) {
         this.idSolicitacaoAgendamento = solicitacao.getIdSolicitacaoAgendamento();
@@ -20,7 +20,6 @@ public class SolicitacaoAgendamentoResponse {
         this.telefone = solicitacao.getTelefone();
         this.email = solicitacao.getEmail();
         this.assunto = solicitacao.getAssunto();
-        this.mensagem = solicitacao.getMensagem();
         this.dataSolicitacao = solicitacao.getDataSolicitacao();
     }
 
@@ -64,19 +63,11 @@ public class SolicitacaoAgendamentoResponse {
         this.assunto = assunto;
     }
 
-    public String getMensagem() {
-        return mensagem;
-    }
-
-    public void setMensagem(String mensagem) {
-        this.mensagem = mensagem;
-    }
-
-    public LocalDateTime getDataSolicitacao() {
+    public LocalDate getDataSolicitacao() {
         return dataSolicitacao;
     }
 
-    public void setDataSolicitacao(LocalDateTime dataSolicitacao) {
+    public void setDataSolicitacao(LocalDate dataSolicitacao) {
         this.dataSolicitacao = dataSolicitacao;
     }
 }

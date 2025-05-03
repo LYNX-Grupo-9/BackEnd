@@ -2,6 +2,7 @@ package br.com.exemplo.crudusuariospring.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,8 +16,7 @@ public class SolicitacaoAgendamento {
     private String telefone;
     private String email;
     private String assunto;
-    private String mensagem;
-    private LocalDateTime dataSolicitacao;
+    private LocalDate dataSolicitacao;
 
     // RELACIONAMENTOS
     @ManyToOne
@@ -64,19 +64,11 @@ public class SolicitacaoAgendamento {
         this.assunto = assunto;
     }
 
-    public String getMensagem() {
-        return mensagem;
-    }
-
-    public void setMensagem(String mensagem) {
-        this.mensagem = mensagem;
-    }
-
-    public LocalDateTime getDataSolicitacao() {
+    public LocalDate getDataSolicitacao() {
         return dataSolicitacao;
     }
 
-    public void setDataSolicitacao(LocalDateTime dataSolicitacao) {
+    public void setDataSolicitacao(LocalDate dataSolicitacao) {
         this.dataSolicitacao = dataSolicitacao;
     }
 

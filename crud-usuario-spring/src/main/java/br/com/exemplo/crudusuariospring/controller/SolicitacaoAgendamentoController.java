@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/solicitacao-agendamento")
 public class SolicitacaoAgendamentoController {
 
     @Autowired
     private SolicitacaoAgendamentoService solicitacaoAgendamentoService;
 
-    @SecurityRequirement(name = "Bearer")
-    @PostMapping("/api/solicitar-agendamento")
+    @PostMapping("/solicitar")
     public ResponseEntity<SolicitacaoAgendamentoResponse> criarSolicitacao(@RequestBody @Valid SolicitacaoAgendamentoRequest request) {
         SolicitacaoAgendamentoResponse response = solicitacaoAgendamentoService.criarSolicitacao(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

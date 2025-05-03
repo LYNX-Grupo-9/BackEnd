@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,8 +32,7 @@ public class SolicitacaoAgendamentoService {
         solicitacao.setTelefone(request.getTelefone());
         solicitacao.setEmail(request.getEmail());
         solicitacao.setAssunto(request.getAssunto());
-        solicitacao.setMensagem(request.getMensagem());
-        solicitacao.setDataSolicitacao(LocalDateTime.now());
+        solicitacao.setDataSolicitacao(request.getDataSolicitacao());
 
         Advogado advogado = advogadoRepository.findById(request.getIdAdvogado())
                 .orElseThrow(() -> new RuntimeException("Advogado não encontrado"));

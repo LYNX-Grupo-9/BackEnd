@@ -1,10 +1,12 @@
 package br.com.exemplo.crudusuariospring.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class SolicitacaoAgendamentoRequest {
@@ -19,10 +21,9 @@ public class SolicitacaoAgendamentoRequest {
     private String email;
     @NotBlank(message = "Assunto é obrigatório")
     private String assunto;
-    @NotBlank(message = "Mensagem é obrigatório")
-    private String mensagem;
     @NotBlank(message = "Data de solicitação é obrigatório")
-    private LocalDateTime dataSolicitacao;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataSolicitacao;
 
     @NotNull(message = "ID do advogado é obrigatório")
     private Integer idAdvogado;
@@ -59,19 +60,11 @@ public class SolicitacaoAgendamentoRequest {
         this.assunto = assunto;
     }
 
-    public String getMensagem() {
-        return mensagem;
-    }
-
-    public void setMensagem(String mensagem) {
-        this.mensagem = mensagem;
-    }
-
-    public LocalDateTime getDataSolicitacao() {
+    public LocalDate getDataSolicitacao() {
         return dataSolicitacao;
     }
 
-    public void setDataSolicitacao(LocalDateTime dataSolicitacao) {
+    public void setDataSolicitacao(LocalDate dataSolicitacao) {
         this.dataSolicitacao = dataSolicitacao;
     }
 
