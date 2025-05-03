@@ -1,6 +1,7 @@
 package br.com.exemplo.crudusuariospring.controller;
 
 import br.com.exemplo.crudusuariospring.dto.request.ClienteRequest;
+import br.com.exemplo.crudusuariospring.dto.response.ClienteProcessoEventoResponse;
 import br.com.exemplo.crudusuariospring.dto.response.ClienteResponse;
 import br.com.exemplo.crudusuariospring.model.Cliente;
 import br.com.exemplo.crudusuariospring.repository.ClienteRepository;
@@ -72,5 +73,12 @@ public class ClienteController {
     @SecurityRequirement(name = "Bearer")
     public List<ClienteResponse> buscarPorTexto(@RequestParam String termo) {
         return clienteService.buscarPorTexto(termo);
+    }
+
+    @GetMapping("/{id}/completo")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<ClienteProcessoEventoResponse> buscarClienteCompleto(@PathVariable Integer id) {
+        ClienteProcessoEventoResponse clienteDados = clienteService.buscarDadosCliente(id);
+        return ResponseEntity.ok(clienteDados);
     }
 }

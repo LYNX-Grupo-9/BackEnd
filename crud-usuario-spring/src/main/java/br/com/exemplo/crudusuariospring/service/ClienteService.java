@@ -1,6 +1,7 @@
 package br.com.exemplo.crudusuariospring.service;
 
 import br.com.exemplo.crudusuariospring.dto.request.ClienteRequest;
+import br.com.exemplo.crudusuariospring.dto.response.ClienteProcessoEventoResponse;
 import br.com.exemplo.crudusuariospring.dto.response.ClienteResponse;
 import br.com.exemplo.crudusuariospring.model.Cliente;
 import br.com.exemplo.crudusuariospring.observer.CadastroClienteSubject;
@@ -171,4 +172,50 @@ public class ClienteService {
         List<Cliente> clientes = clienteRepository.findByNomeContainingIgnoreCaseOrEmailContainingIgnoreCaseOrTelefoneContaining(termo, termo, termo);
         return clientes.stream().map(this::mapToResponse).collect(Collectors.toList());
     }
+
+    public ClienteProcessoEventoResponse buscarDadosCliente(Integer idCliente) {
+        Cliente cliente = clienteRepository.findById(idCliente)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+
+        ClienteProcessoEventoResponse clienteDados = new ClienteProcessoEventoResponse();
+
+        clienteDados.setIdCliente(cliente.getIdCliente());
+        clienteDados.setNome(cliente.getNome());
+        clienteDados.setDocumento(cliente.getDocumento());
+        clienteDados.setTipoDocumento(cliente.getTipoDocumento());
+        clienteDados.setEmail(cliente.getEmail());
+        clienteDados.setTelefone(cliente.getTelefone());
+        clienteDados.setEndereco(cliente.getEndereco());
+        clienteDados.setGenero(cliente.getGenero());
+        clienteDados.setDataNascimento(cliente.getDataNascimento());
+        clienteDados.setEstadoCivil(cliente.getEstadoCivil());
+        clienteDados.setProfissao(cliente.getProfissao());
+        clienteDados.setPassaporte(cliente.getPassaporte());
+        clienteDados.setCnh(cliente.getCnh());
+        clienteDados.setNaturalidade(cliente.getNaturalidade());
+
+        // Processos
+        List<ClienteProcessoEventoResponse.ProcessoResponse> processosDTO = cliente.getProcessos().stream()
+                .map(processo -> {
+                    ClienteProcessoEventoResponse.ProcessoResponse p = new ClienteProcessoEventoResponse.ProcessoResponse();
+                    p.setNumeroProcesso(processo.getNumeroProcesso());
+                    return p;
+                }).toList();
+        clienteDados.setProcessos(processosDTO);
+
+        // Eventos
+        List<ClienteProcessoEventoResponse.EventoResponse> eventosDTO = cliente.getEventos().stream()
+                .map(evento -> {
+                    ClienteProcessoEventoResponse.EventoResponse e = new ClienteProcessoEventoResponse.EventoResponse();
+                    e.setIdEvento(evento.getIdEvento());
+                    e.setDataHora(evento.getDataHora());
+                    e.setTitulo(evento.getNome());
+                    e.setTipo(evento.getCategoria() != null ? evento.getCategoria().getNome() : null);
+                    return e;
+                }).toList();
+        clienteDados.setEventos(eventosDTO);
+
+        return clienteDados;
+    }
+
 }
