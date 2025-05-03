@@ -27,12 +27,12 @@ public class ClienteController {
     @Autowired
     private ProcessoRepository processoRepository;
 
-    @PostMapping
+    @PostMapping("/cadastrar")
     public ClienteResponse cadastrarClientes(@RequestBody ClienteRequest request) {
         return clienteService.salvar(request);
     }
 
-    @GetMapping
+    @GetMapping("/listar")
     @SecurityRequirement(name = "Bearer")
     public List<ClienteResponse> listarClientes() {
         return clienteService.listarTodos();
@@ -75,7 +75,7 @@ public class ClienteController {
         return clienteService.buscarPorTexto(termo);
     }
 
-    @GetMapping("/{id}/completo")
+    @GetMapping("/{id}/dados-completo")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<ClienteProcessoEventoResponse> buscarClienteCompleto(@PathVariable Integer id) {
         ClienteProcessoEventoResponse clienteDados = clienteService.buscarDadosCliente(id);
