@@ -2,13 +2,16 @@ package br.com.exemplo.crudusuariospring.service;
 
 import br.com.exemplo.crudusuariospring.dto.request.SolicitacaoAgendamentoRequest;
 import br.com.exemplo.crudusuariospring.dto.response.SolicitacaoAgendamentoResponse;
+import br.com.exemplo.crudusuariospring.model.Advogado;
 import br.com.exemplo.crudusuariospring.model.SolicitacaoAgendamento;
+import br.com.exemplo.crudusuariospring.repository.AdvogadoRepository;
 import br.com.exemplo.crudusuariospring.repository.SolicitacaoAgendamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +21,10 @@ public class SolicitacaoAgendamentoService {
     @Autowired
     private SolicitacaoAgendamentoRepository solicitacaoAgendamentoRepository;
 
+    @Autowired
+    private AdvogadoRepository advogadoRepository;
+
+
     public SolicitacaoAgendamentoResponse criarSolicitacao(SolicitacaoAgendamentoRequest request) {
         SolicitacaoAgendamento solicitacao = new SolicitacaoAgendamento();
         solicitacao.setNome(request.getNome());
@@ -25,17 +32,23 @@ public class SolicitacaoAgendamentoService {
         solicitacao.setEmail(request.getEmail());
         solicitacao.setAssunto(request.getAssunto());
         solicitacao.setMensagem(request.getMensagem());
-        solicitacao.setDataSolicitacao(request.getDataSolicitacao());
+        solicitacao.setDataSolicitacao(LocalDateTime.now());
 
-        SolicitacaoAgendamento solicitacaoSalva = solicitacaoAgendamentoRepository.save(solicitacao);
-        return new SolicitacaoAgendamentoResponse(solicitacaoSalva);
+        Advogado advogado = advogadoRepository.findById(request.getIdAdvogado())
+                .orElseThrow(() -> new RuntimeException("Advogado não encontrado"));
+
+        solicitacao.setAdvogado(advogado);
+
+        SolicitacaoAgendamento salvo = solicitacaoAgendamentoRepository.save(solicitacao);
+        return new SolicitacaoAgendamentoResponse(salvo);
     }
 
-    public List<SolicitacaoAgendamentoResponse> listarTodas() {
-        List<SolicitacaoAgendamento> solicitacoes = solicitacaoAgendamentoRepository.findAll();
-        return solicitacoes.stream()
-                .map(SolicitacaoAgendamentoResponse::new)
-                .collect(Collectors.toList());
+    public SolicitacaoAgendamentoResponse buscarPorEmail(String email) {
+        SolicitacaoAgendamento solicitacao = solicitacaoAgendamentoRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Solicitação não encontrada para o email: " + email));
+
+        return new SolicitacaoAgendamentoResponse(solicitacao);
     }
 
 }

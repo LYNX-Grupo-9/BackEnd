@@ -69,6 +69,7 @@ public class ClienteController {
     }
 
     @GetMapping("/buscar")
+    @SecurityRequirement(name = "Bearer")
     public List<ClienteResponse> buscarPorTexto(@RequestParam String termo) {
         return clienteService.buscarPorTexto(termo);
     }
