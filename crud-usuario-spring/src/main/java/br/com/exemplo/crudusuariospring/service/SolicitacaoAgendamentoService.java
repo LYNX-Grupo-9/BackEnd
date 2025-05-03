@@ -43,12 +43,15 @@ public class SolicitacaoAgendamentoService {
         return new SolicitacaoAgendamentoResponse(salvo);
     }
 
-    public SolicitacaoAgendamentoResponse buscarPorEmail(String email) {
-        SolicitacaoAgendamento solicitacao = solicitacaoAgendamentoRepository
-                .findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Solicitação não encontrada para o email: " + email));
+    public List<SolicitacaoAgendamentoResponse> buscarPorEmail(String email) {
+        List<SolicitacaoAgendamento> solicitacoes = solicitacaoAgendamentoRepository.findByEmail(email);
 
-        return new SolicitacaoAgendamentoResponse(solicitacao);
+        if (solicitacoes.isEmpty()) {
+            throw new RuntimeException("Solicitação não encontrada para o email: " + email);
+        }
+
+        return solicitacoes.stream()
+                .map(solicitacao -> new SolicitacaoAgendamentoResponse(solicitacao))
+                .collect(Collectors.toList());
     }
-
 }

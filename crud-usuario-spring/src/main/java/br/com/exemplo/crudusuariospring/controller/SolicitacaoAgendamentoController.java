@@ -25,11 +25,9 @@ public class SolicitacaoAgendamentoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/buscar-por-email")
+    @GetMapping("/buscar-por-email/{email}")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<SolicitacaoAgendamentoResponse> buscarPorEmail(@RequestParam String email) {
-        SolicitacaoAgendamentoResponse response = solicitacaoAgendamentoService.buscarPorEmail(email);
-        return ResponseEntity.ok(response);
+    public List<SolicitacaoAgendamentoResponse> buscarPorEmail(@PathVariable String email) {
+        return solicitacaoAgendamentoService.buscarPorEmail(email);
     }
-
 }
