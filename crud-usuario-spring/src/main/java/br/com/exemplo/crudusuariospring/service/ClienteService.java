@@ -71,7 +71,7 @@ public class ClienteService {
         response.setGenero(salvo.getGenero());
         response.setProfissao(salvo.getProfissao());
         response.setPassaporte(salvo.getPassaporte());
-        response.setCnh(salvo.getCnh()); // Mantendo cnh
+        response.setCnh(salvo.getCnh());
         response.setNaturalidade(salvo.getNaturalidade());
         response.setDataNascimento(salvo.getDataNascimento());
         response.setAdvogadoResponsavel(advogado.getNome());
