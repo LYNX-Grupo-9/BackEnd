@@ -1,7 +1,10 @@
 package br.com.exemplo.crudusuariospring.dto.response;
 
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 
 public class ClienteProcessoEventoResponse {
@@ -38,7 +41,9 @@ public class ClienteProcessoEventoResponse {
 
     public static class EventoResponse {
         private Long idEvento;
-        private LocalDateTime dataHora;
+        private Date dataEvento;
+        private LocalTime horaInicio;
+        private LocalTime horaFim;
         private String titulo;
         private String tipo;
 
@@ -50,12 +55,12 @@ public class ClienteProcessoEventoResponse {
             this.idEvento = idEvento;
         }
 
-        public LocalDateTime getDataHora() {
-            return dataHora;
+        public Date getDataEvento() {
+            return dataEvento;
         }
 
-        public void setDataHora(LocalDateTime dataHora) {
-            this.dataHora = dataHora;
+        public void setDataEvento(Date dataEvento) {
+            this.dataEvento = dataEvento;
         }
 
         public String getTitulo() {
@@ -72,6 +77,22 @@ public class ClienteProcessoEventoResponse {
 
         public void setTipo(String tipo) {
             this.tipo = tipo;
+        }
+
+        public LocalTime getHoraInicio() {
+            return horaInicio;
+        }
+
+        public void setHoraInicio(LocalTime horaInicio) {
+            this.horaInicio = horaInicio;
+        }
+
+        public LocalTime getHoraFim() {
+            return horaFim;
+        }
+
+        public void setHoraFim(LocalTime horaFim) {
+            this.horaFim = horaFim;
         }
     }
 

@@ -7,7 +7,9 @@ import br.com.exemplo.crudusuariospring.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,6 +36,9 @@ public class EventoService {
         Evento evento = new Evento();
         evento.setNome(request.getNome());
         evento.setDescricao(request.getDescricao());
+        evento.setHoraInicio(request.getHoraInicio());
+        evento.setHoraFim(request.getHoraFim());
+        evento.setDataReuniao(request.getDataReuniao());
         evento.setLocal(request.getLocal());
         evento.setLinkReuniao(request.getLinkReuniao());
 
@@ -86,10 +91,11 @@ public class EventoService {
         return eventoRepository.findByAdvogadoIdAdvogado(idAdvogado);
     }
 
-    public List<Evento> buscaEventoProximoSeteDias(Integer idAdvogado) {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime sevenDaysLater = now.plusDays(7);
 
-        return eventoRepository.findByAdvogadoIdAdvogadoAndDataHoraBetween(idAdvogado, now, sevenDaysLater);
+    public List<Evento> buscaEventoProximoSeteDias(Integer idAdvogado) {
+        LocalTime now = LocalTime.now();
+        LocalTime sevenDaysLater = now.plusHours(24 * 7);
+
+        return eventoRepository.findByAdvogadoIdAdvogadoAndDataReuniaoBetween(idAdvogado, now, sevenDaysLater);
     }
 }

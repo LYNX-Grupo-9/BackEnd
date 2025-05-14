@@ -18,6 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,8 +26,10 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -177,4 +180,97 @@ class AdvogadoServiceTest {
 
         verify(clienteRepository).save(any());
     }
+
+    @Test
+    void deveBuscarAdvogadoPorEmailERetornarResponse() {
+        Advogado advogado = new Advogado();
+        advogado.setIdAdvogado(1);
+        advogado.setNome("Lucas Ronald");
+        advogado.setRegistroOab("123456");
+        advogado.setCpf("11122233344");
+        advogado.setEmail("lucas@email.com");
+        advogado.setSenha("senha123");
+
+        when(advogadoRepository.findByEmail("lucas@email.com"))
+                .thenReturn(Optional.of(advogado));
+
+        AdvogadoResponse response = advogadoService.buscarPorEmail("lucas@email.com");
+
+        assertNotNull(response);
+        assertEquals("Lucas Ronald", response.getNome());
+        assertEquals("123456", response.getRegistroOab());
+        assertEquals("lucas@email.com", response.getEmail());
+
+        verify(advogadoRepository).findByEmail("lucas@email.com");
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoAdvogadoNaoEncontradoPorEmail() {
+        when(advogadoRepository.findByEmail("naoexiste@email.com"))
+                .thenReturn(Optional.empty());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            advogadoService.buscarPorEmail("naoexiste@email.com");
+        });
+
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+        assertEquals("Advogado não encontrado", exception.getReason());
+
+        verify(advogadoRepository).findByEmail("naoexiste@email.com");
+    }
+
+    @Test
+    void deveListarTodosOsAdvogadosERetornarListaDeResponses() {
+        Advogado advogado1 = new Advogado();
+        advogado1.setIdAdvogado(1);
+        advogado1.setNome("Lucas Ronald");
+        advogado1.setRegistroOab("123456");
+        advogado1.setCpf("11122233344");
+        advogado1.setEmail("lucas@email.com");
+        advogado1.setSenha("senha123");
+
+        Advogado advogado2 = new Advogado();
+        advogado2.setIdAdvogado(2);
+        advogado2.setNome("Joana Alves");
+        advogado2.setRegistroOab("654321");
+        advogado2.setCpf("99988877766");
+        advogado2.setEmail("joana@email.com");
+        advogado2.setSenha("senha456");
+
+        List<Advogado> advogados = List.of(advogado1, advogado2);
+
+        when(advogadoRepository.findAll()).thenReturn(advogados);
+
+        List<AdvogadoResponse> responses = advogadoService.listarTodosAdvogados();
+
+        assertNotNull(responses);
+        assertEquals(2, responses.size());
+
+        assertEquals("Lucas Ronald", responses.get(0).getNome());
+        assertEquals("Joana Alves", responses.get(1).getNome());
+
+        verify(advogadoRepository).findAll();
+    }
+
+    @Test
+    void deveCriarAdvogadoComSenhaCriptografadaESalvarNoRepositorio() {
+        Advogado novoAdvogado = new Advogado();
+        novoAdvogado.setNome("Lucas Ronald");
+        novoAdvogado.setRegistroOab("123456");
+        novoAdvogado.setCpf("11122233344");
+        novoAdvogado.setEmail("lucas@email.com");
+        novoAdvogado.setSenha("senha123");
+
+        String senhaCriptografada = "$2a$10$abc123senhaCriptografada";
+
+        when(passwordEncoder.encode("senha123")).thenReturn(senhaCriptografada);
+
+        advogadoService.criarAdvogado(novoAdvogado);
+
+        assertEquals(senhaCriptografada, novoAdvogado.getSenha());
+
+        verify(passwordEncoder).encode("senha123");
+        verify(advogadoRepository).save(novoAdvogado);
+    }
+
 }

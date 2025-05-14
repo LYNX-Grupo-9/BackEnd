@@ -208,7 +208,9 @@ public class ClienteService {
                 .map(evento -> {
                     ClienteProcessoEventoResponse.EventoResponse e = new ClienteProcessoEventoResponse.EventoResponse();
                     e.setIdEvento(evento.getIdEvento());
-                    e.setDataHora(evento.getDataHora());
+                    e.setDataEvento(evento.getDataReuniao());
+                    e.setHoraInicio(evento.getHoraInicio());
+                    e.setHoraFim(evento.getHoraFim());
                     e.setTitulo(evento.getNome());
                     e.setTipo(evento.getCategoria() != null ? evento.getCategoria().getNome() : null);
                     return e;

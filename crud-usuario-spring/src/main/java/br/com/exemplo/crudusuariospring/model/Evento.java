@@ -1,10 +1,9 @@
 package br.com.exemplo.crudusuariospring.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+
 import java.time.LocalTime;
 import java.util.Date;
-import java.util.Timer;
 
 @Entity
 public class Evento {
