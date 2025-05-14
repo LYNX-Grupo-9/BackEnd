@@ -7,6 +7,7 @@ import br.com.exemplo.crudusuariospring.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,7 +36,18 @@ public class EventoService {
         evento.setDescricao(request.getDescricao());
         evento.setLocal(request.getLocal());
         evento.setLinkReuniao(request.getLinkReuniao());
-        evento.setDataHora(request.getDataHora());
+
+        if (request.getDataReuniao() != null) {
+            evento.setDataReuniao(request.getDataReuniao());
+        }
+
+        if (request.getHoraInicio() != null) {
+            evento.setHoraInicio(request.getHoraInicio());
+        }
+
+        if (request.getHoraFim() != null) {
+            evento.setHoraFim(request.getHoraFim());
+        }
 
         Optional<Advogado> advogadoOpt = advogadoRepository.findByNome(request.getNomeAdvogado());
         Optional<Cliente> clienteOpt = clienteRepository.findByNome(request.getNomeCliente());
@@ -48,7 +60,6 @@ public class EventoService {
         processoOpt.ifPresent(evento::setProcesso);
 
         Evento eventoSalvo = eventoRepository.save(evento);
-
         return new EventoResponse(eventoSalvo);
     }
 
@@ -69,5 +80,16 @@ public class EventoService {
         public EventoNaoEncontradoException(String mensagem) {
             super(mensagem);
         }
+    }
+
+    public List<Evento> buscaEventoPorAdvogado(Integer idAdvogado) {
+        return eventoRepository.findByAdvogadoIdAdvogado(idAdvogado);
+    }
+
+    public List<Evento> buscaEventoProximoSeteDias(Integer idAdvogado) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime sevenDaysLater = now.plusDays(7);
+
+        return eventoRepository.findByAdvogadoIdAdvogadoAndDataHoraBetween(idAdvogado, now, sevenDaysLater);
     }
 }

@@ -1,8 +1,8 @@
 package br.com.exemplo.crudusuariospring.dto.response;
 
 import br.com.exemplo.crudusuariospring.model.Evento;
-
-import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class EventoResponse {
 
@@ -11,11 +11,12 @@ public class EventoResponse {
     private String descricao;
     private String local;
     private String linkReuniao;
-    private LocalDateTime dataHora;
     private String nomeAdvogado;
     private String nomeCliente;
     private String nomeCategoria;
     private String numeroProcesso;
+    private String horaInicio;
+    private String horaFim;
 
     public EventoResponse(Evento evento) {
         this.idEvento = evento.getIdEvento();
@@ -23,7 +24,28 @@ public class EventoResponse {
         this.descricao = evento.getDescricao();
         this.local = evento.getLocal();
         this.linkReuniao = evento.getLinkReuniao();
-        this.dataHora = evento.getDataHora();
+
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        if (evento.getHoraInicio() != null) {
+            this.horaInicio = evento.getHoraInicio().format(timeFormatter);
+        }
+        if (evento.getHoraFim() != null) {
+            this.horaFim = evento.getHoraFim().format(timeFormatter);
+        }
+
+        if (evento.getAdvogado() != null) {
+            this.nomeAdvogado = evento.getAdvogado().getNome();
+        }
+        if (evento.getCliente() != null) {
+            this.nomeCliente = evento.getCliente().getNome();
+        }
+        if (evento.getCategoria() != null) {
+            this.nomeCategoria = evento.getCategoria().getNome();
+        }
+        if (evento.getProcesso() != null) {
+            this.numeroProcesso = evento.getProcesso().getNumeroProcesso();
+        }
     }
 
     public Long getIdEvento() {
@@ -98,11 +120,19 @@ public class EventoResponse {
         this.numeroProcesso = numeroProcesso;
     }
 
-    public LocalDateTime getDataHora() {
-        return dataHora;
+    public String getHoraInicio() {
+        return horaInicio;
     }
 
-    public void setDataHora(LocalDateTime dataHora) {
-        this.dataHora = dataHora;
+    public void setHoraInicio(String horaInicio) {
+        this.horaInicio = horaInicio;
+    }
+
+    public String getHoraFim() {
+        return horaFim;
+    }
+
+    public void setHoraFim(String horaFim) {
+        this.horaFim = horaFim;
     }
 }

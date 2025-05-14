@@ -53,4 +53,15 @@ public class EventoController {
         return ResponseEntity.ok(resposta);
     }
 
+    @GetMapping("/eventos/advogado/{idAdvogado}")
+    @SecurityRequirement(name = "Bearer")
+    public List<Evento> buscaEventoPorAdvogado(@PathVariable Integer idAdvogado) {
+        return eventoService.buscaEventoPorAdvogado(idAdvogado);
+    }
+
+    @GetMapping("/eventos/advogado/{idAdvogado}/7dias")
+    @SecurityRequirement(name = "Bearer")
+    public List<Evento> buscaEventoProximoSeteDias(@PathVariable Integer idAdvogado) {
+        return eventoService.buscaEventoProximoSeteDias(idAdvogado);
+    }
 }

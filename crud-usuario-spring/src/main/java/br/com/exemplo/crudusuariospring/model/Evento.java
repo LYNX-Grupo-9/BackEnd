@@ -2,6 +2,9 @@ package br.com.exemplo.crudusuariospring.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
+import java.util.Timer;
 
 @Entity
 public class Evento {
@@ -14,7 +17,10 @@ public class Evento {
     private String descricao;
     private String local;
     private String linkReuniao;
-    private LocalDateTime dataHora;
+    private Date dataReuniao;
+    private LocalTime horaInicio;
+    private LocalTime horaFim;
+
 
     // RELACIONAMENTOS CORRIGIDOS
     @ManyToOne
@@ -73,12 +79,28 @@ public class Evento {
         this.linkReuniao = linkReuniao;
     }
 
-    public LocalDateTime getDataHora() {
-        return dataHora;
+    public Date getDataReuniao() {
+        return dataReuniao;
     }
 
-    public void setDataHora(LocalDateTime dataHora) {
-        this.dataHora = dataHora;
+    public void setDataReuniao(Date dataReuniao) {
+        this.dataReuniao = dataReuniao;
+    }
+
+    public LocalTime getHoraInicio() {
+        return horaInicio;
+    }
+
+    public void setHoraInicio(LocalTime horaInicio) {
+        this.horaInicio = horaInicio;
+    }
+
+    public LocalTime getHoraFim() {
+        return horaFim;
+    }
+
+    public void setHoraFim(LocalTime horaFim) {
+        this.horaFim = horaFim;
     }
 
     // Métodos para os relacionamentos

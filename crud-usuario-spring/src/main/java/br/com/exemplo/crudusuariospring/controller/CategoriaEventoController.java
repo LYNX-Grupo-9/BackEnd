@@ -1,6 +1,7 @@
 package br.com.exemplo.crudusuariospring.controller;
 
 import br.com.exemplo.crudusuariospring.dto.response.CategoriaEventoResponse;
+import br.com.exemplo.crudusuariospring.model.CategoriaEvento;
 import br.com.exemplo.crudusuariospring.repository.CategoriaEventoRepository;
 import br.com.exemplo.crudusuariospring.service.CategoriaEventoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -29,6 +30,12 @@ public class CategoriaEventoController {
     public ResponseEntity<List<CategoriaEventoResponse>> buscarTodasCategorias() {
         List<CategoriaEventoResponse> categorias = categoriaEventoService.buscarTodasCategorias();
         return ResponseEntity.ok(categorias);
+    }
+
+    @GetMapping("/categorias/advogado/{idAdvogado}")
+    @SecurityRequirement(name = "Bearer")
+    public List<CategoriaEvento> CategoriaPorAdvogado(@PathVariable Integer idAdvogado) {
+        return categoriaEventoService.CategoriaPorAdvogado(idAdvogado);
     }
 
 }

@@ -3,6 +3,8 @@ package br.com.exemplo.crudusuariospring.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 
 public class EventoRequest {
 
@@ -30,7 +32,13 @@ public class EventoRequest {
     private String numeroProcesso;
 
     @NotNull(message = "A data e hora são obrigatórias")
-    private LocalDateTime dataHora;
+    private Date dataReuniao;
+
+    @NotNull(message = "A data e hora de início são obrigatórias")
+    private LocalTime horaInicio;
+
+    @NotNull(message = "A data e hora de fim são obrigatórias")
+    private LocalTime horaFim;
 
     public String getNome() {
         return nome;
@@ -96,11 +104,27 @@ public class EventoRequest {
         this.numeroProcesso = numeroProcesso;
     }
 
-    public LocalDateTime getDataHora() {
-        return dataHora;
+    public Date getDataReuniao() {
+        return dataReuniao;
     }
 
-    public void setDataHora(LocalDateTime dataHora) {
-        this.dataHora = dataHora;
+    public void setDataReuniao(Date dataReuniao) {
+        this.dataReuniao = dataReuniao;
+    }
+
+    public LocalTime getHoraInicio() {
+        return horaInicio;
+    }
+
+    public void setHoraInicio(LocalTime horaInicio) {
+        this.horaInicio = horaInicio;
+    }
+
+    public LocalTime getHoraFim() {
+        return horaFim;
+    }
+
+    public void setHoraFim(LocalTime horaFim) {
+        this.horaFim = horaFim;
     }
 }

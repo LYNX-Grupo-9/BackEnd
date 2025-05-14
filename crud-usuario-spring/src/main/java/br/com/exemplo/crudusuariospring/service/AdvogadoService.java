@@ -86,12 +86,6 @@ public class AdvogadoService {
         return toResponse(salvo);
     }
 
-    public List<AdvogadoResponse> listarTodos() {
-        return advogadoRepository.findAll().stream()
-                .map(this::toResponse)
-                .collect(Collectors.toList());
-    }
-
     public void criarAdvogado(Advogado novoAdvogado) {
         String senhaCriptografada = passwordEncoder.encode(novoAdvogado.getSenha());
         novoAdvogado.setSenha(senhaCriptografada);
