@@ -27,8 +27,10 @@ public class CategoriaEventoService {
         return categorias.stream().map(categoria -> new CategoriaEventoResponse(categoria.getIdCategoria(), categoria.getNome(), categoria.getCor())).toList();
     }
 
-    public List<CategoriaEvento> CategoriaPorAdvogado(Integer idAdvogado) {
-        return categoriaEventoRepository.findByAdvogadoIdAdvogado(idAdvogado);
+    public List<CategoriaEventoResponse> CategoriaPorAdvogado(Integer idAdvogado) {
+        List<CategoriaEvento> categorias = categoriaEventoRepository.findByAdvogadoIdAdvogado(idAdvogado);
+        return categorias.stream()
+                .map(c -> new CategoriaEventoResponse(c.getIdCategoria(), c.getNome(), c.getCor()))
+                .toList();
     }
-
 }

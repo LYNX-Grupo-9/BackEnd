@@ -34,8 +34,8 @@ public class CategoriaEventoController {
 
     @GetMapping("/categorias/advogado/{idAdvogado}")
     @SecurityRequirement(name = "Bearer")
-    public List<CategoriaEvento> CategoriaPorAdvogado(@PathVariable Integer idAdvogado) {
-        return categoriaEventoService.CategoriaPorAdvogado(idAdvogado);
+    public ResponseEntity<List<CategoriaEventoResponse>> buscarPorAdvogado(@PathVariable Integer idAdvogado) {
+        List<CategoriaEventoResponse> categorias = categoriaEventoService.CategoriaPorAdvogado(idAdvogado);
+        return ResponseEntity.ok(categorias);
     }
-
 }

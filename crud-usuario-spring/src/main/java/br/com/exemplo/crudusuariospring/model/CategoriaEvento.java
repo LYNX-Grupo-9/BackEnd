@@ -16,7 +16,7 @@ public class CategoriaEvento {
 
     // RELACIONAMENTOS
     @ManyToOne
-    @JoinColumn(name = "idAdvogado")
+    @JoinColumn(name = "id_advogado")
     private Advogado advogado;
 
     @OneToMany(mappedBy = "categoria")
