@@ -32,7 +32,7 @@ public class CategoriaEventoController {
         return ResponseEntity.ok(categorias);
     }
 
-    @GetMapping("/categorias/advogado/{idAdvogado}")
+    @GetMapping("/advogado/{idAdvogado}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<CategoriaEventoResponse>> buscarPorAdvogado(@PathVariable Integer idAdvogado) {
         List<CategoriaEventoResponse> categorias = categoriaEventoService.CategoriaPorAdvogado(idAdvogado);

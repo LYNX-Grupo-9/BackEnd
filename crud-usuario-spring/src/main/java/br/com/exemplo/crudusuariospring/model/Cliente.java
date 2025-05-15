@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -35,6 +36,7 @@ public class Cliente {
 
     @OneToMany(mappedBy = "cliente")
     private List<Processo> processos;
+
 
     @OneToMany(mappedBy = "cliente")
     private List<Anexo> anexos;

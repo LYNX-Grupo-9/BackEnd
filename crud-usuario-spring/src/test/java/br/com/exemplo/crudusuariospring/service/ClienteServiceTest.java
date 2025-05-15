@@ -3,11 +3,12 @@ package br.com.exemplo.crudusuariospring.service;
 import br.com.exemplo.crudusuariospring.dto.request.ClienteRequest;
 import br.com.exemplo.crudusuariospring.dto.response.ClienteProcessoEventoResponse;
 import br.com.exemplo.crudusuariospring.dto.response.ClienteResponse;
-import br.com.exemplo.crudusuariospring.model.Advogado;
-import br.com.exemplo.crudusuariospring.model.Cliente;
+import br.com.exemplo.crudusuariospring.model.*;
+import br.com.exemplo.crudusuariospring.observer.CadastroClienteSubject;
 import br.com.exemplo.crudusuariospring.repository.AdvogadoRepository;
 import br.com.exemplo.crudusuariospring.repository.ClienteRepository;
 import br.com.exemplo.crudusuariospring.repository.ProcessoRepository;
+import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,17 +16,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.security.auth.Subject;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalTime;
+import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.times;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ClienteServiceTest {
@@ -38,6 +38,9 @@ class ClienteServiceTest {
 
     @Mock
     private ProcessoRepository processoRepository;
+
+    @Mock
+    private CadastroClienteSubject subject;
 
     @InjectMocks
     private ClienteService clienteService;
@@ -157,16 +160,227 @@ class ClienteServiceTest {
     }
 
     @Test
-    void buscarDadosCliente() {
-        cliente.setProcessos(new ArrayList<>());
-        cliente.setEventos(new ArrayList<>());
+    void testBuscarDadosCliente_Sucesso() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(2025, Calendar.MAY, 20, 0, 0, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        Date dataReuniao = cal.getTime();
 
-        when(clienteRepository.findById(cliente.getIdCliente())).thenReturn(Optional.of(cliente));
+        Cliente cliente = new Cliente();
+        cliente.setIdCliente(1);
+        cliente.setNome("Lucas Ronald");
+        cliente.setDocumento("123456789");
+        cliente.setTipoDocumento("CPF");
+        cliente.setEmail("lucas@example.com");
+        cliente.setTelefone("11999999999");
+        cliente.setEndereco("Rua A, 123");
+        cliente.setGenero("Masculino");
+        cliente.setDataNascimento(LocalDate.of(1990, 1, 1));
+        cliente.setEstadoCivil("Solteiro");
+        cliente.setProfissao("Programador");
+        cliente.setPassaporte("XYZ12345");
+        cliente.setCnh("CNH123456");
+        cliente.setNaturalidade("São Paulo");
 
-        ClienteProcessoEventoResponse response = clienteService.buscarDadosCliente(cliente.getIdCliente());
+        Processo processo = new Processo();
+        processo.setNumeroProcesso("0001234-56.2025.8.26.0100");
+        cliente.setProcessos(List.of(processo));
+
+        CategoriaEvento categoria = new CategoriaEvento();
+        categoria.setNome("Reunião");
+
+        Evento evento = new Evento();
+        evento.setIdEvento(10L);
+        evento.setDataReuniao(dataReuniao);
+        evento.setHoraInicio(LocalTime.of(14, 0));
+        evento.setHoraFim(LocalTime.of(15, 0));
+        evento.setNome("Reunião com cliente");
+        evento.setCategoria(categoria);
+
+        cliente.setEventos(List.of(evento));
+
+        when(clienteRepository.findById(1)).thenReturn(Optional.of(cliente));
+
+        ClienteProcessoEventoResponse response = clienteService.buscarDadosCliente(1);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dataEsperada = "2025-05-20";
+        String dataObtida = sdf.format(response.getEventos().get(0).getDataEvento());
 
         assertNotNull(response);
+        assertEquals(1, response.getIdCliente());
+        assertEquals("Lucas Ronald", response.getNome());
+        assertEquals("123456789", response.getDocumento());
+        assertEquals("CPF", response.getTipoDocumento());
+        assertEquals("lucas@example.com", response.getEmail());
+        assertEquals("11999999999", response.getTelefone());
+        assertEquals("Rua A, 123", response.getEndereco());
+        assertEquals("Masculino", response.getGenero());
+        assertEquals(LocalDate.of(1990, 1, 1), response.getDataNascimento());
+        assertEquals("Solteiro", response.getEstadoCivil());
+        assertEquals("Programador", response.getProfissao());
+        assertEquals("XYZ12345", response.getPassaporte());
+        assertEquals("CNH123456", response.getCnh());
+        assertEquals("São Paulo", response.getNaturalidade());
+
+        assertNotNull(response.getProcessos());
+        assertEquals(1, response.getProcessos().size());
+        assertEquals("0001234-56.2025.8.26.0100", response.getProcessos().get(0).getNumeroProcesso());
+
+        assertNotNull(response.getEventos());
+        assertEquals(1, response.getEventos().size());
+        ClienteProcessoEventoResponse.EventoResponse eventoResponse = response.getEventos().get(0);
+        assertEquals(10, eventoResponse.getIdEvento());
+        assertEquals(dataEsperada, dataObtida);
+        assertEquals(LocalTime.of(14, 0), eventoResponse.getHoraInicio());
+        assertEquals(LocalTime.of(15, 0), eventoResponse.getHoraFim());
+        assertEquals("Reunião com cliente", eventoResponse.getTitulo());
+        assertEquals("Reunião", eventoResponse.getTipo());
+    }
+
+    @Test
+    void testBuscarDadosCliente_ClienteNaoEncontrado() {
+        when(clienteRepository.findById(999)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            clienteService.buscarDadosCliente(999);
+        });
+
+        assertEquals("Cliente não encontrado", exception.getMessage());
+    }
+
+    @Test
+    void deveSalvarClienteQuandoDadosValidos() {
+        ClienteRequest request = new ClienteRequest();
+        request.setNome("Lucas Ronald");
+        request.setDocumento("12345678900");
+        request.setEmail("lucas@email.com");
+        request.setTelefone("11999999999");
+        request.setEndereco("Rua Teste");
+        request.setEstadoCivil("Solteiro");
+        request.setGenero("Masculino");
+        request.setProfissao("Desenvolvedor");
+        request.setPassaporte("X1234567");
+        request.setCnh("CNH12345");
+        request.setNaturalidade("São Paulo");
+        request.setDataNascimento(LocalDate.of(1990, 1, 1));
+        request.setIdAdvogado(1);
+
+        when(advogadoRepository.findById(1)).thenReturn(Optional.of(advogado));
+        when(clienteRepository.existsByEmail(request.getEmail())).thenReturn(false);
+        when(clienteRepository.save(any(Cliente.class))).thenAnswer(invocation -> {
+            Cliente clienteSalvo = invocation.getArgument(0);
+            clienteSalvo.setIdCliente(100);
+            return clienteSalvo;
+        });
+
+        doNothing().when(subject).notificarTodos(anyString());
+
+        ClienteResponse response = clienteService.salvar(request);
+
+        assertNotNull(response);
+        assertEquals(100, response.getIdCliente());
+        assertEquals(request.getNome(), response.getNome());
+        assertEquals(request.getEmail(), response.getEmail());
+        assertEquals(request.getTelefone(), response.getTelefone());
+        assertEquals(advogado.getNome(), response.getAdvogadoResponsavel());
+
+        verify(advogadoRepository).findById(1);
+        verify(clienteRepository).existsByEmail(request.getEmail());
+        verify(clienteRepository).save(any(Cliente.class));
+        verify(subject).notificarTodos("Novo cliente cadastrado: " + request.getNome());
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoAdvogadoNaoEncontrado() {
+        ClienteRequest request = new ClienteRequest();
+        request.setIdAdvogado(99);
+
+        when(advogadoRepository.findById(99)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            clienteService.salvar(request);
+        });
+
+        assertEquals("Advogado não encontrado.", exception.getMessage());
+
+        verify(advogadoRepository).findById(99);
+        verify(clienteRepository, times(0)).save(any());
+        verify(subject, times(0)).notificarTodos(anyString());
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoEmailJaExiste() {
+        ClienteRequest request = new ClienteRequest();
+        request.setEmail("email@existente.com");
+        request.setIdAdvogado(1);
+
+        when(advogadoRepository.findById(1)).thenReturn(Optional.of(advogado));
+        when(clienteRepository.existsByEmail(request.getEmail())).thenReturn(true);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            clienteService.salvar(request);
+        });
+
+        assertEquals("Cliente com este e-mail já está cadastrado.", exception.getMessage());
+
+        verify(advogadoRepository).findById(1);
+        verify(clienteRepository).existsByEmail(request.getEmail());
+        verify(clienteRepository, times(0)).save(any());
+        verify(subject, times(0)).notificarTodos(anyString());
+    }
+
+    @Test
+    void deveBuscarClienteComQuantidadeProcessosQuandoClienteExiste() {
+        Integer idCliente = cliente.getIdCliente();
+        Integer qtdProcessos = 3;
+
+        when(clienteRepository.findById(idCliente)).thenReturn(Optional.of(cliente));
+        when(processoRepository.countByCliente_IdCliente(idCliente)).thenReturn(qtdProcessos);
+
+        ClienteResponse response = clienteService.buscarClienteComQuantidadeProcessos(idCliente);
+
+        assertNotNull(response);
+        assertEquals(cliente.getIdCliente(), response.getIdCliente());
         assertEquals(cliente.getNome(), response.getNome());
         assertEquals(cliente.getEmail(), response.getEmail());
+        assertEquals(qtdProcessos, response.getQtdProcessos());
+
+        String advogadoEsperado = cliente.getAdvogado() != null ? cliente.getAdvogado().getNome() : "Não atribuído";
+        assertEquals(advogadoEsperado, response.getAdvogadoResponsavel());
+
+        verify(clienteRepository).findById(idCliente);
+        verify(processoRepository).countByCliente_IdCliente(idCliente);
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoClienteNaoEncontrado() {
+        Integer idCliente = 999;
+
+        when(clienteRepository.findById(idCliente)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            clienteService.buscarClienteComQuantidadeProcessos(idCliente);
+        });
+
+        assertEquals("Cliente não encontrado", exception.getMessage());
+
+        verify(clienteRepository).findById(idCliente);
+        verify(processoRepository, times(0)).countByCliente_IdCliente(any());
+    }
+
+    @Test
+    void testListarOrdenadoPorNome() {
+        when(clienteRepository.findAllByOrderByNomeAsc()).thenReturn(Arrays.asList(cliente1, cliente2, cliente3));
+
+        List<ClienteResponse> resposta = clienteService.listarOrdenadoPorNome();
+
+        assertNotNull(resposta);
+        assertEquals(3, resposta.size());
+        assertEquals("Carlos Silva", resposta.get(0).getNome());
+        assertEquals("Ana Oliveira", resposta.get(1).getNome());
+        assertEquals("Bruna Costa", resposta.get(2).getNome());
+
+        verify(clienteRepository).findAllByOrderByNomeAsc();
     }
 }
