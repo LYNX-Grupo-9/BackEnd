@@ -2,6 +2,7 @@ package br.com.exemplo.crudusuariospring.dto.response;
 
 import br.com.exemplo.crudusuariospring.model.Evento;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class EventoResponse {
 
@@ -14,6 +15,7 @@ public class EventoResponse {
     private Integer idCliente;
     private String cor;
     private Long idProcesso;
+    private Date dataReuniao;
     private String horaInicio;
     private String horaFim;
 
@@ -47,6 +49,10 @@ public class EventoResponse {
 
         if (evento.getProcesso() != null) {
             this.idProcesso = evento.getProcesso().getIdProcesso();
+        }
+
+        if (evento.getDataReuniao() != null) {
+            this.dataReuniao = new Date(evento.getDataReuniao().getDate());
         }
     }
 
@@ -138,5 +144,13 @@ public class EventoResponse {
 
     public void setHoraFim(String horaFim) {
         this.horaFim = horaFim;
+    }
+
+    public Date getDataReuniao() {
+        return dataReuniao;
+    }
+
+    public void setDataReuniao(Date dataReuniao) {
+        this.dataReuniao = dataReuniao;
     }
 }
