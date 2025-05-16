@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public class ClienteRequest {
 
@@ -27,7 +28,7 @@ public class ClienteRequest {
 
     private String endereco;
     private String genero;
-    private LocalDate dataNascimento;
+    private Date dataNascimento;
     private String estadoCivil;
     private String profissao;
     private String passaporte;
@@ -92,11 +93,11 @@ public class ClienteRequest {
         this.genero = genero;
     }
 
-    public LocalDate getDataNascimento() {
+    public Date getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(LocalDate dataNascimento) {
+    public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 

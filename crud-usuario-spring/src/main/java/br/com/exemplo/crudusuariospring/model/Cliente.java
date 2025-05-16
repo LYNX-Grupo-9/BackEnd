@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -22,12 +23,13 @@ public class Cliente {
     private String telefone;
     private String endereco;
     private String genero;
-    private LocalDate dataNascimento;
+    private Date dataNascimento;
     private String estadoCivil;
     private String profissao;
     private String passaporte;
     private String cnh;
     private String naturalidade;
+    private Integer qtdProcessos;
 
     // RELACIONAMENTOS
     @ManyToOne
@@ -108,11 +110,11 @@ public class Cliente {
         this.genero = genero;
     }
 
-    public LocalDate getDataNascimento() {
+    public Date getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(LocalDate dataNascimento) {
+    public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -186,5 +188,13 @@ public class Cliente {
 
     public void setEventos(List<Evento> eventos) {
         this.eventos = eventos;
+    }
+
+    public Integer getQtdProcessos() {
+        return qtdProcessos;
+    }
+
+    public void setQtdProcessos(Integer qtdProcessos) {
+        this.qtdProcessos = qtdProcessos;
     }
 }

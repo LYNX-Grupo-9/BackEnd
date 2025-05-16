@@ -3,6 +3,7 @@ package br.com.exemplo.crudusuariospring.dto.response;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public class ClienteResponse {
 
@@ -16,7 +17,7 @@ public class ClienteResponse {
     private String genero;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private LocalDate dataNascimento;
+    private Date dataNascimento;
 
     private String estadoCivil;
     private String profissao;
@@ -93,11 +94,11 @@ public class ClienteResponse {
         this.genero = genero;
     }
 
-    public LocalDate getDataNascimento() {
+    public Date getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(LocalDate dataNascimento) {
+    public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 

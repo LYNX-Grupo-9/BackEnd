@@ -16,6 +16,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
     List<Cliente> findAllByOrderByNomeAsc();
     List<Cliente> findAllByOrderByNaturalidadeAsc();
     List<Cliente> findAllByOrderByDataNascimentoAsc();
+    List<Cliente> findByAdvogadoIdAdvogado(Long idAdvogado);
 
     @Query("SELECT c FROM Cliente c LEFT JOIN c.processos p GROUP BY c ORDER BY COUNT(p) DESC")
     List<Cliente> ordenarPorQuantidadeProcessos();

@@ -29,6 +29,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -144,7 +145,7 @@ class AdvogadoServiceTest {
         clienteRequest.setTelefone("11999999999");
         clienteRequest.setEndereco("Rua A, 123");
         clienteRequest.setGenero("Masculino");
-        clienteRequest.setDataNascimento(LocalDate.of(1990, 1, 1));
+        clienteRequest.setDataNascimento(new Date(1990, 1, 1));
         clienteRequest.setEstadoCivil("Solteiro");
         clienteRequest.setProfissao("Engenheiro");
         clienteRequest.setPassaporte("P12345");

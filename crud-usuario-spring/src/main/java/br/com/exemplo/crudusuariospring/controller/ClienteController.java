@@ -38,6 +38,13 @@ public class ClienteController {
         return clienteService.listarTodos();
     }
 
+    @GetMapping("/listarPorAdvogado/{idAdvogado}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<ClienteResponse>> listarPorAdvogado(@PathVariable Long idAdvogado) {
+        List<ClienteResponse> clientes = clienteService.listarPorAdvogado(idAdvogado);
+        return ResponseEntity.ok(clientes);
+    }
+
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<ClienteResponse> getClienteComQuantidadeProcessos(@PathVariable Integer id) {

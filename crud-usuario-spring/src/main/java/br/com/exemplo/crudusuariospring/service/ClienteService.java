@@ -54,7 +54,7 @@ public class ClienteService {
         cliente.setGenero(request.getGenero());
         cliente.setProfissao(request.getProfissao());
         cliente.setPassaporte(request.getPassaporte());
-        cliente.setCnh(request.getCnh()); // Mantendo cnh
+        cliente.setCnh(request.getCnh());
         cliente.setNaturalidade(request.getNaturalidade());
         cliente.setDataNascimento(request.getDataNascimento());
         cliente.setAdvogado(advogado);
@@ -98,6 +98,31 @@ public class ClienteService {
             response.setNaturalidade(c.getNaturalidade());
             response.setDataNascimento(c.getDataNascimento());
             response.setAdvogadoResponsavel(c.getAdvogado() != null ? c.getAdvogado().getNome() : "Não atribuído");
+            return response;
+        }).collect(Collectors.toList());
+    }
+
+    public List<ClienteResponse> listarPorAdvogado(Long idAdvogado) {
+        return clienteRepository.findByAdvogadoIdAdvogado(idAdvogado).stream().map(c -> {
+            ClienteResponse response = new ClienteResponse();
+            response.setIdCliente(c.getIdCliente());
+            response.setNome(c.getNome());
+            response.setEmail(c.getEmail());
+            response.setDocumento(c.getDocumento());
+            response.setTipoDocumento(c.getTipoDocumento());
+            response.setTelefone(c.getTelefone());
+            response.setEndereco(c.getEndereco());
+            response.setEstadoCivil(c.getEstadoCivil());
+            response.setGenero(c.getGenero());
+            response.setProfissao(c.getProfissao());
+            response.setPassaporte(c.getPassaporte());
+            response.setCnh(c.getCnh());
+            response.setNaturalidade(c.getNaturalidade());
+            response.setDataNascimento(c.getDataNascimento());
+            response.setQtdProcessos(c.getQtdProcessos());
+            response.setAdvogadoResponsavel(
+                    c.getAdvogado() != null ? c.getAdvogado().getNome() : "Não atribuído"
+            );
             return response;
         }).collect(Collectors.toList());
     }

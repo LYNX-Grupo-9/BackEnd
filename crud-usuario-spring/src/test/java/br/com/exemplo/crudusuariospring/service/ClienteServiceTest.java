@@ -68,7 +68,7 @@ class ClienteServiceTest {
         cliente.setEstadoCivil("Solteiro");
         cliente.setGenero("Feminino");
         cliente.setProfissao("Desenvolvedor");
-        cliente.setDataNascimento(LocalDate.of(2000, 2, 1));
+        cliente.setDataNascimento(new Date(2000, 2, 1));
         cliente.setNaturalidade(naturalidade);
         cliente.setAdvogado(advogado);
         return cliente;
@@ -109,9 +109,9 @@ class ClienteServiceTest {
 
     @Test
     void testListarOrdenadoPorDataNascimento() {
-        cliente1.setDataNascimento(LocalDate.of(1990, 1, 1));
-        cliente2.setDataNascimento(LocalDate.of(1985, 6, 15));
-        cliente3.setDataNascimento(LocalDate.of(2000, 12, 31));
+        cliente1.setDataNascimento(new Date(1990, 1, 1));
+        cliente2.setDataNascimento(new Date(1985, 6, 15));
+        cliente3.setDataNascimento(new Date(2000, 12, 31));
 
         when(clienteRepository.findAllByOrderByDataNascimentoAsc()).thenReturn(Arrays.asList(cliente2, cliente1, cliente3));
 
@@ -175,7 +175,7 @@ class ClienteServiceTest {
         cliente.setTelefone("11999999999");
         cliente.setEndereco("Rua A, 123");
         cliente.setGenero("Masculino");
-        cliente.setDataNascimento(LocalDate.of(1990, 1, 1));
+        cliente.setDataNascimento(new Date(1990, 1, 1));
         cliente.setEstadoCivil("Solteiro");
         cliente.setProfissao("Programador");
         cliente.setPassaporte("XYZ12345");
@@ -216,7 +216,7 @@ class ClienteServiceTest {
         assertEquals("11999999999", response.getTelefone());
         assertEquals("Rua A, 123", response.getEndereco());
         assertEquals("Masculino", response.getGenero());
-        assertEquals(LocalDate.of(1990, 1, 1), response.getDataNascimento());
+        assertEquals(new Date(1990, 1, 1), response.getDataNascimento());
         assertEquals("Solteiro", response.getEstadoCivil());
         assertEquals("Programador", response.getProfissao());
         assertEquals("XYZ12345", response.getPassaporte());
@@ -263,7 +263,7 @@ class ClienteServiceTest {
         request.setPassaporte("X1234567");
         request.setCnh("CNH12345");
         request.setNaturalidade("São Paulo");
-        request.setDataNascimento(LocalDate.of(1990, 1, 1));
+        request.setDataNascimento(new Date(1990, 1, 1));
         request.setIdAdvogado(1);
 
         when(advogadoRepository.findById(1)).thenReturn(Optional.of(advogado));
