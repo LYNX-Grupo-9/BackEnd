@@ -87,8 +87,11 @@ public class EventoService {
         }
     }
 
-    public List<Evento> buscaEventoPorAdvogado(Integer idAdvogado) {
-        return eventoRepository.findByAdvogadoIdAdvogado(idAdvogado);
+    public List<EventoResponse> buscaEventoPorAdvogado(Integer idAdvogado) {
+        List<Evento> eventos = eventoRepository.findByAdvogadoIdAdvogado(idAdvogado);
+        return eventos.stream()
+                .map(EventoResponse::new)
+                .collect(Collectors.toList());
     }
 
 

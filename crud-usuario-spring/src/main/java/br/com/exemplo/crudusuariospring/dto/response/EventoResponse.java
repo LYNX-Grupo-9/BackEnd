@@ -1,7 +1,6 @@
 package br.com.exemplo.crudusuariospring.dto.response;
 
 import br.com.exemplo.crudusuariospring.model.Evento;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class EventoResponse {
@@ -12,9 +11,9 @@ public class EventoResponse {
     private String local;
     private String linkReuniao;
     private String nomeAdvogado;
-    private String nomeCliente;
-    private String nomeCategoria;
-    private String numeroProcesso;
+    private Integer idCliente;
+    private String cor;
+    private Long idProcesso;
     private String horaInicio;
     private String horaFim;
 
@@ -37,16 +36,21 @@ public class EventoResponse {
         if (evento.getAdvogado() != null) {
             this.nomeAdvogado = evento.getAdvogado().getNome();
         }
+
         if (evento.getCliente() != null) {
-            this.nomeCliente = evento.getCliente().getNome();
+            this.idCliente = evento.getCliente().getIdCliente();
         }
+
         if (evento.getCategoria() != null) {
-            this.nomeCategoria = evento.getCategoria().getNome();
+            this.cor = evento.getCategoria().getCor();
         }
+
         if (evento.getProcesso() != null) {
-            this.numeroProcesso = evento.getProcesso().getNumeroProcesso();
+            this.idProcesso = evento.getProcesso().getIdProcesso();
         }
     }
+
+    // Getters e setters
 
     public Long getIdEvento() {
         return idEvento;
@@ -96,28 +100,28 @@ public class EventoResponse {
         this.nomeAdvogado = nomeAdvogado;
     }
 
-    public String getNomeCliente() {
-        return nomeCliente;
+    public Integer getIdCliente() {
+        return idCliente;
     }
 
-    public void setNomeCliente(String nomeCliente) {
-        this.nomeCliente = nomeCliente;
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
     }
 
-    public String getNomeCategoria() {
-        return nomeCategoria;
+    public String getCor() {
+        return cor;
     }
 
-    public void setNomeCategoria(String nomeCategoria) {
-        this.nomeCategoria = nomeCategoria;
+    public void setCor(String cor) {
+        this.cor = cor;
     }
 
-    public String getNumeroProcesso() {
-        return numeroProcesso;
+    public Long getIdProcesso() {
+        return idProcesso;
     }
 
-    public void setNumeroProcesso(String numeroProcesso) {
-        this.numeroProcesso = numeroProcesso;
+    public void setIdProcesso(Long idProcesso) {
+        this.idProcesso = idProcesso;
     }
 
     public String getHoraInicio() {

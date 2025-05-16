@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -55,8 +56,9 @@ public class EventoController {
 
     @GetMapping("/eventos/advogado/{idAdvogado}")
     @SecurityRequirement(name = "Bearer")
-    public List<Evento> buscaEventoPorAdvogado(@PathVariable Integer idAdvogado) {
-        return eventoService.buscaEventoPorAdvogado(idAdvogado);
+    public ResponseEntity<List<EventoResponse>> getEventosPorAdvogado(@PathVariable Integer idAdvogado) {
+        List<EventoResponse> eventos = eventoService.buscaEventoPorAdvogado(idAdvogado);
+        return ResponseEntity.ok(eventos);
     }
 
     @GetMapping("/eventos/advogado/{idAdvogado}/7dias")
