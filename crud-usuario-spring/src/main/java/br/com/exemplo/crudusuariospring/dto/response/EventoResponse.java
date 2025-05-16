@@ -1,6 +1,9 @@
 package br.com.exemplo.crudusuariospring.dto.response;
 
 import br.com.exemplo.crudusuariospring.model.Evento;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -15,7 +18,7 @@ public class EventoResponse {
     private Integer idCliente;
     private String cor;
     private Long idProcesso;
-    private Date dataReuniao;
+    private String dataReuniao;
     private String horaInicio;
     private String horaFim;
 
@@ -52,7 +55,11 @@ public class EventoResponse {
         }
 
         if (evento.getDataReuniao() != null) {
-            this.dataReuniao = new Date(evento.getDataReuniao().getDate());
+            LocalDate dataLocal = evento.getDataReuniao().toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            this.dataReuniao = dataLocal.format(dateFormatter);
         }
     }
 
@@ -146,11 +153,11 @@ public class EventoResponse {
         this.horaFim = horaFim;
     }
 
-    public Date getDataReuniao() {
+    public String getDataReuniao() {
         return dataReuniao;
     }
 
-    public void setDataReuniao(Date dataReuniao) {
+    public void setDataReuniao(String dataReuniao) {
         this.dataReuniao = dataReuniao;
     }
 }
