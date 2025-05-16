@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.security.auth.Subject;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -92,7 +93,8 @@ class ClienteServiceTest {
     }
 
     @Test
-    void testListarOrdenadoPorNaturalidade(Integer idAdvogado) {
+    void testListarOrdenadoPorNaturalidade() {
+        Integer idAdvogado = 1;
         when(clienteRepository.findByAdvogadoIdAdvogadoOrderByNaturalidadeAsc(idAdvogado)).thenReturn(Arrays.asList(cliente3, cliente2, cliente1));
 
         List<ClienteResponse> resposta = clienteService.listarOrdenadoPorNaturalidade(idAdvogado);
@@ -108,7 +110,8 @@ class ClienteServiceTest {
     }
 
     @Test
-    void testListarOrdenadoPorDataNascimento(Integer idAdvogado) {
+    void testListarOrdenadoPorDataNascimento() {
+        Integer idAdvogado = 1;
         cliente1.setDataNascimento(new Date(1990, 1, 1));
         cliente2.setDataNascimento(new Date(1985, 6, 15));
         cliente3.setDataNascimento(new Date(2000, 12, 31));
@@ -127,7 +130,8 @@ class ClienteServiceTest {
     }
 
     @Test
-    void testListarOrdenadoPorQuantidadeProcessos(Integer idAdvogado) {
+    void testListarOrdenadoPorQuantidadeProcessos() {
+        Integer idAdvogado = 1;
         when(clienteRepository.ordenarPorQuantidadeProcessos(idAdvogado)).thenReturn(Arrays.asList(cliente2, cliente1, cliente3));
 
         when(processoRepository.countByCliente_IdCliente(cliente1.getIdCliente())).thenReturn(2);
@@ -145,7 +149,8 @@ class ClienteServiceTest {
 
 
     @Test
-    void testBuscarClientePorTexto(Integer idAdvogado) {
+    void testBuscarClientePorTexto() {
+        Integer idAdvogado = 1;
         String texto = "lucas";
         when(clienteRepository.buscarPorNomeEmailTelefonePorAdvogado(texto, idAdvogado))
                 .thenReturn(List.of(cliente));
@@ -370,7 +375,8 @@ class ClienteServiceTest {
     }
 
     @Test
-    void testListarOrdenadoPorNome(Integer idAdvogado) {
+    void testListarOrdenadoPorNome() {
+        Integer idAdvogado = 1;
         when(clienteRepository.findByAdvogadoIdAdvogadoOrderByNomeAsc(idAdvogado)).thenReturn(Arrays.asList(cliente1, cliente2, cliente3));
 
         List<ClienteResponse> resposta = clienteService.listarOrdenadoPorNome(idAdvogado);
@@ -382,5 +388,57 @@ class ClienteServiceTest {
         assertEquals("Bruna Costa", resposta.get(2).getNome());
 
         verify(clienteRepository).findByAdvogadoIdAdvogadoOrderByNomeAsc(idAdvogado);
+    }
+
+    @Test
+    public void listarPorAdvogado_deveRetornarListaDeClienteResponse() throws Exception {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date dataNascimento = sdf.parse("1990-01-01");
+
+        Advogado advogado = new Advogado();
+        advogado.setNome("João Silva");
+
+        Cliente cliente1 = new Cliente();
+        cliente1.setIdCliente(1);
+        cliente1.setNome("Cliente A");
+        cliente1.setEmail("clientea@email.com");
+        cliente1.setDocumento("123456789");
+        cliente1.setTipoDocumento("RG");
+        cliente1.setTelefone("99999-9999");
+        cliente1.setEndereco("Rua A, 123");
+        cliente1.setEstadoCivil("Solteiro");
+        cliente1.setGenero("Masculino");
+        cliente1.setProfissao("Engenheiro");
+        cliente1.setPassaporte("AB12345");
+        cliente1.setCnh("XYZ1234");
+        cliente1.setNaturalidade("Cidade X");
+        cliente1.setDataNascimento(dataNascimento);
+        cliente1.setQtdProcessos(2);
+        cliente1.setAdvogado(advogado);
+
+        when(clienteRepository.findByAdvogadoIdAdvogado(1)).thenReturn(Arrays.asList(cliente1));
+
+        List<ClienteResponse> lista = clienteService.listarPorAdvogado(1);
+
+        assertNotNull(lista);
+        assertEquals(1, lista.size());
+
+        ClienteResponse resp = lista.get(0);
+        assertEquals(cliente1.getIdCliente(), resp.getIdCliente());
+        assertEquals(cliente1.getNome(), resp.getNome());
+        assertEquals(cliente1.getEmail(), resp.getEmail());
+        assertEquals(cliente1.getDocumento(), resp.getDocumento());
+        assertEquals(cliente1.getTipoDocumento(), resp.getTipoDocumento());
+        assertEquals(cliente1.getTelefone(), resp.getTelefone());
+        assertEquals(cliente1.getEndereco(), resp.getEndereco());
+        assertEquals(cliente1.getEstadoCivil(), resp.getEstadoCivil());
+        assertEquals(cliente1.getGenero(), resp.getGenero());
+        assertEquals(cliente1.getProfissao(), resp.getProfissao());
+        assertEquals(cliente1.getPassaporte(), resp.getPassaporte());
+        assertEquals(cliente1.getCnh(), resp.getCnh());
+        assertEquals(cliente1.getNaturalidade(), resp.getNaturalidade());
+        assertEquals(cliente1.getDataNascimento(), resp.getDataNascimento());
+        assertEquals(cliente1.getQtdProcessos(), resp.getQtdProcessos());
+        assertEquals(advogado.getNome(), resp.getAdvogadoResponsavel());
     }
 }
