@@ -92,10 +92,10 @@ class ClienteServiceTest {
     }
 
     @Test
-    void testListarOrdenadoPorNaturalidade() {
-        when(clienteRepository.findAllByOrderByNaturalidadeAsc()).thenReturn(Arrays.asList(cliente3, cliente2, cliente1));
+    void testListarOrdenadoPorNaturalidade(Integer idAdvogado) {
+        when(clienteRepository.findByAdvogadoIdAdvogadoOrderByNaturalidadeAsc(idAdvogado)).thenReturn(Arrays.asList(cliente3, cliente2, cliente1));
 
-        List<ClienteResponse> resposta = clienteService.listarOrdenadoPorNaturalidade();
+        List<ClienteResponse> resposta = clienteService.listarOrdenadoPorNaturalidade(idAdvogado);
 
         assertNotNull(resposta);
         assertEquals(3, resposta.size());
@@ -104,18 +104,18 @@ class ClienteServiceTest {
         assertEquals("Ana Oliveira", resposta.get(1).getNome());
         assertEquals("Rio de Janeiro", resposta.get(1).getNaturalidade());
 
-        verify(clienteRepository).findAllByOrderByNaturalidadeAsc();
+        verify(clienteRepository).findByAdvogadoIdAdvogadoOrderByNaturalidadeAsc(idAdvogado);
     }
 
     @Test
-    void testListarOrdenadoPorDataNascimento() {
+    void testListarOrdenadoPorDataNascimento(Integer idAdvogado) {
         cliente1.setDataNascimento(new Date(1990, 1, 1));
         cliente2.setDataNascimento(new Date(1985, 6, 15));
         cliente3.setDataNascimento(new Date(2000, 12, 31));
 
-        when(clienteRepository.findAllByOrderByDataNascimentoAsc()).thenReturn(Arrays.asList(cliente2, cliente1, cliente3));
+        when(clienteRepository.findByAdvogadoIdAdvogadoOrderByDataNascimentoAsc(idAdvogado)).thenReturn(Arrays.asList(cliente2, cliente1, cliente3));
 
-        List<ClienteResponse> resposta = clienteService.listarOrdenadoPorDataNascimento();
+        List<ClienteResponse> resposta = clienteService.listarOrdenadoPorDataNascimento(idAdvogado);
 
         assertNotNull(resposta);
         assertEquals(3, resposta.size());
@@ -123,18 +123,18 @@ class ClienteServiceTest {
         assertEquals("Carlos Silva", resposta.get(1).getNome());
         assertEquals("Bruna Costa", resposta.get(2).getNome());
 
-        verify(clienteRepository).findAllByOrderByDataNascimentoAsc();
+        verify(clienteRepository).findByAdvogadoIdAdvogadoOrderByDataNascimentoAsc(idAdvogado);
     }
 
     @Test
-    void testListarOrdenadoPorQuantidadeProcessos() {
-        when(clienteRepository.ordenarPorQuantidadeProcessos()).thenReturn(Arrays.asList(cliente2, cliente1, cliente3));
+    void testListarOrdenadoPorQuantidadeProcessos(Integer idAdvogado) {
+        when(clienteRepository.ordenarPorQuantidadeProcessos(idAdvogado)).thenReturn(Arrays.asList(cliente2, cliente1, cliente3));
 
         when(processoRepository.countByCliente_IdCliente(cliente1.getIdCliente())).thenReturn(2);
         when(processoRepository.countByCliente_IdCliente(cliente2.getIdCliente())).thenReturn(5);
         when(processoRepository.countByCliente_IdCliente(cliente3.getIdCliente())).thenReturn(1);
 
-        List<ClienteResponse> resposta = clienteService.listarOrdenadoPorQuantidadeProcessos();
+        List<ClienteResponse> resposta = clienteService.listarOrdenadoPorQuantidadeProcessos(idAdvogado);
 
         assertNotNull(resposta);
         assertEquals(3, resposta.size());
@@ -145,18 +145,18 @@ class ClienteServiceTest {
 
 
     @Test
-    void testBuscarClientePorTexto() {
+    void testBuscarClientePorTexto(Integer idAdvogado) {
         String texto = "lucas";
-        when(clienteRepository.findByNomeContainingIgnoreCaseOrEmailContainingIgnoreCaseOrTelefoneContaining(texto, texto, texto))
+        when(clienteRepository.buscarPorNomeEmailTelefonePorAdvogado(texto, idAdvogado))
                 .thenReturn(List.of(cliente));
 
-        List<ClienteResponse> resultado = clienteService.buscarPorTexto(texto);
+        List<ClienteResponse> resultado = clienteService.buscarPorTexto(texto, idAdvogado);
 
         assertNotNull(resultado);
         assertEquals(1, resultado.size());
         assertEquals("Lucas Ronald", resultado.get(0).getNome());
 
-        verify(clienteRepository).findByNomeContainingIgnoreCaseOrEmailContainingIgnoreCaseOrTelefoneContaining(texto, texto, texto);
+        verify(clienteRepository).buscarPorNomeEmailTelefonePorAdvogado(texto, idAdvogado);
     }
 
     @Test
@@ -370,10 +370,10 @@ class ClienteServiceTest {
     }
 
     @Test
-    void testListarOrdenadoPorNome() {
-        when(clienteRepository.findAllByOrderByNomeAsc()).thenReturn(Arrays.asList(cliente1, cliente2, cliente3));
+    void testListarOrdenadoPorNome(Integer idAdvogado) {
+        when(clienteRepository.findByAdvogadoIdAdvogadoOrderByNomeAsc(idAdvogado)).thenReturn(Arrays.asList(cliente1, cliente2, cliente3));
 
-        List<ClienteResponse> resposta = clienteService.listarOrdenadoPorNome();
+        List<ClienteResponse> resposta = clienteService.listarOrdenadoPorNome(idAdvogado);
 
         assertNotNull(resposta);
         assertEquals(3, resposta.size());
@@ -381,6 +381,6 @@ class ClienteServiceTest {
         assertEquals("Ana Oliveira", resposta.get(1).getNome());
         assertEquals("Bruna Costa", resposta.get(2).getNome());
 
-        verify(clienteRepository).findAllByOrderByNomeAsc();
+        verify(clienteRepository).findByAdvogadoIdAdvogadoOrderByNomeAsc(idAdvogado);
     }
 }

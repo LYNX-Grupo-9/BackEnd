@@ -102,7 +102,7 @@ public class ClienteService {
         }).collect(Collectors.toList());
     }
 
-    public List<ClienteResponse> listarPorAdvogado(Long idAdvogado) {
+    public List<ClienteResponse> listarPorAdvogado(Integer idAdvogado) {
         return clienteRepository.findByAdvogadoIdAdvogado(idAdvogado).stream().map(c -> {
             ClienteResponse response = new ClienteResponse();
             response.setIdCliente(c.getIdCliente());
@@ -172,20 +172,20 @@ public class ClienteService {
         return response;
     }
 
-    public List<ClienteResponse> listarOrdenadoPorNome() {
-        return clienteRepository.findAllByOrderByNomeAsc().stream().map(this::mapToResponse).collect(Collectors.toList());
+    public List<ClienteResponse> listarOrdenadoPorNome(Integer idAdvogado) {
+        return clienteRepository.findByAdvogadoIdAdvogadoOrderByNomeAsc(idAdvogado).stream().map(this::mapToResponse).collect(Collectors.toList());
     }
 
-    public List<ClienteResponse> listarOrdenadoPorNaturalidade() {
-        return clienteRepository.findAllByOrderByNaturalidadeAsc().stream().map(this::mapToResponse).collect(Collectors.toList());
+    public List<ClienteResponse> listarOrdenadoPorNaturalidade(Integer idAdvogado) {
+        return clienteRepository.findByAdvogadoIdAdvogadoOrderByNaturalidadeAsc(idAdvogado).stream().map(this::mapToResponse).collect(Collectors.toList());
     }
 
-    public List<ClienteResponse> listarOrdenadoPorDataNascimento() {
-        return clienteRepository.findAllByOrderByDataNascimentoAsc().stream().map(this::mapToResponse).collect(Collectors.toList());
+    public List<ClienteResponse> listarOrdenadoPorDataNascimento(Integer idAdvogado) {
+        return clienteRepository.findByAdvogadoIdAdvogadoOrderByDataNascimentoAsc(idAdvogado).stream().map(this::mapToResponse).collect(Collectors.toList());
     }
 
-    public List<ClienteResponse> listarOrdenadoPorQuantidadeProcessos() {
-        return clienteRepository.ordenarPorQuantidadeProcessos().stream().map(cliente -> {
+    public List<ClienteResponse> listarOrdenadoPorQuantidadeProcessos(Integer idAdvogado) {
+        return clienteRepository.ordenarPorQuantidadeProcessos(idAdvogado).stream().map(cliente -> {
             ClienteResponse response = mapToResponse(cliente);
             Integer qtd = processoRepository.countByCliente_IdCliente(cliente.getIdCliente());
             response.setQtdProcessos(qtd);
@@ -193,8 +193,8 @@ public class ClienteService {
         }).collect(Collectors.toList());
     }
 
-    public List<ClienteResponse> buscarPorTexto(String termo) {
-        List<Cliente> clientes = clienteRepository.findByNomeContainingIgnoreCaseOrEmailContainingIgnoreCaseOrTelefoneContaining(termo, termo, termo);
+    public List<ClienteResponse> buscarPorTexto(String termo, Integer idAvogado) {
+        List<Cliente> clientes = clienteRepository.buscarPorNomeEmailTelefonePorAdvogado(termo, idAvogado);
         return clientes.stream().map(this::mapToResponse).collect(Collectors.toList());
     }
 

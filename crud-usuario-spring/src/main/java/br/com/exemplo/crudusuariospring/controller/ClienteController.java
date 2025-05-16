@@ -40,7 +40,7 @@ public class ClienteController {
 
     @GetMapping("/listarPorAdvogado/{idAdvogado}")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<ClienteResponse>> listarPorAdvogado(@PathVariable Long idAdvogado) {
+    public ResponseEntity<List<ClienteResponse>> listarPorAdvogado(@PathVariable Integer idAdvogado) {
         List<ClienteResponse> clientes = clienteService.listarPorAdvogado(idAdvogado);
         return ResponseEntity.ok(clientes);
     }
@@ -54,32 +54,32 @@ public class ClienteController {
 
     @GetMapping("/ordenado-nome")
     @SecurityRequirement(name = "Bearer")
-    public List<ClienteResponse> listarPorNome() {
-        return clienteService.listarOrdenadoPorNome();
+    public List<ClienteResponse> listarPorNome(Integer idAdvogado) {
+        return clienteService.listarOrdenadoPorNome(idAdvogado);
     }
 
     @GetMapping("/ordenado-naturalidade")
     @SecurityRequirement(name = "Bearer")
-    public List<ClienteResponse> listarPorNaturalidade() {
-        return clienteService.listarOrdenadoPorNaturalidade();
+    public List<ClienteResponse> listarPorNaturalidade(Integer idAdvogado) {
+        return clienteService.listarOrdenadoPorNaturalidade(idAdvogado);
     }
 
     @GetMapping("/ordenado-nascimento")
     @SecurityRequirement(name = "Bearer")
-    public List<ClienteResponse> listarPorNascimento() {
-        return clienteService.listarOrdenadoPorDataNascimento();
+    public List<ClienteResponse> listarPorNascimento(Integer idAdvogado) {
+        return clienteService.listarOrdenadoPorDataNascimento(idAdvogado);
     }
 
     @GetMapping("/ordenado-processos")
     @SecurityRequirement(name = "Bearer")
-    public List<ClienteResponse> listarPorQtdProcessos() {
-        return clienteService.listarOrdenadoPorQuantidadeProcessos();
+    public List<ClienteResponse> listarPorQtdProcessos(Integer idAdvogado) {
+        return clienteService.listarOrdenadoPorQuantidadeProcessos(idAdvogado);
     }
 
     @GetMapping("/buscar")
     @SecurityRequirement(name = "Bearer")
-    public List<ClienteResponse> buscarPorTexto(@RequestParam String termo) {
-        return clienteService.buscarPorTexto(termo);
+    public List<ClienteResponse> buscarPorTexto(@RequestParam String termo, Integer idAdvogado) {
+        return clienteService.buscarPorTexto(termo, idAdvogado);
     }
 
     @GetMapping("/{id}/dados-completo")
