@@ -1,5 +1,6 @@
 package br.com.exemplo.crudusuariospring.controller;
 
+import br.com.exemplo.crudusuariospring.dto.request.AtualizarEventoRequest;
 import br.com.exemplo.crudusuariospring.dto.request.EventoRequest;
 import br.com.exemplo.crudusuariospring.dto.response.EventoResponse;
 import br.com.exemplo.crudusuariospring.model.Evento;
@@ -54,16 +55,32 @@ public class EventoController {
         return ResponseEntity.ok(resposta);
     }
 
-    @GetMapping("/eventos/advogado/{idAdvogado}")
+    @GetMapping("/advogado/{idAdvogado}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<EventoResponse>> getEventosPorAdvogado(@PathVariable Integer idAdvogado) {
         List<EventoResponse> eventos = eventoService.buscaEventoPorAdvogado(idAdvogado);
         return ResponseEntity.ok(eventos);
     }
 
-    @GetMapping("/eventos/advogado/{idAdvogado}/7dias")
+    @GetMapping("/advogado/{idAdvogado}/7dias")
     @SecurityRequirement(name = "Bearer")
     public List<Evento> buscaEventoProximoSeteDias(@PathVariable Integer idAdvogado) {
         return eventoService.buscaEventoProximoSeteDias(idAdvogado);
     }
+
+    @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<Void> deletarEvento(@PathVariable Long id) {
+        eventoService.deletarEvento(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<EventoResponse> atualizarParcialmente(@PathVariable Long id,
+                                                                @RequestBody AtualizarEventoRequest request) {
+        EventoResponse eventoResponse = eventoService.atualizarParcialmente(id, request);
+        return ResponseEntity.ok(eventoResponse);
+    }
+
 }

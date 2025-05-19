@@ -1,5 +1,6 @@
 package br.com.exemplo.crudusuariospring.service;
 
+import br.com.exemplo.crudusuariospring.dto.request.AtualizarEventoRequest;
 import br.com.exemplo.crudusuariospring.dto.request.EventoRequest;
 import br.com.exemplo.crudusuariospring.dto.response.EventoResponse;
 import br.com.exemplo.crudusuariospring.model.*;
@@ -101,4 +102,58 @@ public class EventoService {
 
         return eventoRepository.findByAdvogadoIdAdvogadoAndDataReuniaoBetween(idAdvogado, now, sevenDaysLater);
     }
+
+    public void deletarEvento(Long id) {
+        Evento evento = eventoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Evento não encontrado"));
+        eventoRepository.delete(evento);
+    }
+
+    public EventoResponse atualizarParcialmente(Long id, AtualizarEventoRequest request) {
+        Evento evento = eventoRepository.findById(id)
+                .orElseThrow(() -> new EventoNaoEncontradoException("Evento não encontrado"));
+
+        if (request.getNome() != null) {
+            evento.setNome(request.getNome());
+        }
+        if (request.getDescricao() != null) {
+            evento.setDescricao(request.getDescricao());
+        }
+        if (request.getDataReuniao() != null) {
+            evento.setDataReuniao(request.getDataReuniao());
+        }
+        if (request.getHoraInicio() != null) {
+            evento.setHoraInicio(request.getHoraInicio());
+        }
+        if (request.getHoraFim() != null) {
+            evento.setHoraFim(request.getHoraFim());
+        }
+        if (request.getLocal() != null) {
+            evento.setLocal(request.getLocal());
+        }
+        if (request.getLinkReuniao() != null) {
+            evento.setLinkReuniao(request.getLinkReuniao());
+        }
+        if (request.getNomeAdvogado() != null) {
+            advogadoRepository.findByNome(request.getNomeAdvogado())
+                    .ifPresent(evento::setAdvogado);
+        }
+        if (request.getNomeCliente() != null) {
+            clienteRepository.findByNome(request.getNomeCliente())
+                    .ifPresent(evento::setCliente);
+        }
+        if (request.getNomeCategoria() != null) {
+            categoriaEventoRepository.findByNome(request.getNomeCategoria())
+                    .ifPresent(evento::setCategoria);
+        }
+        if (request.getNumeroProcesso() != null) {
+            processoRepository.findByNumeroProcesso(request.getNumeroProcesso())
+                    .ifPresent(evento::setProcesso);
+        }
+
+        Evento eventoAtualizado = eventoRepository.save(evento);
+        return new EventoResponse(eventoAtualizado);
+    }
+
+
 }
