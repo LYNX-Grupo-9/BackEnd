@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @RestController
 @RequestMapping("/api/categorias")
 public class CategoriaEventoController {
@@ -37,5 +39,12 @@ public class CategoriaEventoController {
     public ResponseEntity<List<CategoriaEventoResponse>> buscarPorAdvogado(@PathVariable Integer idAdvogado) {
         List<CategoriaEventoResponse> categorias = categoriaEventoService.CategoriaPorAdvogado(idAdvogado);
         return ResponseEntity.ok(categorias);
+    }
+
+    @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<CategoriaEventoResponse> deletarCategoria(@PathVariable Long id){
+        categoriaEventoService.deletarCategoria(id);
+        return ResponseEntity.noContent().build();
     }
 }

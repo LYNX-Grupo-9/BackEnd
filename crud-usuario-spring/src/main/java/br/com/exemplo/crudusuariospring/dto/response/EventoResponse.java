@@ -1,11 +1,11 @@
 package br.com.exemplo.crudusuariospring.dto.response;
 
 import br.com.exemplo.crudusuariospring.model.Evento;
+import jakarta.persistence.criteria.CriteriaBuilder;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class EventoResponse {
 
@@ -14,7 +14,7 @@ public class EventoResponse {
     private String descricao;
     private String local;
     private String linkReuniao;
-    private String nomeAdvogado;
+    private Integer idAdvogado;
     private Integer idCliente;
     private String cor;
     private Long idProcesso;
@@ -39,7 +39,7 @@ public class EventoResponse {
         }
 
         if (evento.getAdvogado() != null) {
-            this.nomeAdvogado = evento.getAdvogado().getNome();
+            this.idAdvogado = evento.getAdvogado().getIdAdvogado();
         }
 
         if (evento.getCliente() != null) {
@@ -62,8 +62,6 @@ public class EventoResponse {
             this.dataReuniao = dataLocal.format(dateFormatter);
         }
     }
-
-    // Getters e setters
 
     public Long getIdEvento() {
         return idEvento;
@@ -105,12 +103,12 @@ public class EventoResponse {
         this.linkReuniao = linkReuniao;
     }
 
-    public String getNomeAdvogado() {
-        return nomeAdvogado;
+    public Integer getIdAdvogado() {
+        return idAdvogado;
     }
 
-    public void setNomeAdvogado(String nomeAdvogado) {
-        this.nomeAdvogado = nomeAdvogado;
+    public void setIdAdvogado(Integer idAdvogado) {
+        this.idAdvogado = idAdvogado;
     }
 
     public Integer getIdCliente() {

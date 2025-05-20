@@ -2,7 +2,6 @@ package br.com.exemplo.crudusuariospring.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -20,16 +19,16 @@ public class EventoRequest {
     private String linkReuniao;
 
     @NotBlank(message = "O nome do advogado é obrigatório")
-    private String nomeAdvogado;
+    private Integer idAdvogado;
 
     @NotBlank(message = "O nome do cliente é obrigatório")
-    private String nomeCliente;
+    private Integer idCliente;
 
     @NotBlank(message = "O nome da categoria é obrigatório")
-    private String nomeCategoria;
+    private Long idCategoria;
 
     @NotBlank(message = "O número do processo é obrigatório")
-    private String numeroProcesso;
+    private Integer idProcesso;
 
     @NotNull(message = "A data e hora são obrigatórias")
     private Date dataReuniao;
@@ -72,36 +71,36 @@ public class EventoRequest {
         this.linkReuniao = linkReuniao;
     }
 
-    public String getNomeAdvogado() {
-        return nomeAdvogado;
+    public Integer getIdAdvogado() {
+        return idAdvogado;
     }
 
-    public void setNomeAdvogado(String nomeAdvogado) {
-        this.nomeAdvogado = nomeAdvogado;
+    public void setIdAdvogado(Integer idAdvogado) {
+        this.idAdvogado = idAdvogado;
     }
 
-    public String getNomeCliente() {
-        return nomeCliente;
+    public Integer getIdCliente() {
+        return idCliente;
     }
 
-    public void setNomeCliente(String nomeCliente) {
-        this.nomeCliente = nomeCliente;
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
     }
 
-    public String getNomeCategoria() {
-        return nomeCategoria;
+    public Long getIdCategoria() {
+        return idCategoria;
     }
 
-    public void setNomeCategoria(String nomeCategoria) {
-        this.nomeCategoria = nomeCategoria;
+    public void setIdCategoria(Long idCategoria) {
+        this.idCategoria = idCategoria;
     }
 
-    public String getNumeroProcesso() {
-        return numeroProcesso;
+    public Integer getIdProcesso() {
+        return idProcesso;
     }
 
-    public void setNumeroProcesso(String numeroProcesso) {
-        this.numeroProcesso = numeroProcesso;
+    public void setIdProcesso(Integer idProcesso) {
+        this.idProcesso = idProcesso;
     }
 
     public Date getDataReuniao() {

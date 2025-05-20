@@ -55,10 +55,10 @@ public class EventoService {
             evento.setHoraFim(request.getHoraFim());
         }
 
-        Optional<Advogado> advogadoOpt = advogadoRepository.findByNome(request.getNomeAdvogado());
-        Optional<Cliente> clienteOpt = clienteRepository.findByNome(request.getNomeCliente());
-        Optional<CategoriaEvento> categoriaOpt = categoriaEventoRepository.findByNome(request.getNomeCategoria());
-        Optional<Processo> processoOpt = processoRepository.findByNumeroProcesso(request.getNumeroProcesso());
+        Optional<Advogado> advogadoOpt = advogadoRepository.findById(request.getIdAdvogado());
+        Optional<Cliente> clienteOpt = clienteRepository.findById(request.getIdCliente());
+        Optional<CategoriaEvento> categoriaOpt = categoriaEventoRepository.findById(request.getIdCategoria());
+        Optional<Processo> processoOpt = processoRepository.findById(request.getIdProcesso());
 
         advogadoOpt.ifPresent(evento::setAdvogado);
         clienteOpt.ifPresent(evento::setCliente);

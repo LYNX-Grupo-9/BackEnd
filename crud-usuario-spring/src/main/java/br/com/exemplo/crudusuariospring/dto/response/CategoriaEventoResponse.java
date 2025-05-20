@@ -1,5 +1,7 @@
 package br.com.exemplo.crudusuariospring.dto.response;
 
+import br.com.exemplo.crudusuariospring.model.CategoriaEvento;
+
 public class CategoriaEventoResponse {
 
     private Long idCategoriaEvento;
@@ -10,6 +12,12 @@ public class CategoriaEventoResponse {
         this.idCategoriaEvento = idCategoriaEvento;
         this.nomeEvento = nomeEvento;
         this.cor = cor;
+    }
+
+    public CategoriaEventoResponse(CategoriaEvento categoria) {
+        this.idCategoriaEvento = categoria.getIdCategoria();
+        this.nomeEvento = categoria.getNome();
+        this.cor = categoria.getCor();
     }
 
     public Long getIdCategoriaEvento() {

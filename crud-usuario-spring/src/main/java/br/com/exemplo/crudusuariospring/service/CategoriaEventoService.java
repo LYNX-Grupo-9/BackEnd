@@ -1,8 +1,10 @@
 package br.com.exemplo.crudusuariospring.service;
 
+import br.com.exemplo.crudusuariospring.dto.request.AtualizarCategoriaRequest;
 import br.com.exemplo.crudusuariospring.repository.CategoriaEventoRepository;
 import br.com.exemplo.crudusuariospring.dto.response.CategoriaEventoResponse;
 import br.com.exemplo.crudusuariospring.model.CategoriaEvento;
+import br.com.exemplo.crudusuariospring.repository.EventoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,9 @@ public class CategoriaEventoService {
 
     @Autowired
     private CategoriaEventoRepository categoriaEventoRepository;
+
+    @Autowired
+    private EventoRepository eventoRepository;
 
     public CategoriaEventoResponse criarCategoria(CategoriaEventoResponse categoriaEventoResponse) {
         CategoriaEvento categoriaEvento = new CategoriaEvento();
@@ -32,5 +37,33 @@ public class CategoriaEventoService {
         return categorias.stream()
                 .map(c -> new CategoriaEventoResponse(c.getIdCategoria(), c.getNome(), c.getCor()))
                 .toList();
+    }
+
+    public void deletarCategoria(Long id) {
+        CategoriaEvento categoria = categoriaEventoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Categoria não encontrado"));
+
+        eventoRepository.desvincularCategoriaDosEventos(id);
+        categoriaEventoRepository.delete(categoria);
+    }
+
+
+    public CategoriaEventoResponse atualizarParcialmente(Long id, AtualizarCategoriaRequest request) {
+        CategoriaEvento categoria = categoriaEventoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Evento não encontrado"));
+
+        if(request.getNomeEvento() != null){
+            categoria.setNome(request.getNomeEvento());
+        }
+        if (request.getCor() != null){
+            categoria.setCor(request.getCor());
+        }
+
+        CategoriaEvento categoriaAtualizado = categoriaEventoRepository.save(categoria);
+        return new CategoriaEventoResponse(
+                categoriaAtualizado.getIdCategoria(),
+                categoriaAtualizado.getNome(),
+                categoriaAtualizado.getCor()
+        );
     }
 }

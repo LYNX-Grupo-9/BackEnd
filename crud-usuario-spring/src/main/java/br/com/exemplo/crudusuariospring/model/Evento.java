@@ -21,7 +21,6 @@ public class Evento {
     private LocalTime horaFim;
 
 
-    // RELACIONAMENTOS CORRIGIDOS
     @ManyToOne
     @JoinColumn(name = "id_advogado")
     private Advogado advogado;
@@ -102,7 +101,6 @@ public class Evento {
         this.horaFim = horaFim;
     }
 
-    // Métodos para os relacionamentos
     public Advogado getAdvogado() {
         return advogado;
     }
