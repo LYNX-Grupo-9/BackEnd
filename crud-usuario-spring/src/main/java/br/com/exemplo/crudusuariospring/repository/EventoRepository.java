@@ -8,12 +8,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 
 public interface EventoRepository extends JpaRepository<Evento, Long> {
     List<Evento> findByCliente_IdCliente(Integer idCliente);
     List<Evento> findByAdvogadoIdAdvogado(Integer idAdvogado);
-    List<Evento> findByAdvogadoIdAdvogadoAndDataReuniaoBetween(Integer idAdvogado, LocalTime startDate, LocalTime endDate);
+    List<Evento> findByAdvogadoIdAdvogadoAndDataReuniaoBetween(Integer idAdvogado, Date startDate, Date endDate);
 
     @Modifying
     @Transactional

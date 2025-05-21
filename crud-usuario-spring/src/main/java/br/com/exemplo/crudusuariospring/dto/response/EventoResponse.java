@@ -1,7 +1,6 @@
 package br.com.exemplo.crudusuariospring.dto.response;
 
 import br.com.exemplo.crudusuariospring.model.Evento;
-import jakarta.persistence.criteria.CriteriaBuilder;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -17,6 +16,7 @@ public class EventoResponse {
     private Integer idAdvogado;
     private Integer idCliente;
     private String cor;
+    private Integer idCategoria;
     private Long idProcesso;
     private String dataReuniao;
     private String horaInicio;
@@ -157,5 +157,13 @@ public class EventoResponse {
 
     public void setDataReuniao(String dataReuniao) {
         this.dataReuniao = dataReuniao;
+    }
+
+    public Integer getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(Integer idCategoria) {
+        this.idCategoria = idCategoria;
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -96,12 +97,22 @@ public class EventoService {
     }
 
 
-    public List<Evento> buscaEventoProximoSeteDias(Integer idAdvogado) {
-        LocalTime now = LocalTime.now();
-        LocalTime sevenDaysLater = now.plusHours(24 * 7);
+    public List<EventoResponse> buscaEventoProximoSeteDias(Integer idAdvogado) {
+        LocalDate hoje = LocalDate.now();
+        LocalDate seteDiasDepois = hoje.plusDays(7);
 
-        return eventoRepository.findByAdvogadoIdAdvogadoAndDataReuniaoBetween(idAdvogado, now, sevenDaysLater);
+        Date dataInicial = java.sql.Date.valueOf(hoje);
+        Date dataFinal = java.sql.Date.valueOf(seteDiasDepois);
+
+        List<Evento> eventos = eventoRepository.findByAdvogadoIdAdvogadoAndDataReuniaoBetween(
+                idAdvogado, dataInicial, dataFinal
+        );
+
+        return eventos.stream()
+                .map(EventoResponse::new)
+                .collect(Collectors.toList());
     }
+
 
     public void deletarEvento(Long id) {
         Evento evento = eventoRepository.findById(id)

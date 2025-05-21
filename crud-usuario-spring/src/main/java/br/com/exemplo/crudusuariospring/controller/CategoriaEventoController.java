@@ -1,6 +1,9 @@
 package br.com.exemplo.crudusuariospring.controller;
 
+import br.com.exemplo.crudusuariospring.dto.request.AtualizarCategoriaRequest;
+import br.com.exemplo.crudusuariospring.dto.request.AtualizarEventoRequest;
 import br.com.exemplo.crudusuariospring.dto.response.CategoriaEventoResponse;
+import br.com.exemplo.crudusuariospring.dto.response.EventoResponse;
 import br.com.exemplo.crudusuariospring.model.CategoriaEvento;
 import br.com.exemplo.crudusuariospring.repository.CategoriaEventoRepository;
 import br.com.exemplo.crudusuariospring.service.CategoriaEventoService;
@@ -46,5 +49,13 @@ public class CategoriaEventoController {
     public ResponseEntity<CategoriaEventoResponse> deletarCategoria(@PathVariable Long id){
         categoriaEventoService.deletarCategoria(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<CategoriaEventoResponse> atualizarParcialmente(@PathVariable Long id,
+                                                                @RequestBody AtualizarCategoriaRequest request) {
+        CategoriaEventoResponse categoriaResponse = categoriaEventoService.atualizarParcialmente(id, request);
+        return ResponseEntity.ok(categoriaResponse);
     }
 }

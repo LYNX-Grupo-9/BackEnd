@@ -64,7 +64,7 @@ public class EventoController {
 
     @GetMapping("/advogado/{idAdvogado}/7dias")
     @SecurityRequirement(name = "Bearer")
-    public List<Evento> buscaEventoProximoSeteDias(@PathVariable Integer idAdvogado) {
+    public List<EventoResponse> buscaEventoProximoSeteDias(@PathVariable Integer idAdvogado) {
         return eventoService.buscaEventoProximoSeteDias(idAdvogado);
     }
 
