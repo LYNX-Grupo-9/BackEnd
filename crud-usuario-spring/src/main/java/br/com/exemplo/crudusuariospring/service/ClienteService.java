@@ -133,23 +133,23 @@ public class ClienteService {
 
         Integer qtdProcessos = processoRepository.countByCliente_IdCliente(idCliente);
 
-        ClienteResponse clienteResponse = new ClienteResponse();
-        clienteResponse.setIdCliente(cliente.getIdCliente());
-        clienteResponse.setNome(cliente.getNome());
-        clienteResponse.setEmail(cliente.getEmail());
-        clienteResponse.setTelefone(cliente.getTelefone());
-        clienteResponse.setEndereco(cliente.getEndereco());
-        clienteResponse.setEstadoCivil(cliente.getEstadoCivil());
-        clienteResponse.setGenero(cliente.getGenero());
-        clienteResponse.setProfissao(cliente.getProfissao());
-        clienteResponse.setPassaporte(cliente.getPassaporte());
-        clienteResponse.setCnh(cliente.getCnh());
-        clienteResponse.setNaturalidade(cliente.getNaturalidade());
-        clienteResponse.setDataNascimento(cliente.getDataNascimento());
-        clienteResponse.setAdvogadoResponsavel(cliente.getAdvogado() != null ? cliente.getAdvogado().getNome() : "Não atribuído");
-        clienteResponse.setQtdProcessos(qtdProcessos);
+        ClienteResponse response = new ClienteResponse();
+        response.setIdCliente(cliente.getIdCliente());
+        response.setNome(cliente.getNome());
+        response.setEmail(cliente.getEmail());
+        response.setTelefone(cliente.getTelefone());
+        response.setEndereco(cliente.getEndereco());
+        response.setEstadoCivil(cliente.getEstadoCivil());
+        response.setGenero(cliente.getGenero());
+        response.setProfissao(cliente.getProfissao());
+        response.setPassaporte(cliente.getPassaporte());
+        response.setCnh(cliente.getCnh());
+        response.setNaturalidade(cliente.getNaturalidade());
+        response.setDataNascimento(cliente.getDataNascimento());
+        response.setAdvogadoResponsavel(cliente.getAdvogado() != null ? cliente.getAdvogado().getNome() : "Não atribuído");
+        response.setQtdProcessos(qtdProcessos);
 
-        return clienteResponse;
+        return response;
     }
 
     private ClienteResponse mapToResponse(Cliente c) {
@@ -231,14 +231,14 @@ public class ClienteService {
         // Eventos
         List<ClienteProcessoEventoResponse.EventoResponse> eventosDTO = cliente.getEventos().stream()
                 .map(evento -> {
-                    ClienteProcessoEventoResponse.EventoResponse e = new ClienteProcessoEventoResponse.EventoResponse();
-                    e.setIdEvento(evento.getIdEvento());
-                    e.setDataEvento(evento.getDataReuniao());
-                    e.setHoraInicio(evento.getHoraInicio());
-                    e.setHoraFim(evento.getHoraFim());
-                    e.setTitulo(evento.getNome());
-                    e.setTipo(evento.getCategoria() != null ? evento.getCategoria().getNome() : null);
-                    return e;
+                    ClienteProcessoEventoResponse.EventoResponse eventoResponse = new ClienteProcessoEventoResponse.EventoResponse();
+                    eventoResponse.setIdEvento(evento.getIdEvento());
+                    eventoResponse.setDataEvento(evento.getDataReuniao());
+                    eventoResponse.setHoraInicio(evento.getHoraInicio());
+                    eventoResponse.setHoraFim(evento.getHoraFim());
+                    eventoResponse.setTitulo(evento.getNome());
+                    eventoResponse.setTipo(evento.getCategoria() != null ? evento.getCategoria().getNome() : null);
+                    return eventoResponse;
                 }).toList();
         clienteDados.setEventos(eventosDTO);
 

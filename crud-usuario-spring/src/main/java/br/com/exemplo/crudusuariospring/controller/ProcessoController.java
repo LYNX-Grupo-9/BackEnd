@@ -32,6 +32,14 @@ public class ProcessoController {
         return processoService.listarTodos();
     }
 
+    @GetMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<ProcessoResponse> buscarPorId(@PathVariable Integer id) {
+        ProcessoResponse response = processoService.buscarPorId(id);
+        return ResponseEntity.ok(response);
+    }
+
+
     @GetMapping("/cliente/{idCliente}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<ProcessoResponse>> buscarPorCliente(@PathVariable Integer idCliente) {
@@ -41,11 +49,11 @@ public class ProcessoController {
             ProcessoResponse processoR = new ProcessoResponse(processo);
 
             if (processo.getAdvogado() != null) {
-                processoR.setNomeAdvogado(processo.getAdvogado().getNome());
+                processoR.setIdAdvogado(processo.getAdvogado().getIdAdvogado());
             }
 
             if (processo.getCliente() != null) {
-                processoR.setNomeCliente(processo.getCliente().getNome());
+                processoR.setIdCliente(processo.getCliente().getIdCliente());
             }
 
             return processoR;

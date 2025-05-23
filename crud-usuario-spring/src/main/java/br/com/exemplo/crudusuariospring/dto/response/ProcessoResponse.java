@@ -8,8 +8,8 @@ public class ProcessoResponse {
     private String numeroProcesso;
     private String descricao;
     private String status;
-    private String nomeAdvogado;
-    private String nomeCliente;
+    private Integer idAdvogado;
+    private Integer idCliente;
 
     public ProcessoResponse(Processo processo) {
         this.idProcesso = processo.getIdProcesso();
@@ -18,11 +18,11 @@ public class ProcessoResponse {
         this.status = processo.getStatus();
 
         if (processo.getAdvogado() != null) {
-            this.nomeAdvogado = processo.getAdvogado().getNome();
+            this.idAdvogado = processo.getAdvogado().getIdAdvogado();
         }
 
         if (processo.getCliente() != null) {
-            this.nomeCliente = processo.getCliente().getNome();
+            this.idCliente = processo.getCliente().getIdCliente();
         }
     }
 
@@ -58,19 +58,19 @@ public class ProcessoResponse {
         this.status = status;
     }
 
-    public String getNomeAdvogado() {
-        return nomeAdvogado;
+    public Integer getIdAdvogado() {
+        return idAdvogado;
     }
 
-    public void setNomeAdvogado(String nomeAdvogado) {
-        this.nomeAdvogado = nomeAdvogado;
+    public void setIdAdvogado(Integer idAdvogado) {
+        this.idAdvogado = idAdvogado;
     }
 
-    public String getNomeCliente() {
-        return nomeCliente;
+    public Integer getIdCliente() {
+        return idCliente;
     }
 
-    public void setNomeCliente(String nomeCliente) {
-        this.nomeCliente = nomeCliente;
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
     }
 }
