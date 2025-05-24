@@ -15,10 +15,10 @@ public class AtualizarEventoRequest {
     private LocalTime horaFim;
     private String local;
     private String linkReuniao;
-    private String nomeAdvogado;
-    private String nomeCliente;
-    private String nomeCategoria;
-    private String numeroProcesso;
+    private String idAdvogado;
+    private String idCliente;
+    private String idCategoria;
+    private String idProcesso;
 
     public String getNome() {
         return nome;
@@ -76,35 +76,35 @@ public class AtualizarEventoRequest {
         this.linkReuniao = linkReuniao;
     }
 
-    public String getNomeAdvogado() {
-        return nomeAdvogado;
+    public String getIdAdvogado() {
+        return idAdvogado;
     }
 
-    public void setNomeAdvogado(String nomeAdvogado) {
-        this.nomeAdvogado = nomeAdvogado;
+    public void setIdAdvogado(String idAdvogado) {
+        this.idAdvogado = idAdvogado;
     }
 
-    public String getNomeCliente() {
-        return nomeCliente;
+    public String getIdCliente() {
+        return idCliente;
     }
 
-    public void setNomeCliente(String nomeCliente) {
-        this.nomeCliente = nomeCliente;
+    public void setIdCliente(String idCliente) {
+        this.idCliente = idCliente;
     }
 
-    public String getNomeCategoria() {
-        return nomeCategoria;
+    public String getIdCategoria() {
+        return idCategoria;
     }
 
-    public void setNomeCategoria(String nomeCategoria) {
-        this.nomeCategoria = nomeCategoria;
+    public void setIdCategoria(String idCategoria) {
+        this.idCategoria = idCategoria;
     }
 
-    public String getNumeroProcesso() {
-        return numeroProcesso;
+    public String getIdProcesso() {
+        return idProcesso;
     }
 
-    public void setNumeroProcesso(String numeroProcesso) {
-        this.numeroProcesso = numeroProcesso;
+    public void setIdProcesso(String idProcesso) {
+        this.idProcesso = idProcesso;
     }
 }

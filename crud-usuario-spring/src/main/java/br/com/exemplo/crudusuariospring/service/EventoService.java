@@ -70,13 +70,6 @@ public class EventoService {
         return new EventoResponse(eventoSalvo);
     }
 
-    public List<EventoResponse> listarTodos() {
-        List<Evento> eventos = eventoRepository.findAll();
-        return eventos.stream()
-                .map(EventoResponse::new)
-                .collect(Collectors.toList());
-    }
-
     public EventoResponse buscarPorId(Long id) {
         Evento evento = eventoRepository.findById(id)
                 .orElseThrow(() -> new EventoNaoEncontradoException("Evento não encontrado"));
@@ -95,7 +88,6 @@ public class EventoService {
                 .map(EventoResponse::new)
                 .collect(Collectors.toList());
     }
-
 
     public List<EventoResponse> buscaEventoProximoSeteDias(Integer idAdvogado) {
         LocalDate hoje = LocalDate.now();
@@ -145,26 +137,24 @@ public class EventoService {
         if (request.getLinkReuniao() != null) {
             evento.setLinkReuniao(request.getLinkReuniao());
         }
-        if (request.getNomeAdvogado() != null) {
-            advogadoRepository.findByNome(request.getNomeAdvogado())
+        if (request.getIdAdvogado() != null) {
+            advogadoRepository.findByNome(request.getIdAdvogado())
                     .ifPresent(evento::setAdvogado);
         }
-        if (request.getNomeCliente() != null) {
-            clienteRepository.findByNome(request.getNomeCliente())
+        if (request.getIdCliente() != null) {
+            clienteRepository.findByNome(request.getIdCliente())
                     .ifPresent(evento::setCliente);
         }
-        if (request.getNomeCategoria() != null) {
-            categoriaEventoRepository.findByNome(request.getNomeCategoria())
+        if (request.getIdCategoria() != null) {
+            categoriaEventoRepository.findByNome(request.getIdCategoria())
                     .ifPresent(evento::setCategoria);
         }
-        if (request.getNumeroProcesso() != null) {
-            processoRepository.findByNumeroProcesso(request.getNumeroProcesso())
+        if (request.getIdProcesso() != null) {
+            processoRepository.findByNumeroProcesso(request.getIdProcesso())
                     .ifPresent(evento::setProcesso);
         }
 
         Evento eventoAtualizado = eventoRepository.save(evento);
         return new EventoResponse(eventoAtualizado);
     }
-
-
 }
