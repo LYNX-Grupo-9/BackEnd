@@ -2,6 +2,7 @@ package br.com.exemplo.crudusuariospring.controller;
 
 import br.com.exemplo.crudusuariospring.dto.request.AtualizarCategoriaRequest;
 import br.com.exemplo.crudusuariospring.dto.request.AtualizarEventoRequest;
+import br.com.exemplo.crudusuariospring.dto.request.CategoriaEventoRequest;
 import br.com.exemplo.crudusuariospring.dto.response.CategoriaEventoResponse;
 import br.com.exemplo.crudusuariospring.dto.response.EventoResponse;
 import br.com.exemplo.crudusuariospring.model.CategoriaEvento;
@@ -25,8 +26,8 @@ public class CategoriaEventoController {
 
     @PostMapping
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<CategoriaEventoResponse> criarCategoria(@RequestBody CategoriaEventoResponse categoriaEventoResponse) {
-        CategoriaEventoResponse catergoriaCriada = categoriaEventoService.criarCategoria(categoriaEventoResponse);
+    public ResponseEntity<CategoriaEventoResponse> criarCategoria(@RequestBody CategoriaEventoRequest categoriaEventoRequest) {
+        CategoriaEventoResponse catergoriaCriada = categoriaEventoService.criarCategoria(categoriaEventoRequest);
         return ResponseEntity.ok(catergoriaCriada);
     }
 

@@ -18,16 +18,12 @@ public class EventoRequest {
 
     private String linkReuniao;
 
-    @NotBlank(message = "O nome do advogado é obrigatório")
     private Integer idAdvogado;
 
-    @NotBlank(message = "O nome do cliente é obrigatório")
     private Integer idCliente;
 
-    @NotBlank(message = "O nome da categoria é obrigatório")
     private Long idCategoria;
 
-    @NotBlank(message = "O número do processo é obrigatório")
     private Integer idProcesso;
 
     @NotNull(message = "A data e hora são obrigatórias")

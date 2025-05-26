@@ -10,11 +10,7 @@ public class CategoriaEventoRequest {
     private String nomeEvento;
     @NotBlank(message = "A cor é obrigatória")
     private String cor;
-
-    public CategoriaEventoRequest(String nomeEvento, String cor) {
-        this.nomeEvento = nomeEvento;
-        this.cor = cor;
-    }
+    private Integer idAdvogado;
 
     public String getNomeEvento() {
         return nomeEvento;
@@ -30,5 +26,13 @@ public class CategoriaEventoRequest {
 
     public void setCor(String cor) {
         this.cor = cor;
+    }
+
+    public Integer getIdAdvogado() {
+        return idAdvogado;
+    }
+
+    public void setIdAdvogado(Integer idAdvogado) {
+        this.idAdvogado = idAdvogado;
     }
 }

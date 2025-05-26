@@ -1,6 +1,9 @@
 package br.com.exemplo.crudusuariospring.service;
 
 import br.com.exemplo.crudusuariospring.dto.request.AtualizarCategoriaRequest;
+import br.com.exemplo.crudusuariospring.dto.request.CategoriaEventoRequest;
+import br.com.exemplo.crudusuariospring.model.Advogado;
+import br.com.exemplo.crudusuariospring.repository.AdvogadoRepository;
 import br.com.exemplo.crudusuariospring.repository.CategoriaEventoRepository;
 import br.com.exemplo.crudusuariospring.dto.response.CategoriaEventoResponse;
 import br.com.exemplo.crudusuariospring.model.CategoriaEvento;
@@ -19,13 +22,29 @@ public class CategoriaEventoService {
     @Autowired
     private EventoRepository eventoRepository;
 
-    public CategoriaEventoResponse criarCategoria(CategoriaEventoResponse categoriaEventoResponse) {
+    @Autowired
+    private AdvogadoRepository advogadoRepository;
+
+    public CategoriaEventoResponse criarCategoria(CategoriaEventoRequest request) {
         CategoriaEvento categoriaEvento = new CategoriaEvento();
-        categoriaEvento.setNome(categoriaEventoResponse.getNomeEvento());
-        categoriaEvento.setCor(categoriaEventoResponse.getCor());
+        categoriaEvento.setNome(request.getNomeEvento());
+        categoriaEvento.setCor(request.getCor());
+
+        if (request.getIdAdvogado() != null) {
+            Advogado advogado = advogadoRepository.findById(request.getIdAdvogado())
+                    .orElseThrow(() -> new RuntimeException("Advogado não encontrado com ID: " + request.getIdAdvogado()));
+            categoriaEvento.setAdvogado(advogado);
+        }
+
         categoriaEvento = categoriaEventoRepository.save(categoriaEvento);
-        return new CategoriaEventoResponse(categoriaEvento.getIdCategoria(), categoriaEvento.getNome(), categoriaEvento.getCor());
+
+        return new CategoriaEventoResponse(
+                categoriaEvento.getIdCategoria(),
+                categoriaEvento.getNome(),
+                categoriaEvento.getCor()
+        );
     }
+
 
     public List<CategoriaEventoResponse> buscarTodasCategorias() {
         List<CategoriaEvento> categorias = categoriaEventoRepository.findAll();
