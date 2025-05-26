@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface CategoriaEventoRepository extends JpaRepository<CategoriaEvento, Long> {
     Optional<CategoriaEvento> findByNome(String nomeEvento);
     List<CategoriaEvento> findByAdvogadoIdAdvogado(Integer idAdvogado);
+    Optional<CategoriaEvento> findById(Long idCategoria);
 }

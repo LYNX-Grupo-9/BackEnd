@@ -58,6 +58,12 @@ public class CategoriaEventoService {
                 .toList();
     }
 
+    public CategoriaEventoResponse buscarCategoriaPorId(Long idCategoria) {
+        CategoriaEvento categoria = categoriaEventoRepository.findById(idCategoria)
+                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+        return new CategoriaEventoResponse(categoria.getIdCategoria(), categoria.getNome(), categoria.getCor());
+    }
+
     public void deletarCategoria(Long id) {
         CategoriaEvento categoria = categoriaEventoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrado"));

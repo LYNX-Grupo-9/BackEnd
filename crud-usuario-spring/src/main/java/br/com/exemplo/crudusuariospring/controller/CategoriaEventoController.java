@@ -45,6 +45,13 @@ public class CategoriaEventoController {
         return ResponseEntity.ok(categorias);
     }
 
+    @GetMapping("/{idCategoriaEvento}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<CategoriaEventoResponse> buscarPorCategoria(@PathVariable Long idCategoriaEvento) {
+        CategoriaEventoResponse categoria = categoriaEventoService.buscarCategoriaPorId(idCategoriaEvento);
+        return ResponseEntity.ok(categoria);
+    }
+
     @DeleteMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<CategoriaEventoResponse> deletarCategoria(@PathVariable Long id){
