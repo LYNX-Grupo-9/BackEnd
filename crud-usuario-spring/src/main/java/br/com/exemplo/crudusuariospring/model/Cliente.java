@@ -29,7 +29,7 @@ public class Cliente {
     private String passaporte;
     private String cnh;
     private String naturalidade;
-    private Integer qtdProcessos;
+    private Long qtdProcessos;
 
     // RELACIONAMENTOS
     @ManyToOne
@@ -190,11 +190,11 @@ public class Cliente {
         this.eventos = eventos;
     }
 
-    public Integer getQtdProcessos() {
+    public Long getQtdProcessos() {
         return qtdProcessos;
     }
 
-    public void setQtdProcessos(Integer qtdProcessos) {
+    public void setQtdProcessos(Long qtdProcessos) {
         this.qtdProcessos = qtdProcessos;
     }
 }

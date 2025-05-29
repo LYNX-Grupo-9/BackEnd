@@ -7,8 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProcessoRepository extends JpaRepository<Processo, Integer> {
-    List<Processo> findByCliente_IdCliente(Integer idCliente);
-    Integer countByCliente_IdCliente(Integer clienteId);
+    List<Processo> findByAdvogadoIdAdvogado(Long idAdvogado);
+    List<Processo> findByClienteIdCliente(Long idCliente);
+    Long countByCliente_IdCliente(Integer idCliente);
     Optional<Processo> findByNumeroProcesso(String numeroProcesso);
 }
 

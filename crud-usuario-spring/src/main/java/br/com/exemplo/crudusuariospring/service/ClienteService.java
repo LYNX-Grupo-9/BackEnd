@@ -131,7 +131,7 @@ public class ClienteService {
         Cliente cliente = clienteRepository.findById(idCliente)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
-        Integer qtdProcessos = processoRepository.countByCliente_IdCliente(idCliente);
+        Long qtdProcessos = processoRepository.countByCliente_IdCliente(idCliente);
 
         ClienteResponse response = new ClienteResponse();
         response.setIdCliente(cliente.getIdCliente());
@@ -187,7 +187,7 @@ public class ClienteService {
     public List<ClienteResponse> listarOrdenadoPorQuantidadeProcessos(Integer idAdvogado) {
         return clienteRepository.ordenarPorQuantidadeProcessos(idAdvogado).stream().map(cliente -> {
             ClienteResponse response = mapToResponse(cliente);
-            Integer qtd = processoRepository.countByCliente_IdCliente(cliente.getIdCliente());
+            Long qtd = processoRepository.countByCliente_IdCliente(cliente.getIdCliente());
             response.setQtdProcessos(qtd);
             return response;
         }).collect(Collectors.toList());

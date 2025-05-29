@@ -134,9 +134,9 @@ class ClienteServiceTest {
         Integer idAdvogado = 1;
         when(clienteRepository.ordenarPorQuantidadeProcessos(idAdvogado)).thenReturn(Arrays.asList(cliente2, cliente1, cliente3));
 
-        when(processoRepository.countByCliente_IdCliente(cliente1.getIdCliente())).thenReturn(2);
-        when(processoRepository.countByCliente_IdCliente(cliente2.getIdCliente())).thenReturn(5);
-        when(processoRepository.countByCliente_IdCliente(cliente3.getIdCliente())).thenReturn(1);
+        when(processoRepository.countByCliente_IdCliente(cliente1.getIdCliente())).thenReturn(2L);
+        when(processoRepository.countByCliente_IdCliente(cliente2.getIdCliente())).thenReturn(5L);
+        when(processoRepository.countByCliente_IdCliente(cliente3.getIdCliente())).thenReturn(1L);
 
         List<ClienteResponse> resposta = clienteService.listarOrdenadoPorQuantidadeProcessos(idAdvogado);
 
@@ -338,7 +338,7 @@ class ClienteServiceTest {
     @Test
     void deveBuscarClienteComQuantidadeProcessosQuandoClienteExiste() {
         Integer idCliente = cliente.getIdCliente();
-        Integer qtdProcessos = 3;
+        Long qtdProcessos = 3L;
 
         when(clienteRepository.findById(idCliente)).thenReturn(Optional.of(cliente));
         when(processoRepository.countByCliente_IdCliente(idCliente)).thenReturn(qtdProcessos);
@@ -413,7 +413,7 @@ class ClienteServiceTest {
         cliente1.setCnh("XYZ1234");
         cliente1.setNaturalidade("Cidade X");
         cliente1.setDataNascimento(dataNascimento);
-        cliente1.setQtdProcessos(2);
+        cliente1.setQtdProcessos(2L);
         cliente1.setAdvogado(advogado);
 
         when(clienteRepository.findByAdvogadoIdAdvogado(1)).thenReturn(Arrays.asList(cliente1));

@@ -2,7 +2,6 @@ package br.com.exemplo.crudusuariospring.dto.response;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 public class ClienteResponse {
@@ -26,9 +25,7 @@ public class ClienteResponse {
     private String naturalidade;
 
     private String advogadoResponsavel;
-    private Integer qtdProcessos;
-
-    // Getters e Setters
+    private Long qtdProcessos;
 
     public Integer getIdCliente() {
         return idCliente;
@@ -150,11 +147,11 @@ public class ClienteResponse {
         this.advogadoResponsavel = advogadoResponsavel;
     }
 
-    public Integer getQtdProcessos() {
+    public Long getQtdProcessos() {
         return qtdProcessos;
     }
 
-    public void setQtdProcessos(Integer qtdProcessos) {
+    public void setQtdProcessos(Long qtdProcessos) {
         this.qtdProcessos = qtdProcessos;
     }
 }

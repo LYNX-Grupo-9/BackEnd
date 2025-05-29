@@ -1,10 +1,8 @@
 package br.com.exemplo.crudusuariospring.controller;
 
+import br.com.exemplo.crudusuariospring.dto.request.AtualizarProcessoRequest;
 import br.com.exemplo.crudusuariospring.dto.request.ProcessoRequest;
-import br.com.exemplo.crudusuariospring.dto.response.AdvogadoResponse;
-import br.com.exemplo.crudusuariospring.dto.response.ClienteResponse;
 import br.com.exemplo.crudusuariospring.dto.response.ProcessoResponse;
-import br.com.exemplo.crudusuariospring.model.Processo;
 import br.com.exemplo.crudusuariospring.service.ProcessoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,43 +20,40 @@ public class ProcessoController {
 
     @PostMapping
     @SecurityRequirement(name = "Bearer")
-    private ProcessoResponse cadastrarProcesso(@RequestBody ProcessoRequest processoRequest){
-        return processoService.salvar(processoRequest);
+    private ProcessoResponse cadastrarProcesso(@RequestBody ProcessoRequest processoRequest) {
+        return processoService.criarProcesso(processoRequest);
     }
 
-    @GetMapping
+    @GetMapping("/advogado/{idAdvogado}")
     @SecurityRequirement(name = "Bearer")
-    public List<ProcessoResponse> listarProcessos(){
-        return processoService.listarTodos();
+    public ResponseEntity<List<ProcessoResponse>> listarPorAdvogado(@PathVariable Long idAdvogado) {
+        List<ProcessoResponse> processos = processoService.listarTodosPorIdAdvogado(idAdvogado);
+        return ResponseEntity.ok(processos);
     }
 
     @GetMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<ProcessoResponse> buscarPorId(@PathVariable Integer id) {
-        ProcessoResponse response = processoService.buscarPorId(id);
-        return ResponseEntity.ok(response);
+    private ProcessoResponse buscarPorId(@PathVariable Integer id) {
+        return processoService.buscarPorId(id);
     }
-
 
     @GetMapping("/cliente/{idCliente}")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<ProcessoResponse>> buscarPorCliente(@PathVariable Integer idCliente) {
-        List<Processo> processos = processoService.listarPorCliente(idCliente);
+    private List<ProcessoResponse> buscarPorCliente(@PathVariable Long idCliente) {
+        return processoService.buscarPorIdCliente(idCliente);
+    }
 
-        List<ProcessoResponse> resposta = processos.stream().map(processo -> {
-            ProcessoResponse processoR = new ProcessoResponse(processo);
+    @DeleteMapping("/{idProcesso}")
+    @SecurityRequirement(name = "Bearer")
+    private void excluirProcesso(@PathVariable Integer idProcesso) {
+        processoService.excluirPorId(idProcesso);
+    }
 
-            if (processo.getAdvogado() != null) {
-                processoR.setIdAdvogado(processo.getAdvogado().getIdAdvogado());
-            }
-
-            if (processo.getCliente() != null) {
-                processoR.setIdCliente(processo.getCliente().getIdCliente());
-            }
-
-            return processoR;
-        }).toList();
-
-        return ResponseEntity.ok(resposta);
+    @PatchMapping("/{idProcesso}")
+    @SecurityRequirement(name = "Bearer")
+    private ProcessoResponse atualizarParcialmente(
+            @PathVariable Integer idProcesso,
+            @RequestBody AtualizarProcessoRequest request) {
+        return processoService.atualizarProcessoParcialmente(idProcesso, request);
     }
 }
