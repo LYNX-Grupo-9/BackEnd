@@ -21,10 +21,8 @@ public class ProcessoResponse {
     private String advRequerente;
     private String reu;
     private String advReu;
-    private Long idAdvogado;
-    private String nomeAdvogado;
-    private Long idCliente;
-    private String nomeCliente;
+    private Integer idAdvogado;
+    private Integer idCliente;
     private List<Long> eventos;
 
     public ProcessoResponse(Processo processo) {
@@ -41,6 +39,15 @@ public class ProcessoResponse {
         this.advRequerente = processo.getAdvRequerente();
         this.reu = processo.getReu();
         this.advReu = processo.getAdvReu();
+
+        if (processo.getAdvogado() != null) {
+            this.idAdvogado = processo.getAdvogado().getIdAdvogado();
+        }
+
+        if (processo.getCliente() != null) {
+            this.idCliente = processo.getCliente().getIdCliente();
+        }
+
 
         this.eventos = processo.getEventos() != null ?
                 processo.getEventos().stream()
@@ -153,36 +160,20 @@ public class ProcessoResponse {
         this.advReu = advReu;
     }
 
-    public Long getIdAdvogado() {
+    public Integer getIdAdvogado() {
         return idAdvogado;
     }
 
-    public void setIdAdvogado(Long idAdvogado) {
+    public void setIdAdvogado(Integer idAdvogado) {
         this.idAdvogado = idAdvogado;
     }
 
-    public String getNomeAdvogado() {
-        return nomeAdvogado;
-    }
-
-    public void setNomeAdvogado(String nomeAdvogado) {
-        this.nomeAdvogado = nomeAdvogado;
-    }
-
-    public Long getIdCliente() {
+    public Integer getIdCliente() {
         return idCliente;
     }
 
-    public void setIdCliente(Long idCliente) {
+    public void setIdCliente(Integer idCliente) {
         this.idCliente = idCliente;
-    }
-
-    public String getNomeCliente() {
-        return nomeCliente;
-    }
-
-    public void setNomeCliente(String nomeCliente) {
-        this.nomeCliente = nomeCliente;
     }
 
     public List<Long> getEventos() {
