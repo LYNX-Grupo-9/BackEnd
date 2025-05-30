@@ -1,22 +1,24 @@
 package br.com.exemplo.crudusuariospring.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Anexo {
 
     @Id
+    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Long idAnexo;
     private String nomeAnexo;
-    private String linkBucket;
+    private String idItem;
 
     // RELACIONAMENTOS
     @ManyToOne
-    @JoinColumn(name = "idCliente")
+    @JoinColumn(name = "id_cliente")
     private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "id_processo")
+    private Processo processo;
 
     public Long getIdAnexo() {
         return idAnexo;
@@ -34,12 +36,12 @@ public class Anexo {
         this.nomeAnexo = nomeAnexo;
     }
 
-    public String getLinkBucket() {
-        return linkBucket;
+    public String getIdItem() {
+        return idItem;
     }
 
-    public void setLinkBucket(String linkBucket) {
-        this.linkBucket = linkBucket;
+    public void setIdItem(String idItem) {
+        this.idItem = idItem;
     }
 
     public Cliente getCliente() {
@@ -48,5 +50,13 @@ public class Anexo {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public Processo getProcesso() {
+        return processo;
+    }
+
+    public void setProcesso(Processo processo) {
+        this.processo = processo;
     }
 }

@@ -1,7 +1,14 @@
 package br.com.exemplo.crudusuariospring.service;
 
+import br.com.exemplo.crudusuariospring.dto.request.AnexoRequest;
+import br.com.exemplo.crudusuariospring.dto.response.AnexoResponse;
 import br.com.exemplo.crudusuariospring.model.Anexo;
+import br.com.exemplo.crudusuariospring.model.Cliente;
+import br.com.exemplo.crudusuariospring.model.Processo;
 import br.com.exemplo.crudusuariospring.repository.AnexoRepository;
+import br.com.exemplo.crudusuariospring.repository.ClienteRepository;
+import br.com.exemplo.crudusuariospring.repository.ProcessoRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +20,49 @@ public class AnexoService {
     @Autowired
     private AnexoRepository anexoRepository;
 
-    public Anexo salvarAnexo(Anexo anexo) {
-        return anexoRepository.save(anexo);
+    @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
+    private ProcessoRepository processoRepository;
+
+    public AnexoResponse criarAnexo(AnexoRequest request) {
+        Anexo anexo = new Anexo();
+
+        anexo.setIdAnexo(request.getIdAnexo());
+        anexo.setNomeAnexo(request.getNomeAnexo());
+        anexo.setIdItem(request.getIdItem());
+
+        if (request.getIdCliente() != null) {
+            Cliente cliente = clienteRepository.findById(request.getIdCliente())
+                    .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+            anexo.setCliente(cliente);
+        }
+
+        if (request.getIdProcesso() != null) {
+            Processo processo = processoRepository.findById(request.getIdProcesso())
+                    .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
+            anexo.setProcesso(processo);
+        }
+
+        Anexo salvo = anexoRepository.save(anexo);
+        return new AnexoResponse(salvo);
     }
 
-    public List<Anexo> pegarTodosAnexos() {
-        return anexoRepository.findAll();
+    public List<AnexoResponse> buscarPorIdCliente(Integer idCliente) {
+        List<Anexo> anexos = anexoRepository.findByCliente_IdCliente(idCliente);
+        return anexos.stream().map(AnexoResponse::new).toList();
     }
 
+    public List<AnexoResponse> buscarPorIdProcesso(Integer idProcesso) {
+        List<Anexo> anexos = anexoRepository.findByProcesso_IdProcesso(idProcesso);
+        return anexos.stream().map(AnexoResponse::new).toList();
+    }
+
+    public void deletarAnexo(Integer idAnexo) {
+        if (!anexoRepository.existsById(idAnexo)) {
+            throw new RuntimeException("Anexo com ID " + idAnexo + " não encontrado.");
+        }
+        anexoRepository.deleteById(idAnexo);
+    }
 }

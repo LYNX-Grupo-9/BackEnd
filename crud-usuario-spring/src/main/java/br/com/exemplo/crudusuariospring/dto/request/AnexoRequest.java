@@ -1,17 +1,21 @@
 package br.com.exemplo.crudusuariospring.dto.request;
 
-
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-
 public class AnexoRequest {
 
-    @NotBlank(message = "O nome do anexo é obrigatório.")
+    private Long idAnexo;
     private String nomeAnexo;
-    @NotBlank(message = "O link do bucket é obrigatório.")
-    @Pattern(regexp = "^(https?|ftp)://[^\\s/$.?#].[^\\s]*$", message = "O link do bucket deve ser uma URL válida."
-    )
-    private String linkBucket;
+    private String idItem;
+
+    private Integer idCliente;
+    private Integer idProcesso;
+
+    public Long getIdAnexo() {
+        return idAnexo;
+    }
+
+    public void setIdAnexo(Long idAnexo) {
+        this.idAnexo = idAnexo;
+    }
 
     public String getNomeAnexo() {
         return nomeAnexo;
@@ -21,11 +25,28 @@ public class AnexoRequest {
         this.nomeAnexo = nomeAnexo;
     }
 
-    public String getLinkBucket() {
-        return linkBucket;
+    public String getIdItem() {
+        return idItem;
     }
 
-    public void setLinkBucket(String linkBucket) {
-        this.linkBucket = linkBucket;
+    public void setIdItem(String idItem) {
+        this.idItem = idItem;
+    }
+
+    public Integer getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    public Integer getIdProcesso() {
+        return idProcesso;
+    }
+
+    public void setIdProcesso(Integer idProcesso) {
+        this.idProcesso = idProcesso;
     }
 }
+

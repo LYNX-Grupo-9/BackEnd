@@ -37,6 +37,10 @@ public class Processo {
     @OneToMany(mappedBy = "processo")
     private List<Evento> eventos;
 
+    @ManyToOne
+    @JoinColumn(name = "id_anexo")
+    private Anexo anexo;
+
     public List<Evento> getEventos() {
         return eventos;
     }
@@ -163,5 +167,13 @@ public class Processo {
 
     public void setIdProcesso(Long idProcesso) {
         this.idProcesso = idProcesso;
+    }
+
+    public Anexo getAnexo() {
+        return anexo;
+    }
+
+    public void setAnexo(Anexo anexo) {
+        this.anexo = anexo;
     }
 }

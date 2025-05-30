@@ -1,10 +1,18 @@
 package br.com.exemplo.crudusuariospring.dto.response;
 
+import br.com.exemplo.crudusuariospring.model.Anexo;
+
 public class AnexoResponse {
 
     private Long idAnexo;
     private String nomeAnexo;
-    private String linkBucket;
+    private String idItem;
+
+    public AnexoResponse(Anexo anexo) {
+        this.idAnexo = anexo.getIdAnexo();
+        this.nomeAnexo = anexo.getNomeAnexo();
+        this.idItem = anexo.getIdItem();
+    }
 
     public Long getIdAnexo() {
         return idAnexo;
@@ -22,11 +30,12 @@ public class AnexoResponse {
         this.nomeAnexo = nomeAnexo;
     }
 
-    public String getLinkBucket() {
-        return linkBucket;
+    public String getIdItem() {
+        return idItem;
     }
 
-    public void setLinkBucket(String linkBucket) {
-        this.linkBucket = linkBucket;
+    public void setIdItem(String idItem) {
+        this.idItem = idItem;
     }
 }
+
