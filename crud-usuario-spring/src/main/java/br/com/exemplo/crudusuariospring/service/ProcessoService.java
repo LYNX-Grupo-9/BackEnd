@@ -3,11 +3,9 @@ package br.com.exemplo.crudusuariospring.service;
 
 import br.com.exemplo.crudusuariospring.dto.request.AtualizarProcessoRequest;
 import br.com.exemplo.crudusuariospring.dto.request.ProcessoRequest;
-import br.com.exemplo.crudusuariospring.dto.response.EventoResponse;
 import br.com.exemplo.crudusuariospring.dto.response.ProcessoResponse;
 import br.com.exemplo.crudusuariospring.model.Advogado;
 import br.com.exemplo.crudusuariospring.model.Cliente;
-import br.com.exemplo.crudusuariospring.model.Evento;
 import br.com.exemplo.crudusuariospring.model.Processo;
 import br.com.exemplo.crudusuariospring.repository.AdvogadoRepository;
 import br.com.exemplo.crudusuariospring.repository.ClienteRepository;

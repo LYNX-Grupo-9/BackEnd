@@ -145,4 +145,33 @@ class CategoriaEventoServiceTest {
         assertEquals("Novo Nome", response.getNomeEvento());
         assertEquals("Preto", response.getCor());
     }
+
+    @Test
+    public void deveRetornarCategoriaQuandoIdExiste() {
+        Long id = 1L;
+        CategoriaEvento categoria = new CategoriaEvento();
+        categoria.setIdCategoria(id);
+        categoria.setNome("Reunião");
+        categoria.setCor("Azul");
+
+        when(categoriaEventoRepository.findById(id)).thenReturn(Optional.of(categoria));
+
+        CategoriaEventoResponse response = service.buscarCategoriaPorId(id);
+
+        assertEquals(id, response.getIdCategoriaEvento());
+        assertEquals("Reunião", response.getNomeEvento());
+        assertEquals("Azul", response.getCor());
+    }
+
+    @Test
+    public void deveLancarExcecaoQuandoCategoriaNaoExiste() {
+        Long id = 99L;
+        when(categoriaEventoRepository.findById(id)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            service.buscarCategoriaPorId(id);
+        });
+
+        assertEquals("Categoria não encontrada", exception.getMessage());
+    }
 }
