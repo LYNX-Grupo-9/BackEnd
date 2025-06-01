@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/processos")
@@ -55,5 +56,26 @@ public class ProcessoController {
             @PathVariable Integer idProcesso,
             @RequestBody AtualizarProcessoRequest request) {
         return processoService.atualizarProcessoParcialmente(idProcesso, request);
+    }
+
+    @GetMapping("/processosAtivos/{idAdvogado}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<ProcessoResponse>> listarProcessosAtivosPorAdvogado(@PathVariable Long idAdvogado) {
+        List<ProcessoResponse> processos = processoService.listarProcessosAtivosPorAdvogado(idAdvogado);
+        return ResponseEntity.ok(processos);
+    }
+
+    @GetMapping("/contagem-por-status/{idAdvogado}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<Map<String, Long>> contarProcessosPorStatusPorAdvogado(@PathVariable Long idAdvogado) {
+        Map<String, Long> contagem = processoService.contarProcessosPorStatusPorAdvogado(idAdvogado);
+        return ResponseEntity.ok(contagem);
+    }
+
+    @GetMapping("/quantidade-por-classe/{idAdvogado}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<Map<String, Long>> contarPorClasseProcessual(@PathVariable Long idAdvogado) {
+        Map<String, Long> resultado = processoService.contarProcessosPorClasseProcessualPorAdvogado(idAdvogado);
+        return ResponseEntity.ok(resultado);
     }
 }

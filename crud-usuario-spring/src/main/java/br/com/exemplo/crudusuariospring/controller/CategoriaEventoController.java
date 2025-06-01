@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
@@ -65,5 +66,11 @@ public class CategoriaEventoController {
                                                                 @RequestBody AtualizarCategoriaRequest request) {
         CategoriaEventoResponse categoriaResponse = categoriaEventoService.atualizarParcialmente(id, request);
         return ResponseEntity.ok(categoriaResponse);
+    }
+
+    @GetMapping("/contagem-por-nome")
+    public ResponseEntity<Map<String, Long>> contarCategoriasPorNome() {
+        Map<String, Long> resultado = categoriaEventoService.contarCategoriaPorNome();
+        return ResponseEntity.ok(resultado);
     }
 }

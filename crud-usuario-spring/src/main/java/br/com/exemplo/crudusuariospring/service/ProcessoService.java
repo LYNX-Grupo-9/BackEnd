@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -138,4 +139,30 @@ public class ProcessoService {
         return new ProcessoResponse(atualizado);
     }
 
+    public List<ProcessoResponse> listarProcessosAtivosPorAdvogado(Long idAdvogado) {
+        List<Processo> processos = processoRepository.findByStatusIgnoreCaseAndAdvogadoIdAdvogado("Ativo", idAdvogado);
+        return processos.stream()
+                .map(ProcessoResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    public Map<String, Long> contarProcessosPorStatusPorAdvogado(Long idAdvogado) {
+        List<Processo> processos = processoRepository.findByAdvogadoIdAdvogado(idAdvogado);
+
+        return processos.stream()
+                .collect(Collectors.groupingBy(
+                        Processo::getStatus,
+                        Collectors.counting()
+                ));
+    }
+
+    public Map<String, Long> contarProcessosPorClasseProcessualPorAdvogado(Long idAdvogado) {
+        List<Object[]> resultados = processoRepository.contarProcessosPorClasseProcessualPorAdvogado(idAdvogado);
+
+        return resultados.stream()
+                .collect(Collectors.toMap(
+                        r -> (String) r[0],
+                        r -> (Long) r[1]
+                ));
+    }
 }

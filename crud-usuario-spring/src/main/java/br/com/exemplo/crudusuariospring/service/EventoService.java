@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -157,4 +158,29 @@ public class EventoService {
         Evento eventoAtualizado = eventoRepository.save(evento);
         return new EventoResponse(eventoAtualizado);
     }
+
+    public List<EventoResponse> buscarEventosDoMesPorAdvogado(Integer idAdvogado) {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Date inicioMes = calendar.getTime();
+
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+        Date fimMes = calendar.getTime();
+
+        List<Evento> eventos = eventoRepository.findByAdvogadoIdAdvogadoAndDataReuniaoBetween(idAdvogado, inicioMes, fimMes);
+
+        return eventos.stream()
+                .map(EventoResponse::new)
+                .collect(Collectors.toList());
+    }
+
 }

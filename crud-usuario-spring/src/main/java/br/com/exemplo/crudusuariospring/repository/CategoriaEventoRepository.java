@@ -12,4 +12,7 @@ public interface CategoriaEventoRepository extends JpaRepository<CategoriaEvento
     Optional<CategoriaEvento> findByNome(String nomeEvento);
     List<CategoriaEvento> findByAdvogadoIdAdvogado(Integer idAdvogado);
     Optional<CategoriaEvento> findById(Long idCategoria);
+
+    @Query("SELECT c.nome AS nome, COUNT(c) AS quantidade FROM CategoriaEvento c GROUP BY c.nome")
+    List<Object[]> contarCategoriasAgrupadasPorNome();
 }

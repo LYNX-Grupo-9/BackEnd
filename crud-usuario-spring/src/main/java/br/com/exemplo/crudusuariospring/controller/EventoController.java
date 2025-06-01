@@ -83,4 +83,10 @@ public class EventoController {
         return ResponseEntity.ok(eventoResponse);
     }
 
+    @GetMapping("/advogado/{idAdvogado}/eventosMes")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<EventoResponse>> eventosDoMesPorAdvogado(@PathVariable Integer idAdvogado) {
+        List<EventoResponse> eventos = eventoService.buscarEventosDoMesPorAdvogado(idAdvogado);
+        return ResponseEntity.ok(eventos);
+    }
 }

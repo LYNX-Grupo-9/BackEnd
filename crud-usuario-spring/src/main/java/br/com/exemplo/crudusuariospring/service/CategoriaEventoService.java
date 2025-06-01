@@ -11,7 +11,9 @@ import br.com.exemplo.crudusuariospring.repository.EventoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CategoriaEventoService {
@@ -90,5 +92,19 @@ public class CategoriaEventoService {
                 categoriaAtualizado.getNome(),
                 categoriaAtualizado.getCor()
         );
+    }
+
+    public Map<String, Long> contarCategoriaPorNome() {
+        List<Object[]> resultados = categoriaEventoRepository.contarCategoriasAgrupadasPorNome();
+
+        Map<String, Long> mapa = new HashMap<>();
+
+        for (Object[] linha : resultados) {
+            String nome = (String) linha[0];
+            Long quantidade = (Long) linha[1];
+            mapa.put(nome, quantidade);
+        }
+
+        return mapa;
     }
 }
