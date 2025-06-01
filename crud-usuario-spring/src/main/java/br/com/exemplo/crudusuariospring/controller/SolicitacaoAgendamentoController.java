@@ -41,4 +41,10 @@ public class SolicitacaoAgendamentoController {
         return ResponseEntity.ok(lista);
     }
 
+    @GetMapping("/solicitacao/{idSolicitacao}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<SolicitacaoAgendamentoResponse> buscarPorId(@PathVariable Integer idSolicitacao) {
+        SolicitacaoAgendamentoResponse response = service.buscarPorId(idSolicitacao);
+        return ResponseEntity.ok(response);
+    }
 }

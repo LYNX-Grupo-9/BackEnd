@@ -62,4 +62,11 @@ public class SolicitacaoAgendamentoService {
                 .map(SolicitacaoAgendamentoResponse::new)
                 .collect(Collectors.toList());
     }
+
+    public SolicitacaoAgendamentoResponse buscarPorId(Integer idSolicitacao) {
+        SolicitacaoAgendamento solicitacao = solicitacaoAgendamentoRepository.findById(idSolicitacao)
+                .orElseThrow(() -> new RuntimeException("Solicitação de agendamento não encontrada com ID: " + idSolicitacao));
+
+        return new SolicitacaoAgendamentoResponse(solicitacao);
+    }
 }
