@@ -37,9 +37,6 @@ public class Advogado {
     private List<SolicitacaoAgendamento> solicitacoesAgendamento;
 
     @OneToMany(mappedBy = "advogado")
-    private List<Notificacao> notificacoes;
-
-    @OneToMany(mappedBy = "advogado")
     private List<CategoriaEvento> categoriasEvento;
 
     public Integer getIdAdvogado() {
@@ -128,14 +125,6 @@ public class Advogado {
 
     public void setSolicitacoesAgendamento(List<SolicitacaoAgendamento> solicitacoesAgendamento) {
         this.solicitacoesAgendamento = solicitacoesAgendamento;
-    }
-
-    public List<Notificacao> getNotificacoes() {
-        return notificacoes;
-    }
-
-    public void setNotificacoes(List<Notificacao> notificacoes) {
-        this.notificacoes = notificacoes;
     }
 
     public List<CategoriaEvento> getCategoriasEvento() {

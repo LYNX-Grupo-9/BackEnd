@@ -4,23 +4,31 @@ import br.com.exemplo.crudusuariospring.model.SolicitacaoAgendamento;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 
 public class SolicitacaoAgendamentoResponse {
 
     private Long idSolicitacaoAgendamento;
     private String nome;
-    private String telefone;
     private String email;
     private String assunto;
-    private LocalDate dataSolicitacao;
+    private String telefone;
+    private Date dataSolicitacao;
+    private LocalTime horaSolicitacao;
+    private Boolean visualizado;
+    private Integer idAvogado;
 
-    public SolicitacaoAgendamentoResponse(SolicitacaoAgendamento solicitacao) {
-        this.idSolicitacaoAgendamento = solicitacao.getIdSolicitacaoAgendamento();
-        this.nome = solicitacao.getNome();
-        this.telefone = solicitacao.getTelefone();
-        this.email = solicitacao.getEmail();
-        this.assunto = solicitacao.getAssunto();
-        this.dataSolicitacao = solicitacao.getDataSolicitacao();
+    public SolicitacaoAgendamentoResponse(SolicitacaoAgendamento solicitacaoAgendamento) {
+        this.idSolicitacaoAgendamento = solicitacaoAgendamento.getIdSolicitacaoAgendamento();
+        this.nome = solicitacaoAgendamento.getNome();
+        this.telefone = solicitacaoAgendamento.getTelefone();
+        this.email = solicitacaoAgendamento.getEmail();
+        this.assunto = solicitacaoAgendamento.getAssunto();
+        this.dataSolicitacao = solicitacaoAgendamento.getDataSolicitacao();
+        this.visualizado = solicitacaoAgendamento.getVisualizado();
+        this.horaSolicitacao = solicitacaoAgendamento.getHoraSolicitacao();
+        this.idAvogado = solicitacaoAgendamento.getAdvogado().getIdAdvogado();
     }
 
     public Long getIdSolicitacaoAgendamento() {
@@ -39,14 +47,6 @@ public class SolicitacaoAgendamentoResponse {
         this.nome = nome;
     }
 
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -63,11 +63,43 @@ public class SolicitacaoAgendamentoResponse {
         this.assunto = assunto;
     }
 
-    public LocalDate getDataSolicitacao() {
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public Date getDataSolicitacao() {
         return dataSolicitacao;
     }
 
-    public void setDataSolicitacao(LocalDate dataSolicitacao) {
+    public void setDataSolicitacao(Date dataSolicitacao) {
         this.dataSolicitacao = dataSolicitacao;
+    }
+
+    public LocalTime getHoraSolicitacao() {
+        return horaSolicitacao;
+    }
+
+    public void setHoraSolicitacao(LocalTime horaSolicitacao) {
+        this.horaSolicitacao = horaSolicitacao;
+    }
+
+    public Boolean getVisualizado() {
+        return visualizado;
+    }
+
+    public void setVisualizado(Boolean visualizado) {
+        this.visualizado = visualizado;
+    }
+
+    public Integer getIdAvogado() {
+        return idAvogado;
+    }
+
+    public void setIdAvogado(Integer idAvogado) {
+        this.idAvogado = idAvogado;
     }
 }

@@ -4,26 +4,24 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.sql.Date;
+import java.time.LocalTime;
 
 public class SolicitacaoAgendamentoRequest {
 
     @NotBlank(message = "O nome é obrigatório")
     private String nome;
-    @NotBlank(message = "O telefone é obrigatório")
-    @Pattern(regexp = "^\\(?\\d{2}\\)?\\s?9?\\d{4}-?\\d{4}$", message = "O telefone deve estar no formato 11912345678.")
     private String telefone;
     @Email(message = "Email inválido")
     @NotBlank(message = "Email é obrigatório")
     private String email;
-    @NotBlank(message = "Assunto é obrigatório")
+    @NotBlank(message = "Mensagem é obrigatória")
     private String assunto;
     @NotBlank(message = "Data de solicitação é obrigatório")
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate dataSolicitacao;
+    private Date dataSolicitacao;
+    @NotBlank(message = "Hora de solicitação é obrigatório")
+    private LocalTime horaSolicitacao;
+
 
     @NotNull(message = "ID do advogado é obrigatório")
     private Integer idAdvogado;
@@ -60,12 +58,20 @@ public class SolicitacaoAgendamentoRequest {
         this.assunto = assunto;
     }
 
-    public LocalDate getDataSolicitacao() {
+    public Date getDataSolicitacao() {
         return dataSolicitacao;
     }
 
-    public void setDataSolicitacao(LocalDate dataSolicitacao) {
+    public void setDataSolicitacao(Date dataSolicitacao) {
         this.dataSolicitacao = dataSolicitacao;
+    }
+
+    public LocalTime getHoraSolicitacao() {
+        return horaSolicitacao;
+    }
+
+    public void setHoraSolicitacao(LocalTime horaSolicitacao) {
+        this.horaSolicitacao = horaSolicitacao;
     }
 
     public Integer getIdAdvogado() {

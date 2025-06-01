@@ -7,14 +7,12 @@ import br.com.exemplo.crudusuariospring.model.SolicitacaoAgendamento;
 import br.com.exemplo.crudusuariospring.repository.AdvogadoRepository;
 import br.com.exemplo.crudusuariospring.repository.SolicitacaoAgendamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 @Service
 public class SolicitacaoAgendamentoService {
@@ -25,33 +23,43 @@ public class SolicitacaoAgendamentoService {
     @Autowired
     private AdvogadoRepository advogadoRepository;
 
-
     public SolicitacaoAgendamentoResponse criarSolicitacao(SolicitacaoAgendamentoRequest request) {
+        Advogado advogado = advogadoRepository.findById(request.getIdAdvogado())
+                .orElseThrow(() -> new RuntimeException("Advogado não encontrado"));
+
         SolicitacaoAgendamento solicitacao = new SolicitacaoAgendamento();
         solicitacao.setNome(request.getNome());
         solicitacao.setTelefone(request.getTelefone());
         solicitacao.setEmail(request.getEmail());
         solicitacao.setAssunto(request.getAssunto());
         solicitacao.setDataSolicitacao(request.getDataSolicitacao());
-
-        Advogado advogado = advogadoRepository.findById(request.getIdAdvogado())
-                .orElseThrow(() -> new RuntimeException("Advogado não encontrado"));
-
+        solicitacao.setHoraSolicitacao(request.getHoraSolicitacao());
+        solicitacao.setVisualizado(false);
         solicitacao.setAdvogado(advogado);
 
-        SolicitacaoAgendamento salvo = solicitacaoAgendamentoRepository.save(solicitacao);
-        return new SolicitacaoAgendamentoResponse(salvo);
+        SolicitacaoAgendamento salvaSolicitacao = solicitacaoAgendamentoRepository.save(solicitacao);
+
+        return new SolicitacaoAgendamentoResponse(salvaSolicitacao);
     }
 
-    public List<SolicitacaoAgendamentoResponse> buscarPorEmail(String email) {
-        List<SolicitacaoAgendamento> solicitacoes = solicitacaoAgendamentoRepository.findByEmail(email);
+    public SolicitacaoAgendamentoResponse marcarComoVisualizado(Integer idSolicitacao) {
+        Optional<SolicitacaoAgendamento> optionalSolicitacao = solicitacaoAgendamentoRepository.findById(idSolicitacao);
 
-        if (solicitacoes.isEmpty()) {
-            throw new RuntimeException("Solicitação não encontrada para o email: " + email);
+        if (optionalSolicitacao.isEmpty()) {
+            throw new RuntimeException("Solicitação de agendamento não encontrada com ID: " + idSolicitacao);
         }
 
-        return solicitacoes.stream()
-                .map(solicitacao -> new SolicitacaoAgendamentoResponse(solicitacao))
+        SolicitacaoAgendamento solicitacao = optionalSolicitacao.get();
+        solicitacao.setVisualizado(true);
+        solicitacaoAgendamentoRepository.save(solicitacao);
+
+        return new SolicitacaoAgendamentoResponse(solicitacao);
+    }
+
+    public List<SolicitacaoAgendamentoResponse> buscarPorAdvogado(Integer idAdvogado) {
+        List<SolicitacaoAgendamento> lista = solicitacaoAgendamentoRepository.findByAdvogadoIdAdvogado(idAdvogado);
+        return lista.stream()
+                .map(SolicitacaoAgendamentoResponse::new)
                 .collect(Collectors.toList());
     }
 }
