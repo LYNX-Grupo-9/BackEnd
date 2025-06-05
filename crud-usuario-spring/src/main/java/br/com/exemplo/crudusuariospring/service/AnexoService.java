@@ -8,7 +8,6 @@ import br.com.exemplo.crudusuariospring.model.Processo;
 import br.com.exemplo.crudusuariospring.repository.AnexoRepository;
 import br.com.exemplo.crudusuariospring.repository.ClienteRepository;
 import br.com.exemplo.crudusuariospring.repository.ProcessoRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

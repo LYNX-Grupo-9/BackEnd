@@ -2,12 +2,10 @@ package br.com.exemplo.crudusuariospring.controller;
 
 import br.com.exemplo.crudusuariospring.dto.request.AnexoRequest;
 import br.com.exemplo.crudusuariospring.dto.response.AnexoResponse;
-import br.com.exemplo.crudusuariospring.model.Anexo;
 import br.com.exemplo.crudusuariospring.service.AnexoService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +19,9 @@ public class AnexoController {
     @Autowired
     private AnexoService anexoService;
 
-    @PostMapping
+    @PostMapping("")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<AnexoResponse> criar(@RequestBody AnexoRequest request) {
+    public ResponseEntity<AnexoResponse> criarAnexo(@RequestBody AnexoRequest request) {
         AnexoResponse response = anexoService.criarAnexo(request);
         return ResponseEntity.ok(response);
     }

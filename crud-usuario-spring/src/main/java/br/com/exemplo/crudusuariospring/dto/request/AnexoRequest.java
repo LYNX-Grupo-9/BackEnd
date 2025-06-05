@@ -1,9 +1,13 @@
 package br.com.exemplo.crudusuariospring.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class AnexoRequest {
 
     private Long idAnexo;
+    @NotBlank(message = "O nome do anexo não pode estar vazio")
     private String nomeAnexo;
+    @NotBlank(message = "O id do item não pode estar vazio")
     private String idItem;
 
     private Integer idCliente;

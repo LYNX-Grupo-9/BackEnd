@@ -8,8 +8,13 @@ public class Anexo {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Long idAnexo;
+
+    @Column(name = "nome_anexo")
     private String nomeAnexo;
+
+    @Column(name = "id_item")
     private String idItem;
+
 
     // RELACIONAMENTOS
     @ManyToOne
