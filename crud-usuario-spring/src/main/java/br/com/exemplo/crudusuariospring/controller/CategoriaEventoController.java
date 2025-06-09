@@ -68,9 +68,10 @@ public class CategoriaEventoController {
         return ResponseEntity.ok(categoriaResponse);
     }
 
-    @GetMapping("/contagem-por-nome")
-    public ResponseEntity<Map<String, Long>> contarCategoriasPorNome() {
-        Map<String, Long> resultado = categoriaEventoService.contarCategoriaPorNome();
+    @GetMapping("/contagem-por-nome/{idAdvogado}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<Map<String, Long>> contarCategoriasPorNome(Long idAdvogado) {
+        Map<String, Long> resultado = categoriaEventoService.contarCategoriaPorNome(idAdvogado);
         return ResponseEntity.ok(resultado);
     }
 }

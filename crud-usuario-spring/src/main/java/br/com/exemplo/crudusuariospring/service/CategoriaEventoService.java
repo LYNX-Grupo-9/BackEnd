@@ -94,8 +94,8 @@ public class CategoriaEventoService {
         );
     }
 
-    public Map<String, Long> contarCategoriaPorNome() {
-        List<Object[]> resultados = categoriaEventoRepository.contarCategoriasAgrupadasPorNome();
+    public Map<String, Long> contarCategoriaPorNome(Long idAdvogado) {
+        List<Object[]> resultados = categoriaEventoRepository.contarCategoriasAgrupadasPorNome(idAdvogado);
 
         Map<String, Long> mapa = new HashMap<>();
 
