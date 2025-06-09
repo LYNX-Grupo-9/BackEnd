@@ -58,10 +58,10 @@ public class AnexoService {
         return anexos.stream().map(AnexoResponse::new).toList();
     }
 
-    public void deletarAnexo(Integer idAnexo) {
-        if (!anexoRepository.existsById(idAnexo)) {
-            throw new RuntimeException("Anexo com ID " + idAnexo + " não encontrado.");
+    public void deletarAnexo(String idItem) {
+        if (!anexoRepository.existsByIdItem(idItem)) {
+            throw new RuntimeException("Anexo com ID " + idItem + " não encontrado.");
         }
-        anexoRepository.deleteById(idAnexo);
+        anexoRepository.deleteByIdItem(idItem);
     }
 }

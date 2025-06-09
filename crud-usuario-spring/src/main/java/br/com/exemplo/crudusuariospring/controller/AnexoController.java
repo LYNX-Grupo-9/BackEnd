@@ -40,7 +40,7 @@ public class AnexoController {
 
     @DeleteMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
-    public void deletarAnexo(@PathVariable Integer id) {
+    public void deletarAnexo(@PathVariable String id) {
         anexoService.deletarAnexo(id);
     }
 }

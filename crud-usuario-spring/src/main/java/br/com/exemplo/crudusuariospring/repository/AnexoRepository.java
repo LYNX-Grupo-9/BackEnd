@@ -10,4 +10,6 @@ import java.util.List;
 public interface AnexoRepository extends JpaRepository<Anexo, Integer> {
     List<Anexo> findByCliente_IdCliente(Integer idCliente);
     List<Anexo> findByProcesso_IdProcesso(Integer processoIdProcesso);
+    boolean existsByIdItem(String idItem);
+    void deleteByIdItem(String idItem);
 }
