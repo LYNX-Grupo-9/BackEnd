@@ -10,16 +10,28 @@ import java.util.Optional;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
     boolean existsByEmail(String email);
+
     boolean existsByDocumento(String documento);
+
     Optional<Cliente> findByNome(String nome);
+
     List<Cliente> findByAdvogadoIdAdvogadoOrderByNomeAsc(Integer idAdvogado);
+
     List<Cliente> findByAdvogadoIdAdvogadoOrderByNaturalidadeAsc(Integer idAdvogado);
+
     List<Cliente> findByAdvogadoIdAdvogadoOrderByDataNascimentoAsc(Integer idAvogado);
 
     List<Cliente> findByAdvogadoIdAdvogado(Integer idAdvogado);
 
-    @Query("SELECT c FROM Cliente c LEFT JOIN c.processos p GROUP BY c ORDER BY COUNT(p) DESC")
+    @Query("""
+                SELECT c FROM Cliente c
+                LEFT JOIN c.processos p
+                WHERE c.advogado.idAdvogado = :idAdvogado
+                GROUP BY c
+                ORDER BY COUNT(p) DESC
+            """)
     List<Cliente> ordenarPorQuantidadeProcessos(@Param("idAdvogado") Integer idAdvogado);
+
 
     @Query("SELECT c FROM Cliente c WHERE (LOWER(c.nome) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
             "OR LOWER(c.email) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +

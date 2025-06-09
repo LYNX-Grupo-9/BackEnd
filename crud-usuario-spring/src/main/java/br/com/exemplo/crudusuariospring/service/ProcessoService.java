@@ -165,4 +165,40 @@ public class ProcessoService {
                         r -> (Long) r[1]
                 ));
     }
+
+    public List<ProcessoResponse> listarProcessosOrdenadosPorNomeCliente(Long idAdvogado) {
+        List<Processo> processos = processoRepository.buscarOrdenadoPorCliente(idAdvogado);
+        return processos.stream()
+                .map(ProcessoResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<ProcessoResponse> listarProcessosOrdenadosPorNumeroDeProcesso(Long idAdvogado) {
+        List<Processo> processos = processoRepository.findByAdvogadoIdAdvogadoOrderByNumeroProcessoAsc(idAdvogado);
+        return processos.stream()
+                .map(ProcessoResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<ProcessoResponse> listarProcessosOrdenadosPorValor(Long idAdvogado) {
+        List<Processo> processos = processoRepository.findByAdvogadoIdAdvogadoOrderByValorAsc(idAdvogado);
+        return processos.stream()
+                .map(ProcessoResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<ProcessoResponse> buscarPorTexto(String termo, Long idAdvogado) {
+        List<Processo> processos = processoRepository.buscarPorNumeroTituloOuCliente(termo, idAdvogado);
+        return processos.stream()
+                .map(ProcessoResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<ProcessoResponse> listarProcessosOrdenadosPorStatus(Long idAdvogado) {
+        List<Processo> processos = processoRepository.findByAdvogadoIdAdvogadoOrderByStatusAsc(idAdvogado);
+        return processos.stream()
+                .map(ProcessoResponse::new)
+                .collect(Collectors.toList());
+    }
+
 }

@@ -52,9 +52,7 @@ public class ProcessoController {
 
     @PatchMapping("/{idProcesso}")
     @SecurityRequirement(name = "Bearer")
-    private ProcessoResponse atualizarParcialmente(
-            @PathVariable Integer idProcesso,
-            @RequestBody AtualizarProcessoRequest request) {
+    private ProcessoResponse atualizarParcialmente(@PathVariable Integer idProcesso, @RequestBody AtualizarProcessoRequest request) {
         return processoService.atualizarProcessoParcialmente(idProcesso, request);
     }
 
@@ -77,5 +75,36 @@ public class ProcessoController {
     public ResponseEntity<Map<String, Long>> contarPorClasseProcessual(@PathVariable Long idAdvogado) {
         Map<String, Long> resultado = processoService.contarProcessosPorClasseProcessualPorAdvogado(idAdvogado);
         return ResponseEntity.ok(resultado);
+    }
+
+    @GetMapping("/processos/ordenado-por-numero")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<ProcessoResponse>> listarOrdenadosPorNumero(@RequestParam Long idAdvogado) {
+        return ResponseEntity.ok(processoService.listarProcessosOrdenadosPorNumeroDeProcesso(idAdvogado));
+    }
+
+    @GetMapping("/processos/ordenado-por-valor")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<ProcessoResponse>> listarOrdenadosPorValor(@RequestParam Long idAdvogado) {
+        return ResponseEntity.ok(processoService.listarProcessosOrdenadosPorValor(idAdvogado));
+    }
+
+    @GetMapping("/buscarPorTexto")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<ProcessoResponse>> buscarPorTexto(@RequestParam String termo, @RequestParam Long idAdvogado) {
+        return ResponseEntity.ok(processoService.buscarPorTexto(termo, idAdvogado));
+    }
+
+    @GetMapping("/processos/ordenado-por-status")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<ProcessoResponse>> listarOrdenadosPorStatus(@RequestParam Long idAdvogado) {
+        return ResponseEntity.ok(processoService.listarProcessosOrdenadosPorStatus(idAdvogado));
+    }
+
+    @GetMapping("/processos/ordenado-por-nome-cliente")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<List<ProcessoResponse>> listarOrdenadosPorNomeCliente(@RequestParam Long idAdvogado) {
+        List<ProcessoResponse> processos = processoService.listarProcessosOrdenadosPorNomeCliente(idAdvogado);
+        return ResponseEntity.ok(processos);
     }
 }
