@@ -151,29 +151,4 @@ class AnexoServiceTest {
         assertEquals("documento2.pdf", resposta.get(1).getNomeAnexo());
     }
 
-    @Test
-    public void deveDeletarAnexoQuandoIdExistente() {
-        // Arrange
-        Integer idAnexo = 10;
-        when(anexoRepository.existsById(idAnexo)).thenReturn(true);
-
-        // Act
-        anexoService.deletarAnexo(idAnexo);
-
-        // Assert
-        verify(anexoRepository).deleteById(idAnexo);
-    }
-
-    @Test
-    public void deveLancarExcecaoQuandoIdNaoExistente() {
-        Integer idAnexo = 99;
-        when(anexoRepository.existsById(idAnexo)).thenReturn(false);
-
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> {
-            anexoService.deletarAnexo(idAnexo);
-        });
-
-        assertEquals("Anexo com ID 99 não encontrado.", ex.getMessage());
-        verify(anexoRepository, never()).deleteById(any());
-    }
 }

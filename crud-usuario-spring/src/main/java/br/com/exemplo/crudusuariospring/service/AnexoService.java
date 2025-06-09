@@ -8,6 +8,7 @@ import br.com.exemplo.crudusuariospring.model.Processo;
 import br.com.exemplo.crudusuariospring.repository.AnexoRepository;
 import br.com.exemplo.crudusuariospring.repository.ClienteRepository;
 import br.com.exemplo.crudusuariospring.repository.ProcessoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +59,7 @@ public class AnexoService {
         return anexos.stream().map(AnexoResponse::new).toList();
     }
 
+    @Transactional
     public void deletarAnexo(String idItem) {
         if (!anexoRepository.existsByIdItem(idItem)) {
             throw new RuntimeException("Anexo com ID " + idItem + " não encontrado.");
