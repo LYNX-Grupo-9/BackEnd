@@ -1,8 +1,10 @@
 package br.com.exemplo.crudusuariospring.service;
 
+import br.com.exemplo.crudusuariospring.dto.request.AtualizarClienteRequest;
 import br.com.exemplo.crudusuariospring.dto.request.ClienteRequest;
 import br.com.exemplo.crudusuariospring.dto.response.ClienteProcessoEventoResponse;
 import br.com.exemplo.crudusuariospring.dto.response.ClienteResponse;
+import br.com.exemplo.crudusuariospring.model.Advogado;
 import br.com.exemplo.crudusuariospring.model.Cliente;
 import br.com.exemplo.crudusuariospring.observer.CadastroClienteSubject;
 import br.com.exemplo.crudusuariospring.observer.EmailObserver;
@@ -245,4 +247,28 @@ public class ClienteService {
         return clienteDados;
     }
 
+    public ClienteResponse atualizarCliente(Integer idCliente, AtualizarClienteRequest request) {
+        Cliente cliente = clienteRepository.findById(idCliente)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado."));
+
+        Advogado advogado = advogadoRepository.findById(request.getIdAdvogado())
+                .orElseThrow(() -> new RuntimeException("Advogado não encontrado."));
+
+        if (request.getNome() != null) cliente.setNome(request.getNome());
+        if (request.getDocumento() != null) cliente.setDocumento(request.getDocumento());
+        if (request.getEmail() != null) cliente.setEmail(request.getEmail());
+        if (request.getTelefone() != null) cliente.setTelefone(request.getTelefone());
+        if (request.getEndereco() != null) cliente.setEndereco(request.getEndereco());
+        if (request.getEstadoCivil() != null) cliente.setEstadoCivil(request.getEstadoCivil());
+        if (request.getGenero() != null) cliente.setGenero(request.getGenero());
+        if (request.getProfissao() != null) cliente.setProfissao(request.getProfissao());
+        if (request.getPassaporte() != null) cliente.setPassaporte(request.getPassaporte());
+        if (request.getCnh() != null) cliente.setCnh(request.getCnh());
+        if (request.getNaturalidade() != null) cliente.setNaturalidade(request.getNaturalidade());
+        if (request.getDataNascimento() != null) cliente.setDataNascimento(request.getDataNascimento());
+        if (request.getIdAdvogado() != null) cliente.setAdvogado(advogado);
+
+        Cliente atualizado = clienteRepository.save(cliente);
+        return mapToResponse(atualizado);
+    }
 }

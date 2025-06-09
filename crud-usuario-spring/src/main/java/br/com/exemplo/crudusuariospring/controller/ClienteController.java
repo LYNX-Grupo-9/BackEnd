@@ -1,5 +1,6 @@
 package br.com.exemplo.crudusuariospring.controller;
 
+import br.com.exemplo.crudusuariospring.dto.request.AtualizarClienteRequest;
 import br.com.exemplo.crudusuariospring.dto.request.ClienteRequest;
 import br.com.exemplo.crudusuariospring.dto.response.ClienteProcessoEventoResponse;
 import br.com.exemplo.crudusuariospring.dto.response.ClienteResponse;
@@ -87,5 +88,15 @@ public class ClienteController {
     public ResponseEntity<ClienteProcessoEventoResponse> buscarClienteCompleto(@PathVariable Integer id) {
         ClienteProcessoEventoResponse clienteDados = clienteService.buscarDadosCliente(id);
         return ResponseEntity.ok(clienteDados);
+    }
+
+    @PatchMapping("/{idCliente}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<ClienteResponse> atualizarParcialmente(
+            @PathVariable("idCliente") Integer idCliente,
+            @RequestBody AtualizarClienteRequest request) {
+
+        ClienteResponse response = clienteService.atualizarCliente(idCliente, request);
+        return ResponseEntity.ok(response);
     }
 }
