@@ -11,10 +11,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.time.ZoneId;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -183,4 +181,25 @@ public class EventoService {
                 .collect(Collectors.toList());
     }
 
+    public Map<String, Long> contarEventosDoDiaPorAdvogado(Integer idAdvogado) {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Date inicioDia = calendar.getTime();
+
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+        Date fimDia = calendar.getTime();
+
+        List<Evento> eventos = eventoRepository.findByAdvogadoIdAdvogadoAndDataReuniaoBetween(
+                idAdvogado, inicioDia, fimDia
+        );
+
+        return Map.of("quantidadeEvento", (long) eventos.size());
+    }
 }

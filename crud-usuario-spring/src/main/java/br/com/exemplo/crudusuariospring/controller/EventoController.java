@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -44,13 +45,11 @@ public class EventoController {
     public ResponseEntity<List<EventoResponse>> listarEventosPorCliente(@PathVariable Integer idCliente) {
         List<Evento> eventos = eventoRepository.findByCliente_IdCliente(idCliente);
 
-        if(eventos.isEmpty()) {
+        if (eventos.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        List<EventoResponse> resposta = eventos.stream()
-                .map(EventoResponse::new)
-                .toList();
+        List<EventoResponse> resposta = eventos.stream().map(EventoResponse::new).toList();
 
         return ResponseEntity.ok(resposta);
     }
@@ -77,8 +76,7 @@ public class EventoController {
 
     @PatchMapping("/{id}")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<EventoResponse> atualizarParcialmente(@PathVariable Long id,
-                                                                @RequestBody AtualizarEventoRequest request) {
+    public ResponseEntity<EventoResponse> atualizarParcialmente(@PathVariable Long id, @RequestBody AtualizarEventoRequest request) {
         EventoResponse eventoResponse = eventoService.atualizarParcialmente(id, request);
         return ResponseEntity.ok(eventoResponse);
     }
@@ -88,5 +86,11 @@ public class EventoController {
     public ResponseEntity<List<EventoResponse>> eventosDoMesPorAdvogado(@PathVariable Integer idAdvogado) {
         List<EventoResponse> eventos = eventoService.buscarEventosDoMesPorAdvogado(idAdvogado);
         return ResponseEntity.ok(eventos);
+    }
+
+    @GetMapping("/contar-eventos-dia/{idAdvogado}")
+    @SecurityRequirement(name = "Bearer")
+    public Map<String, Long> contarEventosDoDiaPorAdvogado(@PathVariable Integer idAdvogado) {
+        return eventoService.contarEventosDoDiaPorAdvogado(idAdvogado);
     }
 }
