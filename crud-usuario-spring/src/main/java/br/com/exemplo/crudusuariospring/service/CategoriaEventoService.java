@@ -94,17 +94,23 @@ public class CategoriaEventoService {
         );
     }
 
-    public Map<String, Long> contarCategoriaPorNome(Long idAdvogado) {
-        List<Object[]> resultados = categoriaEventoRepository.contarCategoriasAgrupadasPorNome(idAdvogado);
+public Map<String, Map<String, Object>> contarCategoriaPorNome(Long idAdvogado) {
+    List<Object[]> resultados = categoriaEventoRepository.contarCategoriasAgrupadasPorNome(idAdvogado);
 
-        Map<String, Long> mapa = new HashMap<>();
+    Map<String, Map<String, Object>> mapa = new HashMap<>();
 
-        for (Object[] linha : resultados) {
-            String nome = (String) linha[0];
-            Long quantidade = (Long) linha[1];
-            mapa.put(nome, quantidade);
-        }
+    for (Object[] linha : resultados) {
+        String nome = (String) linha[0];
+        Long quantidade = (Long) linha[1];
+        String cor = (String) linha[2];
 
-        return mapa;
+        Map<String, Object> detalhes = new HashMap<>();
+        detalhes.put("quantidade", quantidade);
+        detalhes.put("cor", cor);
+
+        mapa.put(nome, detalhes);
     }
+
+    return mapa;
+}
 }

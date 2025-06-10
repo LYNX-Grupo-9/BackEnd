@@ -10,9 +10,14 @@ import java.util.Optional;
 
 public interface CategoriaEventoRepository extends JpaRepository<CategoriaEvento, Long> {
     Optional<CategoriaEvento> findByNome(String nomeEvento);
+
     List<CategoriaEvento> findByAdvogadoIdAdvogado(Integer idAdvogado);
+
     Optional<CategoriaEvento> findById(Long idCategoria);
 
-    @Query("SELECT c.nome AS nome, COUNT(c) AS quantidade FROM CategoriaEvento c GROUP BY c.nome")
-    List<Object[]> contarCategoriasAgrupadasPorNome(Long idAdvogado);
+    @Query("SELECT c.nome, COUNT(e), c.cor FROM CategoriaEvento c " +
+            "LEFT JOIN c.eventos e " +
+            "WHERE c.advogado.idAdvogado = :idAdvogado " +
+            "GROUP BY c.nome, c.cor")
+    List<Object[]> contarCategoriasAgrupadasPorNome(@Param("idAdvogado") Long idAdvogado);
 }
