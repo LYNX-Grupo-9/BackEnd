@@ -271,4 +271,11 @@ public class ClienteService {
         Cliente atualizado = clienteRepository.save(cliente);
         return mapToResponse(atualizado);
     }
+
+    public Long contarClientesPorAdvogado(Integer idAdvogado) {
+        advogadoRepository.findById(idAdvogado)
+                .orElseThrow(() -> new RuntimeException("Advogado não encontrado."));
+
+        return clienteRepository.countByAdvogadoIdAdvogado(idAdvogado);
+    }
 }

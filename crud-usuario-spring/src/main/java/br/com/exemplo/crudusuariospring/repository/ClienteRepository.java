@@ -23,6 +23,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 
     List<Cliente> findByAdvogadoIdAdvogado(Integer idAdvogado);
 
+    Long countByAdvogadoIdAdvogado(Integer idAdvogado);
+
     @Query("""
                 SELECT c FROM Cliente c
                 LEFT JOIN c.processos p

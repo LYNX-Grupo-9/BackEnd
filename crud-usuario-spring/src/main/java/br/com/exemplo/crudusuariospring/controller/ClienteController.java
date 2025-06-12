@@ -99,4 +99,10 @@ public class ClienteController {
         ClienteResponse response = clienteService.atualizarCliente(idCliente, request);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/advogado/{idAdvogado}/total-clientes")
+    @SecurityRequirement(name = "Bearer")
+    public Long contarClientesPorAdvogado(@PathVariable Integer idAdvogado) {
+        return clienteService.contarClientesPorAdvogado(idAdvogado);
+    }
 }

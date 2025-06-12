@@ -18,7 +18,6 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
     List<Evento> findByAdvogadoIdAdvogadoAndDataReuniaoAfterOrDataReuniaoEquals(
             Integer idAdvogado, Date afterDate, Date sameDate);
 
-
     @Modifying
     @Transactional
     @Query("UPDATE Evento e SET e.categoria = NULL WHERE e.categoria.idCategoria = :categoriaId")
