@@ -1,5 +1,6 @@
 package br.com.exemplo.crudusuariospring.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalTime;
@@ -16,8 +17,11 @@ public class Evento {
     private String descricao;
     private String local;
     private String linkReuniao;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dataReuniao;
+    @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime horaInicio;
+    @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime horaFim;
 
 

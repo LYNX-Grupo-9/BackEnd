@@ -202,4 +202,31 @@ public class EventoService {
 
         return Map.of("quantidadeEvento", (long) eventos.size());
     }
+
+    public Optional<EventoResponse> buscarProximoEvento(Integer idAdvogado) {
+        LocalDateTime agora = LocalDateTime.now(ZoneId.systemDefault());
+        Date dataAtual = Date.from(agora.atZone(ZoneId.systemDefault()).toInstant());
+
+        List<Evento> eventosFuturos = eventoRepository
+                .findByAdvogadoIdAdvogadoAndDataReuniaoAfterOrDataReuniaoEquals(
+                        idAdvogado, dataAtual, dataAtual);
+
+        List<Evento> eventosValidos = eventosFuturos.stream()
+                .filter(e -> {
+                    LocalDateTime dataHoraEvento = LocalDateTime.of(
+                            e.getDataReuniao().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+                            e.getHoraInicio() != null ? e.getHoraInicio() : LocalTime.MIN
+                    );
+                    return dataHoraEvento.isAfter(agora);
+                })
+                .sorted(Comparator
+                        .comparing(Evento::getDataReuniao)
+                        .thenComparing(e -> e.getHoraInicio() != null ? e.getHoraInicio() : LocalTime.MIN))
+                .collect(Collectors.toList());
+
+        return eventosValidos.isEmpty() ?
+                Optional.empty() :
+                Optional.of(new EventoResponse(eventosValidos.get(0)));
+    }
+
 }

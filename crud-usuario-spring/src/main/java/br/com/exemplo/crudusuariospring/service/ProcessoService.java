@@ -181,7 +181,7 @@ public class ProcessoService {
     }
 
     public List<ProcessoResponse> listarProcessosOrdenadosPorValor(Long idAdvogado) {
-        List<Processo> processos = processoRepository.findByAdvogadoIdAdvogadoOrderByValorAsc(idAdvogado);
+        List<Processo> processos = processoRepository.findByAdvogadoIdAdvogadoOrderByValorDesc(idAdvogado);
         return processos.stream()
                 .map(ProcessoResponse::new)
                 .collect(Collectors.toList());

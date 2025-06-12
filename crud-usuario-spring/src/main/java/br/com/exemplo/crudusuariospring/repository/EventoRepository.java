@@ -15,6 +15,9 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
     List<Evento> findByCliente_IdCliente(Integer idCliente);
     List<Evento> findByAdvogadoIdAdvogado(Integer idAdvogado);
     List<Evento> findByAdvogadoIdAdvogadoAndDataReuniaoBetween(Integer idAdvogado, Date startDate, Date endDate);
+    List<Evento> findByAdvogadoIdAdvogadoAndDataReuniaoAfterOrDataReuniaoEquals(
+            Integer idAdvogado, Date afterDate, Date sameDate);
+
 
     @Modifying
     @Transactional

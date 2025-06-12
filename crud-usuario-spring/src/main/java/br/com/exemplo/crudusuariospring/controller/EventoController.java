@@ -93,4 +93,12 @@ public class EventoController {
     public Map<String, Long> contarEventosDoDiaPorAdvogado(@PathVariable Integer idAdvogado) {
         return eventoService.contarEventosDoDiaPorAdvogado(idAdvogado);
     }
+
+    @GetMapping("/proximo/{idAdvogado}")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<EventoResponse> buscarProximoEvento(@PathVariable Integer idAdvogado) {
+        return eventoService.buscarProximoEvento(idAdvogado)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.noContent().build()); // 204 se não tiver evento
+    }
 }
