@@ -30,5 +30,9 @@ public interface ProcessoRepository extends JpaRepository<Processo, Integer> {
             "LOWER(c.nome) LIKE LOWER(CONCAT('%', :termo, '%'))" +
             ")")
     List<Processo> buscarPorNumeroTituloOuCliente(@Param("termo") String termo, @Param("idAdvogado") Long idAdvogado);
+
+    @Query("SELECT AVG(p.valor) FROM Processo p WHERE p.advogado.idAdvogado = :idAdvogado")
+    Double calcularValorMedioPorAdvogado(@Param("idAdvogado") Long idAdvogado);
+
 }
 

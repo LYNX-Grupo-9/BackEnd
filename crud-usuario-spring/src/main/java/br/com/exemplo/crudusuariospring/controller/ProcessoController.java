@@ -107,4 +107,10 @@ public class ProcessoController {
         List<ProcessoResponse> processos = processoService.listarProcessosOrdenadosPorNomeCliente(idAdvogado);
         return ResponseEntity.ok(processos);
     }
+
+    @GetMapping("/media-valor/{idAdvogado}")
+    @SecurityRequirement(name = "Bearer")
+    public Double obterValorMedioPorAdvogado(@PathVariable Long idAdvogado) {
+        return processoService.calcularValorMedioProcessosPorAdvogado(idAdvogado);
+    }
 }

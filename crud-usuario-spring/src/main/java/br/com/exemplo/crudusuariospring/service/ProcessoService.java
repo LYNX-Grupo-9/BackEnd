@@ -218,4 +218,9 @@ public class ProcessoService {
                 .collect(Collectors.toList());
     }
 
+    public Double calcularValorMedioProcessosPorAdvogado(Long idAdvogado) {
+        Double media = processoRepository.calcularValorMedioPorAdvogado(idAdvogado);
+        return media != null ? media : 0.0;
+    }
+
 }
