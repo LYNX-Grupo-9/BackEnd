@@ -4,11 +4,9 @@ import br.com.exemplo.crudusuariospring.dto.request.ClienteRequest;
 import br.com.exemplo.crudusuariospring.dto.response.ClienteProcessoEventoResponse;
 import br.com.exemplo.crudusuariospring.dto.response.ClienteResponse;
 import br.com.exemplo.crudusuariospring.model.*;
-import br.com.exemplo.crudusuariospring.observer.CadastroClienteSubject;
 import br.com.exemplo.crudusuariospring.repository.AdvogadoRepository;
 import br.com.exemplo.crudusuariospring.repository.ClienteRepository;
 import br.com.exemplo.crudusuariospring.repository.ProcessoRepository;
-import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,10 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.security.auth.Subject;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -39,9 +34,6 @@ class ClienteServiceTest {
 
     @Mock
     private ProcessoRepository processoRepository;
-
-    @Mock
-    private CadastroClienteSubject subject;
 
     @InjectMocks
     private ClienteService clienteService;
@@ -279,8 +271,6 @@ class ClienteServiceTest {
             return clienteSalvo;
         });
 
-        doNothing().when(subject).notificarTodos(anyString());
-
         ClienteResponse response = clienteService.salvar(request);
 
         assertNotNull(response);
@@ -293,7 +283,6 @@ class ClienteServiceTest {
         verify(advogadoRepository).findById(1);
         verify(clienteRepository).existsByEmail(request.getEmail());
         verify(clienteRepository).save(any(Cliente.class));
-        verify(subject).notificarTodos("Novo cliente cadastrado: " + request.getNome());
     }
 
     @Test
@@ -311,7 +300,6 @@ class ClienteServiceTest {
 
         verify(advogadoRepository).findById(99);
         verify(clienteRepository, times(0)).save(any());
-        verify(subject, times(0)).notificarTodos(anyString());
     }
 
     @Test
@@ -332,7 +320,6 @@ class ClienteServiceTest {
         verify(advogadoRepository).findById(1);
         verify(clienteRepository).existsByEmail(request.getEmail());
         verify(clienteRepository, times(0)).save(any());
-        verify(subject, times(0)).notificarTodos(anyString());
     }
 
     @Test

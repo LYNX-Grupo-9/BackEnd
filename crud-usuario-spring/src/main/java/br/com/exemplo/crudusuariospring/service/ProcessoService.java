@@ -7,10 +7,13 @@ import br.com.exemplo.crudusuariospring.dto.response.ProcessoResponse;
 import br.com.exemplo.crudusuariospring.model.Advogado;
 import br.com.exemplo.crudusuariospring.model.Cliente;
 import br.com.exemplo.crudusuariospring.model.Processo;
+import br.com.exemplo.crudusuariospring.observer.event.ProcessoCriadoEvent;
+import br.com.exemplo.crudusuariospring.observer.event.StatusProcessoAlteradoEvent;
 import br.com.exemplo.crudusuariospring.repository.AdvogadoRepository;
 import br.com.exemplo.crudusuariospring.repository.ClienteRepository;
 import br.com.exemplo.crudusuariospring.repository.ProcessoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +32,10 @@ public class ProcessoService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
 
     public ProcessoResponse criarProcesso(ProcessoRequest request) {
         Processo processo = new Processo();
@@ -53,6 +60,8 @@ public class ProcessoService {
         clienteOpt.ifPresent(processo::setCliente);
 
         Processo processoSalvo = processoRepository.save(processo);
+        eventPublisher.publishEvent(new ProcessoCriadoEvent(this,
+            String.format(processoSalvo.getNumeroProcesso())));
 
         return new ProcessoResponse(processoSalvo);
     }
@@ -135,6 +144,14 @@ public class ProcessoService {
         }
 
         Processo atualizado = processoRepository.save(processo);
+
+        if (request.getStatus() != null && !request.getStatus().equalsIgnoreCase(processo.getStatus())) {
+            processo.setStatus(request.getStatus());
+
+            eventPublisher.publishEvent(
+                    new StatusProcessoAlteradoEvent(this, processo.getIdProcesso(), request.getStatus())
+            );
+        }
 
         return new ProcessoResponse(atualizado);
     }

@@ -1,7 +1,6 @@
 package br.com.exemplo.crudusuariospring.service;
 
 import br.com.exemplo.crudusuariospring.config.GerenciadorTokenJwt;
-import br.com.exemplo.crudusuariospring.dto.AdvogadoDetalhes;
 import br.com.exemplo.crudusuariospring.dto.AdvogadoMapper;
 import br.com.exemplo.crudusuariospring.dto.request.AdvogadoRequest;
 import br.com.exemplo.crudusuariospring.dto.request.ClienteRequest;
@@ -9,14 +8,15 @@ import br.com.exemplo.crudusuariospring.dto.response.AdvogadoToken;
 import br.com.exemplo.crudusuariospring.dto.response.ClienteResponse;
 import br.com.exemplo.crudusuariospring.model.Advogado;
 import br.com.exemplo.crudusuariospring.model.Cliente;
-import br.com.exemplo.crudusuariospring.observer.CadastroAdvogadoSubject;
-import br.com.exemplo.crudusuariospring.observer.EmailObserver;
-import br.com.exemplo.crudusuariospring.observer.LogObserver;
+import br.com.exemplo.crudusuariospring.observer.event.CadastroAdvogadoEvent;
+import br.com.exemplo.crudusuariospring.observer.event.ClienteCadastradoEvent;
+import br.com.exemplo.crudusuariospring.observer.event.ProcessoCriadoEvent;
 import br.com.exemplo.crudusuariospring.repository.AdvogadoRepository;
 import br.com.exemplo.crudusuariospring.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.*;
 import br.com.exemplo.crudusuariospring.dto.response.AdvogadoResponse;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,7 +28,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -49,48 +48,15 @@ public class AdvogadoService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    private CadastroAdvogadoSubject subject;
-
-    public AdvogadoService() {
-        subject = new CadastroAdvogadoSubject();
-        subject.adicionarObserver(new EmailObserver());
-        subject.adicionarObserver(new LogObserver());
-    }
-
-    private Advogado toEntity(AdvogadoRequest dto) {
-        Advogado advogado = new Advogado();
-        advogado.setNome(dto.getNome());
-        advogado.setRegistroOab(dto.getRegistroOab());
-        advogado.setCpf(dto.getCpf());
-        advogado.setEmail(dto.getEmail());
-        advogado.setSenha(dto.getSenha());
-        return advogado;
-    }
-
-    private AdvogadoResponse toResponse(Advogado advogado) {
-        AdvogadoResponse response = new AdvogadoResponse();
-        response.setIdAdvogado(advogado.getIdAdvogado());
-        response.setNome(advogado.getNome());
-        response.setEmail(advogado.getEmail());
-        response.setRegistroOab(advogado.getRegistroOab());
-        return response;
-    }
-
-    public AdvogadoResponse salvar(AdvogadoRequest request) {
-        Advogado advogado = toEntity(request);
-        Advogado salvo = advogadoRepository.save(advogado);
-
-        String nomeAdvogado = salvo.getNome();
-        subject.notificarTodos("Novo advogado cadastrado: " + nomeAdvogado);
-
-        return toResponse(salvo);
-    }
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     public void criarAdvogado(Advogado novoAdvogado) {
         String senhaCriptografada = passwordEncoder.encode(novoAdvogado.getSenha());
         novoAdvogado.setSenha(senhaCriptografada);
 
-        this.advogadoRepository.save(novoAdvogado);
+        Advogado salvo = this.advogadoRepository.save(novoAdvogado);
+        eventPublisher.publishEvent(new CadastroAdvogadoEvent(this, salvo.getNome()));
     }
 
     public AdvogadoToken autenticar(Advogado advogado) {
@@ -175,6 +141,8 @@ public class AdvogadoService {
             clienteResponse.setCnh(clienteSalvo.getCnh());
             clienteResponse.setNaturalidade(clienteSalvo.getNaturalidade());
             clienteResponse.setAdvogadoResponsavel(advogado.getNome());
+
+            eventPublisher.publishEvent(new ClienteCadastradoEvent(this, clienteSalvo));
 
             return clienteResponse;
         }

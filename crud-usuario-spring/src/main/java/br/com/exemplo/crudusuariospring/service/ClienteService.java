@@ -6,13 +6,12 @@ import br.com.exemplo.crudusuariospring.dto.response.ClienteProcessoEventoRespon
 import br.com.exemplo.crudusuariospring.dto.response.ClienteResponse;
 import br.com.exemplo.crudusuariospring.model.Advogado;
 import br.com.exemplo.crudusuariospring.model.Cliente;
-import br.com.exemplo.crudusuariospring.observer.CadastroClienteSubject;
-import br.com.exemplo.crudusuariospring.observer.EmailObserver;
-import br.com.exemplo.crudusuariospring.observer.LogObserver;
+import br.com.exemplo.crudusuariospring.observer.event.ClienteCadastradoEvent;
 import br.com.exemplo.crudusuariospring.repository.AdvogadoRepository;
 import br.com.exemplo.crudusuariospring.repository.ClienteRepository;
 import br.com.exemplo.crudusuariospring.repository.ProcessoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,13 +29,8 @@ public class ClienteService {
     @Autowired
     private ProcessoRepository processoRepository;
 
-    private CadastroClienteSubject subject;
-
-    public ClienteService() {
-        subject = new CadastroClienteSubject();
-        subject.adicionarObserver(new EmailObserver());
-        subject.adicionarObserver(new LogObserver());
-    }
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     public ClienteResponse salvar(ClienteRequest request) {
         var advogado = advogadoRepository.findById(request.getIdAdvogado())
@@ -79,7 +73,6 @@ public class ClienteService {
         response.setAdvogadoResponsavel(advogado.getNome());
 
         String nomeCliente = salvo.getNome();
-        subject.notificarTodos("Novo cliente cadastrado: " + nomeCliente);
 
         return response;
     }
@@ -269,6 +262,9 @@ public class ClienteService {
         if (request.getIdAdvogado() != null) cliente.setAdvogado(advogado);
 
         Cliente atualizado = clienteRepository.save(cliente);
+
+        eventPublisher.publishEvent(new ClienteCadastradoEvent(this, atualizado));
+
         return mapToResponse(atualizado);
     }
 

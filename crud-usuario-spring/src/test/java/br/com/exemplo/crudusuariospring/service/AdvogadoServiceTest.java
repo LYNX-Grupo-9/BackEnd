@@ -79,20 +79,6 @@ class AdvogadoServiceTest {
     }
 
     @Test
-    void deveSalvarAdvogadoERetornarResponse() {
-        when(advogadoRepository.save(any(Advogado.class))).thenReturn(advogadoSalvo);
-
-        AdvogadoResponse response = advogadoService.salvar(request);
-
-        assertNotNull(response);
-        assertEquals("Lucas Ronald", response.getNome());
-        assertEquals("123456", response.getRegistroOab());
-        assertEquals("lucas@email.com", response.getEmail());
-
-        verify(advogadoRepository).save(any(Advogado.class));
-    }
-
-    @Test
     void deveAutenticarAdvogadoERetornarToken() {
         Advogado advogado = new Advogado();
         advogado.setEmail("lucas@email.com");

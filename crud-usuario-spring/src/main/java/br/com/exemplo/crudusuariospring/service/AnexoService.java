@@ -5,11 +5,14 @@ import br.com.exemplo.crudusuariospring.dto.response.AnexoResponse;
 import br.com.exemplo.crudusuariospring.model.Anexo;
 import br.com.exemplo.crudusuariospring.model.Cliente;
 import br.com.exemplo.crudusuariospring.model.Processo;
+import br.com.exemplo.crudusuariospring.observer.event.CadastroAnexoEvent;
+import br.com.exemplo.crudusuariospring.observer.event.ClienteCadastradoEvent;
 import br.com.exemplo.crudusuariospring.repository.AnexoRepository;
 import br.com.exemplo.crudusuariospring.repository.ClienteRepository;
 import br.com.exemplo.crudusuariospring.repository.ProcessoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +28,9 @@ public class AnexoService {
 
     @Autowired
     private ProcessoRepository processoRepository;
+
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     public AnexoResponse criarAnexo(AnexoRequest request) {
         Anexo anexo = new Anexo();
@@ -46,6 +52,7 @@ public class AnexoService {
         }
 
         Anexo salvo = anexoRepository.save(anexo);
+        eventPublisher.publishEvent(new CadastroAnexoEvent(this, salvo));
         return new AnexoResponse(salvo);
     }
 

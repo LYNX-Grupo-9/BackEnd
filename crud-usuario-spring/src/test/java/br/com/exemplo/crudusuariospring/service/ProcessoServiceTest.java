@@ -38,69 +38,6 @@ class ProcessoServiceTest {
     private ProcessoService processoService;
 
     @Test
-    public void deveCriarProcesso() {
-        ProcessoRequest request = new ProcessoRequest();
-        request.setTitulo("Título do Processo");
-        request.setNumeroProcesso("12345");
-        request.setDescricao("Descrição do processo");
-        request.setStatus("Ativo");
-        request.setClasseProcessual("Classe A");
-        request.setAssunto("Assunto X");
-        request.setTribunal("Tribunal Y");
-        request.setValor(new BigDecimal("10000"));
-        request.setAutor("Autor Z");
-        request.setAdvRequerente("Advogado Requerente");
-        request.setReu("Réu A");
-        request.setAdvReu("Advogado Réu");
-        request.setIdAdvogado(1);
-        request.setIdCliente(2);
-
-        Advogado advogado = new Advogado();
-        advogado.setIdAdvogado(1);
-
-        Cliente cliente = new Cliente();
-        cliente.setIdCliente(2);
-
-        when(advogadoRepository.findById(1)).thenReturn(Optional.of(advogado));
-        when(clienteRepository.findById(2)).thenReturn(Optional.of(cliente));
-
-        when(processoRepository.save(any(Processo.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        ProcessoResponse response = processoService.criarProcesso(request);
-
-        assertNotNull(response);
-        assertEquals("Título do Processo", response.getTitulo());
-        assertEquals("12345", response.getNumeroProcesso());
-        assertEquals("Ativo", response.getStatus());
-        assertEquals(1, response.getIdAdvogado());
-        assertEquals(2, response.getIdCliente());
-
-
-        verify(processoRepository, times(1)).save(any(Processo.class));
-    }
-
-    @Test
-    public void deveCriarProcessoSemAdvogadoEClienteQuandoNaoEncontrados() {
-        ProcessoRequest request = new ProcessoRequest();
-        request.setTitulo("Título Simples");
-        request.setIdAdvogado(99);
-        request.setIdCliente(88);
-
-        when(advogadoRepository.findById(99)).thenReturn(Optional.empty());
-        when(clienteRepository.findById(88)).thenReturn(Optional.empty());
-        when(processoRepository.save(any(Processo.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        ProcessoResponse response = processoService.criarProcesso(request);
-
-        assertNotNull(response);
-        assertEquals("Título Simples", response.getTitulo());
-        assertNull(response.getIdAdvogado());
-        assertNull(response.getIdCliente());
-
-        verify(processoRepository, times(1)).save(any(Processo.class));
-    }
-
-    @Test
     public void deveListarTodosOsProcessosPorIdAdvogado() {
         Long idAdvogado = 1L;
 

@@ -3,12 +3,16 @@ package br.com.exemplo.crudusuariospring.service;
 import br.com.exemplo.crudusuariospring.dto.request.AtualizarCategoriaRequest;
 import br.com.exemplo.crudusuariospring.dto.request.CategoriaEventoRequest;
 import br.com.exemplo.crudusuariospring.model.Advogado;
+import br.com.exemplo.crudusuariospring.observer.event.ClienteCadastradoEvent;
+import br.com.exemplo.crudusuariospring.observer.event.CriacaoCategoriaEvent;
+import br.com.exemplo.crudusuariospring.observer.event.DeleteCategoriaEvent;
 import br.com.exemplo.crudusuariospring.repository.AdvogadoRepository;
 import br.com.exemplo.crudusuariospring.repository.CategoriaEventoRepository;
 import br.com.exemplo.crudusuariospring.dto.response.CategoriaEventoResponse;
 import br.com.exemplo.crudusuariospring.model.CategoriaEvento;
 import br.com.exemplo.crudusuariospring.repository.EventoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -27,6 +31,9 @@ public class CategoriaEventoService {
     @Autowired
     private AdvogadoRepository advogadoRepository;
 
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
     public CategoriaEventoResponse criarCategoria(CategoriaEventoRequest request) {
         CategoriaEvento categoriaEvento = new CategoriaEvento();
         categoriaEvento.setNome(request.getNomeEvento());
@@ -39,6 +46,8 @@ public class CategoriaEventoService {
         }
 
         categoriaEvento = categoriaEventoRepository.save(categoriaEvento);
+
+        eventPublisher.publishEvent(new CriacaoCategoriaEvent(this, categoriaEvento));
 
         return new CategoriaEventoResponse(
                 categoriaEvento.getIdCategoria(),
@@ -72,6 +81,7 @@ public class CategoriaEventoService {
 
         eventoRepository.desvincularCategoriaDosEventos(id);
         categoriaEventoRepository.delete(categoria);
+        eventPublisher.publishEvent(new DeleteCategoriaEvent(this, categoria));
     }
 
 
