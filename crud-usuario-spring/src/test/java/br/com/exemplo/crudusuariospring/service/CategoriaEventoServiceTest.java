@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +35,9 @@ class CategoriaEventoServiceTest {
     @Mock
     private AdvogadoRepository advogadoRepository;
 
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -55,12 +59,14 @@ class CategoriaEventoServiceTest {
         categoriaSalva.setCor("Azul");
 
         when(categoriaEventoRepository.save(any())).thenReturn(categoriaSalva);
+        doNothing().when(eventPublisher).publishEvent(any());  // Configurar comportamento do eventPublisher
 
         CategoriaEventoResponse response = service.criarCategoria(request);
 
         assertEquals(1L, response.getIdCategoriaEvento());
         assertEquals("Reunião", response.getNomeEvento());
         assertEquals("Azul", response.getCor());
+        verify(eventPublisher).publishEvent(any());
     }
 
     @Test

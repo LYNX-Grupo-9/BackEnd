@@ -18,6 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -53,6 +54,9 @@ class AdvogadoServiceTest {
 
     @Mock
     private ClienteRepository clienteRepository;
+
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
 
     @InjectMocks
     private AdvogadoService advogadoService;
@@ -157,6 +161,7 @@ class AdvogadoServiceTest {
         clienteSalvo.setAdvogado(advogado);
 
         when(clienteRepository.save(any())).thenReturn(clienteSalvo);
+        doNothing().when(eventPublisher).publishEvent(any());
 
         ClienteResponse response = advogadoService.cadastrarCliente(clienteRequest);
 
@@ -252,12 +257,20 @@ class AdvogadoServiceTest {
 
         when(passwordEncoder.encode("senha123")).thenReturn(senhaCriptografada);
 
+        Advogado advogadoSalvo = new Advogado();
+        advogadoSalvo.setNome("Lucas Ronald");
+        advogadoSalvo.setRegistroOab("123456");
+        advogadoSalvo.setCpf("11122233344");
+        advogadoSalvo.setEmail("lucas@email.com");
+        advogadoSalvo.setSenha(senhaCriptografada);
+
+        when(advogadoRepository.save(any(Advogado.class))).thenReturn(advogadoSalvo);
+
         advogadoService.criarAdvogado(novoAdvogado);
 
         assertEquals(senhaCriptografada, novoAdvogado.getSenha());
-
         verify(passwordEncoder).encode("senha123");
-        verify(advogadoRepository).save(novoAdvogado);
+        verify(advogadoRepository).save(any(Advogado.class));
     }
 
 }

@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +34,9 @@ class AnexoServiceTest {
 
     @Mock
     private ProcessoRepository processoRepository;
+
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
 
     @InjectMocks
     private AnexoService anexoService;
@@ -67,12 +71,14 @@ class AnexoServiceTest {
         when(clienteRepository.findById(1)).thenReturn(Optional.of(cliente));
         when(processoRepository.findById(2)).thenReturn(Optional.of(processo));
         when(anexoRepository.save(any(Anexo.class))).thenReturn(salvo);
+        doNothing().when(eventPublisher).publishEvent(any());
 
         AnexoResponse response = anexoService.criarAnexo(request);
 
         assertNotNull(response);
         assertEquals(1L, response.getIdAnexo());
         assertEquals("documento.pdf", response.getNomeAnexo());
+        verify(eventPublisher).publishEvent(any());
     }
 
     @Test
