@@ -157,7 +157,7 @@ public class ProcessoService {
     }
 
     public List<ProcessoResponse> listarProcessosAtivosPorAdvogado(Long idAdvogado) {
-        List<Processo> processos = processoRepository.findByStatusIgnoreCaseAndAdvogadoIdAdvogado("Ativo", idAdvogado);
+        List<Processo> processos = processoRepository.findByStatusNotIgnoreCaseAndAdvogadoIdAdvogado("Arquivado", idAdvogado);
         return processos.stream()
                 .map(ProcessoResponse::new)
                 .collect(Collectors.toList());

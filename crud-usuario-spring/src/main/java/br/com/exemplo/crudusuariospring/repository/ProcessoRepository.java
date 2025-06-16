@@ -17,6 +17,7 @@ public interface ProcessoRepository extends JpaRepository<Processo, Integer> {
     List<Processo> findByAdvogadoIdAdvogadoOrderByNumeroProcessoAsc(Long idAdvogado);
     List<Processo> findByAdvogadoIdAdvogadoOrderByValorDesc(Long idAdvogado);
     List<Processo> findByAdvogadoIdAdvogadoOrderByStatusAsc(Long idAdvogado);
+    List<Processo> findByStatusNotIgnoreCaseAndAdvogadoIdAdvogado(String status, Long idAdvogado);
 
     @Query("SELECT p.classeProcessual, COUNT(p) FROM Processo p WHERE p.advogado.idAdvogado = :idAdvogado GROUP BY p.classeProcessual")
     List<Object[]> contarProcessosPorClasseProcessualPorAdvogado(@Param("idAdvogado") Long idAdvogado);

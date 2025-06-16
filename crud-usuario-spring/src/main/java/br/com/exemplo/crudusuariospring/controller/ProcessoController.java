@@ -58,7 +58,8 @@ public class ProcessoController {
 
     @GetMapping("/processosAtivos/{idAdvogado}")
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<List<ProcessoResponse>> listarProcessosAtivosPorAdvogado(@PathVariable Long idAdvogado) {
+    public ResponseEntity<List<ProcessoResponse>> listarProcessosAtivosPorAdvogado(
+            @PathVariable Long idAdvogado) {
         List<ProcessoResponse> processos = processoService.listarProcessosAtivosPorAdvogado(idAdvogado);
         return ResponseEntity.ok(processos);
     }
