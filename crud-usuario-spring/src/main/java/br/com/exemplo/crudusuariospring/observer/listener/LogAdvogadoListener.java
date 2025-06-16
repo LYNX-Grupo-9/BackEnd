@@ -9,6 +9,6 @@ public class LogAdvogadoListener {
 
     @EventListener
     public void logCriacaoAdvogado(CadastroAdvogadoEvent event) {
-        System.out.println("[LOG] Advogado criado: " + event.getNomeAdvogado());
+        System.out.println("[LOG] Advogado cadastrado: " + event.getNomeAdvogado());
     }
 }
