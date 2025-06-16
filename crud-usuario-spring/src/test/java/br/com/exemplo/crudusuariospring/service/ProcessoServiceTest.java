@@ -2,22 +2,29 @@ package br.com.exemplo.crudusuariospring.service;
 
 import br.com.exemplo.crudusuariospring.dto.request.AtualizarProcessoRequest;
 import br.com.exemplo.crudusuariospring.dto.request.ProcessoRequest;
+import br.com.exemplo.crudusuariospring.dto.response.EventoResponse;
 import br.com.exemplo.crudusuariospring.dto.response.ProcessoResponse;
 import br.com.exemplo.crudusuariospring.model.Advogado;
 import br.com.exemplo.crudusuariospring.model.Cliente;
+import br.com.exemplo.crudusuariospring.model.Evento;
 import br.com.exemplo.crudusuariospring.model.Processo;
 import br.com.exemplo.crudusuariospring.repository.AdvogadoRepository;
 import br.com.exemplo.crudusuariospring.repository.ClienteRepository;
+import br.com.exemplo.crudusuariospring.repository.EventoRepository;
 import br.com.exemplo.crudusuariospring.repository.ProcessoRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -33,6 +40,12 @@ class ProcessoServiceTest {
 
     @Mock
     private ClienteRepository clienteRepository;
+
+    @Mock
+    private EventoRepository eventoRepository;
+
+    @Mock
+    private EventoService eventoService;
 
     @InjectMocks
     private ProcessoService processoService;
@@ -178,5 +191,47 @@ class ProcessoServiceTest {
 
         verify(processoRepository).findById(idProcesso);
         verify(processoRepository, never()).save(any(Processo.class));
+    }
+
+    @Test
+    void deveRetornarOptionalVazioQuandoNaoExistiremEventosFuturos() {
+        Integer idAdvogado = 1;
+
+        when(eventoService.buscarProximoEvento(idAdvogado))
+                .thenReturn(Optional.empty());
+
+        Optional<EventoResponse> resultado = eventoService.buscarProximoEvento(idAdvogado);
+
+        assertFalse(resultado.isPresent());
+        verify(eventoService).buscarProximoEvento(idAdvogado);
+    }
+
+    @Test
+    void deveListarProcessosAtivosPorAdvogado() {
+        Long idAdvogado = 1L;
+
+        Processo processo1 = new Processo();
+        processo1.setIdProcesso(1L);
+        processo1.setTitulo("Processo Ativo 1");
+        processo1.setStatus("Ativo");
+
+        Processo processo2 = new Processo();
+        processo2.setIdProcesso(2L);
+        processo2.setTitulo("Processo Ativo 2");
+        processo2.setStatus("ATIVO");
+
+        when(processoRepository.findByStatusIgnoreCaseAndAdvogadoIdAdvogado("Ativo", idAdvogado))
+                .thenReturn(List.of(processo1, processo2));
+
+        List<ProcessoResponse> resultado = processoService.listarProcessosAtivosPorAdvogado(idAdvogado);
+
+        assertNotNull(resultado);
+        assertEquals(2, resultado.size());
+        assertEquals(1L, resultado.get(0).getIdProcesso());
+        assertEquals("Processo Ativo 1", resultado.get(0).getTitulo());
+        assertEquals(2L, resultado.get(1).getIdProcesso());
+        assertEquals("Processo Ativo 2", resultado.get(1).getTitulo());
+
+        verify(processoRepository).findByStatusIgnoreCaseAndAdvogadoIdAdvogado("Ativo", idAdvogado);
     }
 }

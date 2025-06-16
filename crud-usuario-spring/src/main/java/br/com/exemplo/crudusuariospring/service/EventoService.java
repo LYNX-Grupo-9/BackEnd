@@ -203,41 +203,41 @@ public class EventoService {
         return Map.of("quantidadeEvento", (long) eventos.size());
     }
 
-public Optional<EventoResponse> buscarProximoEvento(Integer idAdvogado) {
-    LocalDateTime agora = LocalDateTime.now();
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTime(Date.from(agora.atZone(ZoneId.systemDefault()).toInstant()));
+    public Optional<EventoResponse> buscarProximoEvento(Integer idAdvogado) {
+        LocalDateTime agora = LocalDateTime.now();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(Date.from(agora.atZone(ZoneId.systemDefault()).toInstant()));
 
-    calendar.set(Calendar.HOUR_OF_DAY, 0);
-    calendar.set(Calendar.MINUTE, 0);
-    calendar.set(Calendar.SECOND, 0);
-    calendar.set(Calendar.MILLISECOND, 0);
-    Date dataAtual = calendar.getTime();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Date dataAtual = calendar.getTime();
 
-    List<Evento> eventosFuturos = eventoRepository
-            .findByAdvogadoIdAdvogadoAndDataReuniaoAfterOrDataReuniaoEquals(
-                    idAdvogado, dataAtual, dataAtual);
+        List<Evento> eventosFuturos = eventoRepository
+                .findByAdvogadoIdAdvogadoAndDataReuniaoAfterOrDataReuniaoEquals(
+                        idAdvogado, dataAtual, dataAtual);
 
-    List<Evento> eventosValidos = eventosFuturos.stream()
-            .filter(e -> {
-                Calendar eventoCalendar = Calendar.getInstance();
-                eventoCalendar.setTime(e.getDataReuniao());
+        List<Evento> eventosValidos = eventosFuturos.stream()
+                .filter(e -> {
+                    Calendar eventoCalendar = Calendar.getInstance();
+                    eventoCalendar.setTime(e.getDataReuniao());
 
-                LocalTime horaEvento = e.getHoraInicio() != null ? e.getHoraInicio() : LocalTime.MIN;
-                LocalDateTime dataHoraEvento = LocalDateTime.of(
-                        eventoCalendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-                        horaEvento
-                );
-                return !dataHoraEvento.isBefore(agora);
-            })
-            .sorted(Comparator
-                    .comparing(Evento::getDataReuniao)
-                    .thenComparing(e -> e.getHoraInicio() != null ? e.getHoraInicio() : LocalTime.MIN))
-            .collect(Collectors.toList());
+                    LocalTime horaEvento = e.getHoraInicio() != null ? e.getHoraInicio() : LocalTime.MIN;
+                    LocalDateTime dataHoraEvento = LocalDateTime.of(
+                            eventoCalendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+                            horaEvento
+                    );
+                    return !dataHoraEvento.isBefore(agora);
+                })
+                .sorted(Comparator
+                        .comparing(Evento::getDataReuniao)
+                        .thenComparing(e -> e.getHoraInicio() != null ? e.getHoraInicio() : LocalTime.MIN))
+                .collect(Collectors.toList());
 
-    return eventosValidos.isEmpty() ?
-            Optional.empty() :
-            Optional.of(new EventoResponse(eventosValidos.get(0)));
-}
+        return eventosValidos.isEmpty() ?
+                Optional.empty() :
+                Optional.of(new EventoResponse(eventosValidos.get(0)));
+    }
 
 }

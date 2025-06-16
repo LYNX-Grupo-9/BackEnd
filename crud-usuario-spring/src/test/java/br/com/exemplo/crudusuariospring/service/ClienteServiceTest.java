@@ -428,4 +428,37 @@ class ClienteServiceTest {
         assertEquals(cliente1.getQtdProcessos(), resp.getQtdProcessos());
         assertEquals(advogado.getNome(), resp.getAdvogadoResponsavel());
     }
+
+    @Test
+    void deveContarClientesQuandoAdvogadoExiste() {
+        Integer idAdvogado = 1;
+        long quantidadeEsperada = 5L;
+
+        when(advogadoRepository.findById(idAdvogado))
+                .thenReturn(Optional.of(new Advogado()));
+        when(clienteRepository.countByAdvogadoIdAdvogado(idAdvogado))
+                .thenReturn(quantidadeEsperada);
+
+        Long quantidade = clienteService.contarClientesPorAdvogado(idAdvogado);
+
+        assertEquals(quantidadeEsperada, quantidade);
+        verify(advogadoRepository).findById(idAdvogado);
+        verify(clienteRepository).countByAdvogadoIdAdvogado(idAdvogado);
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoAdvogadoNaoExiste() {
+        Integer idAdvogado = 999;
+
+        when(advogadoRepository.findById(idAdvogado))
+                .thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () ->
+                clienteService.contarClientesPorAdvogado(idAdvogado)
+        );
+
+        assertEquals("Advogado não encontrado.", exception.getMessage());
+        verify(advogadoRepository).findById(idAdvogado);
+        verify(clienteRepository, never()).countByAdvogadoIdAdvogado(any());
+    }
 }

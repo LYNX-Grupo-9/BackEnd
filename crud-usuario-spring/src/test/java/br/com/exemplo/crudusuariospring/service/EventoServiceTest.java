@@ -17,11 +17,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
 class EventoServiceTest {
@@ -246,5 +245,117 @@ class EventoServiceTest {
         verify(eventoRepository).findById(id);
         verifyNoMoreInteractions(eventoRepository);
         verifyNoInteractions(advogadoRepository, clienteRepository, categoriaEventoRepository, processoRepository);
+    }
+
+    @Test
+    void deveRetornarEventosDoMesParaAdvogado() {
+        Integer idAdvogado = 1;
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Date inicioMes = calendar.getTime();
+
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+        Date fimMes = calendar.getTime();
+
+        Evento evento1 = new Evento();
+        evento1.setIdEvento(1L);
+        evento1.setNome("Evento 1");
+        evento1.setDataReuniao(inicioMes);
+
+        Evento evento2 = new Evento();
+        evento2.setIdEvento(2L);
+        evento2.setNome("Evento 2");
+        evento2.setDataReuniao(fimMes);
+
+        List<Evento> eventos = List.of(evento1, evento2);
+
+        when(eventoRepository.findByAdvogadoIdAdvogadoAndDataReuniaoBetween(
+                idAdvogado, inicioMes, fimMes))
+                .thenReturn(eventos);
+
+        List<EventoResponse> response = eventoService.buscarEventosDoMesPorAdvogado(idAdvogado);
+
+        assertNotNull(response);
+        assertEquals(2, response.size());
+        assertEquals("Evento 1", response.get(0).getNome());
+        assertEquals("Evento 2", response.get(1).getNome());
+
+        verify(eventoRepository).findByAdvogadoIdAdvogadoAndDataReuniaoBetween(
+                idAdvogado, inicioMes, fimMes);
+    }
+
+    @Test
+    void deveContarEventosDoDiaParaAdvogado() {
+        Integer idAdvogado = 1;
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Date inicioDia = calendar.getTime();
+
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+        Date fimDia = calendar.getTime();
+
+        Evento evento1 = new Evento();
+        evento1.setIdEvento(1L);
+        evento1.setNome("Evento 1");
+        evento1.setDataReuniao(inicioDia);
+
+        Evento evento2 = new Evento();
+        evento2.setIdEvento(2L);
+        evento2.setNome("Evento 2");
+        evento2.setDataReuniao(fimDia);
+
+        List<Evento> eventos = List.of(evento1, evento2);
+
+        when(eventoRepository.findByAdvogadoIdAdvogadoAndDataReuniaoBetween(
+                idAdvogado, inicioDia, fimDia))
+                .thenReturn(eventos);
+
+        Map<String, Long> resultado = eventoService.contarEventosDoDiaPorAdvogado(idAdvogado);
+
+        assertNotNull(resultado);
+        assertEquals(2L, resultado.get("quantidadeEvento"));
+        verify(eventoRepository).findByAdvogadoIdAdvogadoAndDataReuniaoBetween(
+                idAdvogado, inicioDia, fimDia);
+    }
+
+    @Test
+    void deveRetornarOptionalVazioQuandoNaoExistiremEventosFuturos() {
+        Integer idAdvogado = 1;
+        LocalDateTime agora = LocalDateTime.now();
+        LocalDate hoje = agora.toLocalDate();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(Date.from(hoje.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Date dataAtual = calendar.getTime();
+
+        when(eventoRepository.findByAdvogadoIdAdvogadoAndDataReuniaoAfterOrDataReuniaoEquals(
+                idAdvogado, dataAtual, dataAtual))
+                .thenReturn(Collections.emptyList());
+
+        Optional<EventoResponse> resultado = eventoService.buscarProximoEvento(idAdvogado);
+
+        assertFalse(resultado.isPresent());
+        verify(eventoRepository).findByAdvogadoIdAdvogadoAndDataReuniaoAfterOrDataReuniaoEquals(
+                idAdvogado, dataAtual, dataAtual);
     }
 }
