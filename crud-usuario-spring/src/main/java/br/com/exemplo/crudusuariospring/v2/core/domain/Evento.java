@@ -1,6 +1,4 @@
-package br.com.exemplo.crudusuariospring.v2.core.domain.evento;
-
-import br.com.exemplo.crudusuariospring.model.Processo;
+package br.com.exemplo.crudusuariospring.v2.core.domain;
 
 import java.sql.Date;
 import java.time.LocalTime;

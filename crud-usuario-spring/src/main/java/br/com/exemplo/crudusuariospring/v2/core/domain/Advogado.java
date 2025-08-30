@@ -1,4 +1,4 @@
-package br.com.exemplo.crudusuariospring.v2.core.domain.advogado;
+package br.com.exemplo.crudusuariospring.v2.core.domain;
 
 import br.com.exemplo.crudusuariospring.v2.core.domain.valueObjects.advogado.Oab;
 import br.com.exemplo.crudusuariospring.v2.core.domain.valueObjects.advogado.Senha;

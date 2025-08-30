@@ -1,7 +1,7 @@
 package br.com.exemplo.crudusuariospring.v2.infraestructure.persistence.jpa.adapter;
 
 import br.com.exemplo.crudusuariospring.v2.core.adapter.gateway.AdvogadoGateway;
-import br.com.exemplo.crudusuariospring.v2.core.domain.advogado.Advogado;
+import br.com.exemplo.crudusuariospring.v2.core.domain.Advogado;
 import br.com.exemplo.crudusuariospring.v2.infraestructure.persistence.jpa.entity.AdvogadoEntity;
 import br.com.exemplo.crudusuariospring.v2.infraestructure.persistence.jpa.mapper.AdvogadoMapper;
 import br.com.exemplo.crudusuariospring.v2.infraestructure.persistence.jpa.repository.AdvogadoJpaRepository;

@@ -1,7 +1,5 @@
 package br.com.exemplo.crudusuariospring.v2.core.domain;
 
-import br.com.exemplo.crudusuariospring.v2.core.domain.advogado.Advogado;
-
 import java.sql.Date;
 import java.time.LocalTime;
 

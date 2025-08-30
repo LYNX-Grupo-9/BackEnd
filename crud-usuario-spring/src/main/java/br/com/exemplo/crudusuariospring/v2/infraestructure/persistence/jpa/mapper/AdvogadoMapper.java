@@ -1,6 +1,6 @@
 package br.com.exemplo.crudusuariospring.v2.infraestructure.persistence.jpa.mapper;
 
-import br.com.exemplo.crudusuariospring.v2.core.domain.advogado.Advogado;
+import br.com.exemplo.crudusuariospring.v2.core.domain.Advogado;
 import br.com.exemplo.crudusuariospring.v2.infraestructure.persistence.jpa.entity.AdvogadoEntity;
 
 import java.util.Objects;

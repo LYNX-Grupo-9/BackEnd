@@ -1,9 +1,4 @@
-package br.com.exemplo.crudusuariospring.v2.core.domain.categoriaEvento;
-
-import br.com.exemplo.crudusuariospring.model.Evento;
-import br.com.exemplo.crudusuariospring.v2.core.domain.advogado.Advogado;
-
-import java.util.List;
+package br.com.exemplo.crudusuariospring.v2.core.domain;
 
 public class CategoriaEvento {
 

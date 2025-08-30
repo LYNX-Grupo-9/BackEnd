@@ -1,7 +1,7 @@
 package br.com.exemplo.crudusuariospring.v2.core.adapter.gateway;
 
 
-import br.com.exemplo.crudusuariospring.v2.core.domain.advogado.Advogado;
+import br.com.exemplo.crudusuariospring.v2.core.domain.Advogado;
 
 public interface AdvogadoGateway {
     Advogado criar(Advogado domain);

@@ -1,4 +1,4 @@
-package br.com.exemplo.crudusuariospring.v2.core.domain.processo;
+package br.com.exemplo.crudusuariospring.v2.core.domain;
 
 import java.math.BigDecimal;
 

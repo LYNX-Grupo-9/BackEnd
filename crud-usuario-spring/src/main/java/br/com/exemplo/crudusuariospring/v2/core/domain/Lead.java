@@ -1,6 +1,5 @@
 package br.com.exemplo.crudusuariospring.v2.core.domain;
 
-import br.com.exemplo.crudusuariospring.v2.core.domain.advogado.Advogado;
 import br.com.exemplo.crudusuariospring.v2.core.domain.valueObjects.shared.Email;
 import br.com.exemplo.crudusuariospring.v2.core.domain.valueObjects.shared.Telefone;
 
