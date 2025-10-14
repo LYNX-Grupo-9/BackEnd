@@ -54,26 +54,26 @@ public class CategoriaEventoService {
                 categoriaEvento.getNome(),
                 categoriaEvento.getCor()
         );
-    }
+    }// FEITO
 
 
     public List<CategoriaEventoResponse> buscarTodasCategorias() {
         List<CategoriaEvento> categorias = categoriaEventoRepository.findAll();
         return categorias.stream().map(categoria -> new CategoriaEventoResponse(categoria.getIdCategoria(), categoria.getNome(), categoria.getCor())).toList();
-    }
+    }// FEITO
 
     public List<CategoriaEventoResponse> CategoriaPorAdvogado(Integer idAdvogado) {
         List<CategoriaEvento> categorias = categoriaEventoRepository.findByAdvogadoIdAdvogado(idAdvogado);
         return categorias.stream()
                 .map(c -> new CategoriaEventoResponse(c.getIdCategoria(), c.getNome(), c.getCor()))
                 .toList();
-    }
+    }// FEITO
 
     public CategoriaEventoResponse buscarCategoriaPorId(Long idCategoria) {
         CategoriaEvento categoria = categoriaEventoRepository.findById(idCategoria)
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
         return new CategoriaEventoResponse(categoria.getIdCategoria(), categoria.getNome(), categoria.getCor());
-    }
+    }// FEITO
 
     public void deletarCategoria(Long id) {
         CategoriaEvento categoria = categoriaEventoRepository.findById(id)
@@ -82,7 +82,7 @@ public class CategoriaEventoService {
         eventoRepository.desvincularCategoriaDosEventos(id);
         categoriaEventoRepository.delete(categoria);
         eventPublisher.publishEvent(new DeleteCategoriaEvent(this, categoria));
-    }
+    }// FEITO
 
 
     public CategoriaEventoResponse atualizarParcialmente(Long id, AtualizarCategoriaRequest request) {
@@ -102,7 +102,7 @@ public class CategoriaEventoService {
                 categoriaAtualizado.getNome(),
                 categoriaAtualizado.getCor()
         );
-    }
+    }// FEITO
 
     public Map<String, Map<String, Object>> contarCategoriaPorNome(Long idAdvogado) {
         List<Object[]> resultados = categoriaEventoRepository.contarCategoriasAgrupadasPorNome(idAdvogado);
@@ -122,5 +122,5 @@ public class CategoriaEventoService {
         }
 
         return mapa;
-    }
+    } // FEITO
 }

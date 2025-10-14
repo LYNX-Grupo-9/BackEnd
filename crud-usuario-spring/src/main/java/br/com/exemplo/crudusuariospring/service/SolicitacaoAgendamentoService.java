@@ -40,7 +40,7 @@ public class SolicitacaoAgendamentoService {
         SolicitacaoAgendamento salvaSolicitacao = solicitacaoAgendamentoRepository.save(solicitacao);
 
         return new SolicitacaoAgendamentoResponse(salvaSolicitacao);
-    }
+    }// FEITO
 
     public SolicitacaoAgendamentoResponse marcarComoVisualizado(Integer idSolicitacao) {
         Optional<SolicitacaoAgendamento> optionalSolicitacao = solicitacaoAgendamentoRepository.findById(idSolicitacao);
@@ -54,19 +54,19 @@ public class SolicitacaoAgendamentoService {
         solicitacaoAgendamentoRepository.save(solicitacao);
 
         return new SolicitacaoAgendamentoResponse(solicitacao);
-    }
+    }// FEITO
 
     public List<SolicitacaoAgendamentoResponse> buscarPorAdvogado(Integer idAdvogado) {
         List<SolicitacaoAgendamento> lista = solicitacaoAgendamentoRepository.findByAdvogadoIdAdvogado(idAdvogado);
         return lista.stream()
                 .map(SolicitacaoAgendamentoResponse::new)
                 .collect(Collectors.toList());
-    }
+    }// FEITO
 
     public SolicitacaoAgendamentoResponse buscarPorId(Integer idSolicitacao) {
         SolicitacaoAgendamento solicitacao = solicitacaoAgendamentoRepository.findById(idSolicitacao)
                 .orElseThrow(() -> new RuntimeException("Solicitação de agendamento não encontrada com ID: " + idSolicitacao));
 
         return new SolicitacaoAgendamentoResponse(solicitacao);
-    }
+    }// FEITO
 }

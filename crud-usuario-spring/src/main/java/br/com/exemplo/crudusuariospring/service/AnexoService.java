@@ -54,17 +54,17 @@ public class AnexoService {
         Anexo salvo = anexoRepository.save(anexo);
         eventPublisher.publishEvent(new CadastroAnexoEvent(this, salvo));
         return new AnexoResponse(salvo);
-    }
+    }// FEITO
 
     public List<AnexoResponse> buscarPorIdCliente(Integer idCliente) {
         List<Anexo> anexos = anexoRepository.findByCliente_IdCliente(idCliente);
         return anexos.stream().map(AnexoResponse::new).toList();
-    }
+    }// FEITO
 
     public List<AnexoResponse> buscarPorIdProcesso(Integer idProcesso) {
         List<Anexo> anexos = anexoRepository.findByProcesso_IdProcesso(idProcesso);
         return anexos.stream().map(AnexoResponse::new).toList();
-    }
+    }// FEITO
 
     @Transactional
     public void deletarAnexo(String idItem) {
@@ -72,5 +72,5 @@ public class AnexoService {
             throw new RuntimeException("Anexo com ID " + idItem + " não encontrado.");
         }
         anexoRepository.deleteByIdItem(idItem);
-    }
+    } // FEITO
 }

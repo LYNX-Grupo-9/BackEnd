@@ -67,13 +67,13 @@ public class EventoService {
 
         Evento eventoSalvo = eventoRepository.save(evento);
         return new EventoResponse(eventoSalvo);
-    }
+    } // FEITO
 
     public EventoResponse buscarPorId(Long id) {
         Evento evento = eventoRepository.findById(id)
                 .orElseThrow(() -> new EventoNaoEncontradoException("Evento não encontrado"));
         return new EventoResponse(evento);
-    }
+    } // FEITO
 
     private static class EventoNaoEncontradoException extends RuntimeException {
         public EventoNaoEncontradoException(String mensagem) {
@@ -86,7 +86,7 @@ public class EventoService {
         return eventos.stream()
                 .map(EventoResponse::new)
                 .collect(Collectors.toList());
-    }
+    } // FEITO
 
     public List<EventoResponse> buscaEventoProximoSeteDias(Integer idAdvogado) {
         LocalDate hoje = LocalDate.now();
@@ -102,14 +102,14 @@ public class EventoService {
         return eventos.stream()
                 .map(EventoResponse::new)
                 .collect(Collectors.toList());
-    }
+    } // FEITO
 
 
     public void deletarEvento(Long id) {
         Evento evento = eventoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Evento não encontrado"));
         eventoRepository.delete(evento);
-    }
+    } // FEITO
 
     public EventoResponse atualizarParcialmente(Long id, AtualizarEventoRequest request) {
         Evento evento = eventoRepository.findById(id)
@@ -155,7 +155,7 @@ public class EventoService {
 
         Evento eventoAtualizado = eventoRepository.save(evento);
         return new EventoResponse(eventoAtualizado);
-    }
+    } // FEITO
 
     public List<EventoResponse> buscarEventosDoMesPorAdvogado(Integer idAdvogado) {
         Calendar calendar = Calendar.getInstance();
@@ -179,7 +179,7 @@ public class EventoService {
         return eventos.stream()
                 .map(EventoResponse::new)
                 .collect(Collectors.toList());
-    }
+    } // FEITO
 
     public Map<String, Long> contarEventosDoDiaPorAdvogado(Integer idAdvogado) {
         Calendar calendar = Calendar.getInstance();
@@ -201,7 +201,7 @@ public class EventoService {
         );
 
         return Map.of("quantidadeEvento", (long) eventos.size());
-    }
+    } // FEITO
 
     public Optional<EventoResponse> buscarProximoEvento(Integer idAdvogado) {
         LocalDateTime agora = LocalDateTime.now();
@@ -238,6 +238,6 @@ public class EventoService {
         return eventosValidos.isEmpty() ?
                 Optional.empty() :
                 Optional.of(new EventoResponse(eventosValidos.get(0)));
-    }
+    } // FEITO
 
 }
