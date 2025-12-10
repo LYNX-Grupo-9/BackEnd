@@ -28,7 +28,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Build e testes
-        working-directory: ./crud-advogado
+        working-directory: ./crud-usuario-spring
         run: |
           mvn -B clean install
           mvn test
