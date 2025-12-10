@@ -25,26 +25,26 @@ public class SolicitacaoAgendamentoController {
             @Valid @RequestBody SolicitacaoAgendamentoRequest request) {
         SolicitacaoAgendamentoResponse response = service.criarSolicitacao(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+    }// FEITO
 
     @PutMapping("/visualizar/{idSolicitacao}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<SolicitacaoAgendamentoResponse> marcarVisualizado(@PathVariable Integer idSolicitacao) {
         SolicitacaoAgendamentoResponse response = service.marcarComoVisualizado(idSolicitacao);
         return ResponseEntity.ok(response);
-    }
+    }// FEITO
 
     @GetMapping("/advogado/{idAdvogado}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<List<SolicitacaoAgendamentoResponse>> buscarPorAdvogado(@PathVariable Integer idAdvogado) {
         List<SolicitacaoAgendamentoResponse> lista = service.buscarPorAdvogado(idAdvogado);
         return ResponseEntity.ok(lista);
-    }
+    }// FEITO
 
     @GetMapping("/solicitacao/{idSolicitacao}")
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<SolicitacaoAgendamentoResponse> buscarPorId(@PathVariable Integer idSolicitacao) {
         SolicitacaoAgendamentoResponse response = service.buscarPorId(idSolicitacao);
         return ResponseEntity.ok(response);
-    }
+    } // FEITO
 }

@@ -27,6 +27,6 @@ public class AutenticacaoService implements UserDetailsService {
         }
 
         return new AdvogadoDetalhes(advogadoOpt.get());
-    }
+    } // FEITO
 
 }

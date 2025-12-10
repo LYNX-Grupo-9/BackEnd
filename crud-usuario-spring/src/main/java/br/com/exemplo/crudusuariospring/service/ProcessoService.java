@@ -64,7 +64,7 @@ public class ProcessoService {
             String.format(processoSalvo.getNumeroProcesso())));
 
         return new ProcessoResponse(processoSalvo);
-    }
+    } // FEITO
 
     public List<ProcessoResponse> listarTodosPorIdAdvogado(Long idAdvogado) {
         List<Processo> processos = processoRepository.findByAdvogadoIdAdvogado(idAdvogado);
@@ -72,7 +72,7 @@ public class ProcessoService {
         return processos.stream()
                 .map(ProcessoResponse::new)
                 .collect(Collectors.toList());
-    }
+    } // FEITO
 
     public ProcessoResponse buscarPorId(Integer idProcesso) {
         Optional<Processo> processoOpt = processoRepository.findById(idProcesso);
@@ -82,7 +82,7 @@ public class ProcessoService {
         }
 
         return new ProcessoResponse(processoOpt.get());
-    }
+    } // FEITO
 
     public List<ProcessoResponse> buscarPorIdCliente(Long idCliente) {
         List<Processo> processos = processoRepository.findByClienteIdCliente(idCliente);
@@ -90,11 +90,11 @@ public class ProcessoService {
         return processos.stream()
                 .map(ProcessoResponse::new)
                 .collect(Collectors.toList());
-    }
+    }// FEITO
 
     public void excluirPorId(Integer idProcesso) {
         processoRepository.deleteById(idProcesso);
-    }
+    } // FEITO
 
     public ProcessoResponse atualizarProcessoParcialmente(Integer idProcesso, AtualizarProcessoRequest request) {
         Processo processo = processoRepository.findById(idProcesso)
@@ -154,14 +154,14 @@ public class ProcessoService {
         }
 
         return new ProcessoResponse(atualizado);
-    }
+    } // FEITO
 
     public List<ProcessoResponse> listarProcessosAtivosPorAdvogado(Long idAdvogado) {
         List<Processo> processos = processoRepository.findByStatusNotIgnoreCaseAndAdvogadoIdAdvogado("Arquivado", idAdvogado);
         return processos.stream()
                 .map(ProcessoResponse::new)
                 .collect(Collectors.toList());
-    }
+    } // FEITO
 
     public Map<String, Long> contarProcessosPorStatusPorAdvogado(Long idAdvogado) {
         List<Processo> processos = processoRepository.findByAdvogadoIdAdvogado(idAdvogado);
@@ -171,7 +171,7 @@ public class ProcessoService {
                         Processo::getStatus,
                         Collectors.counting()
                 ));
-    }
+    } // FEITO
 
     public Map<String, Long> contarProcessosPorClasseProcessualPorAdvogado(Long idAdvogado) {
         List<Object[]> resultados = processoRepository.contarProcessosPorClasseProcessualPorAdvogado(idAdvogado);
@@ -181,46 +181,46 @@ public class ProcessoService {
                         r -> (String) r[0],
                         r -> (Long) r[1]
                 ));
-    }
+    }// FEITO
 
     public List<ProcessoResponse> listarProcessosOrdenadosPorNomeCliente(Long idAdvogado) {
         List<Processo> processos = processoRepository.buscarOrdenadoPorCliente(idAdvogado);
         return processos.stream()
                 .map(ProcessoResponse::new)
                 .collect(Collectors.toList());
-    }
+    } // FEITO
 
     public List<ProcessoResponse> listarProcessosOrdenadosPorNumeroDeProcesso(Long idAdvogado) {
         List<Processo> processos = processoRepository.findByAdvogadoIdAdvogadoOrderByNumeroProcessoAsc(idAdvogado);
         return processos.stream()
                 .map(ProcessoResponse::new)
                 .collect(Collectors.toList());
-    }
+    } // FEITO
 
     public List<ProcessoResponse> listarProcessosOrdenadosPorValor(Long idAdvogado) {
         List<Processo> processos = processoRepository.findByAdvogadoIdAdvogadoOrderByValorDesc(idAdvogado);
         return processos.stream()
                 .map(ProcessoResponse::new)
                 .collect(Collectors.toList());
-    }
+    }// FEITO
 
     public List<ProcessoResponse> buscarPorTexto(String termo, Long idAdvogado) {
         List<Processo> processos = processoRepository.buscarPorNumeroTituloOuCliente(termo, idAdvogado);
         return processos.stream()
                 .map(ProcessoResponse::new)
                 .collect(Collectors.toList());
-    }
+    } // FEITO
 
     public List<ProcessoResponse> listarProcessosOrdenadosPorStatus(Long idAdvogado) {
         List<Processo> processos = processoRepository.findByAdvogadoIdAdvogadoOrderByStatusAsc(idAdvogado);
         return processos.stream()
                 .map(ProcessoResponse::new)
                 .collect(Collectors.toList());
-    }
+    }// FEITO
 
     public Double calcularValorMedioProcessosPorAdvogado(Long idAdvogado) {
         Double media = processoRepository.calcularValorMedioPorAdvogado(idAdvogado);
         return media != null ? media : 0.0;
-    }
+    } // FEITO
 
 }

@@ -75,7 +75,7 @@ public class ClienteService {
         String nomeCliente = salvo.getNome();
 
         return response;
-    }
+    } // FEITO
 
     public List<ClienteResponse> listarTodos() {
         return clienteRepository.findAll().stream().map(c -> {
@@ -95,7 +95,7 @@ public class ClienteService {
             response.setAdvogadoResponsavel(c.getAdvogado() != null ? c.getAdvogado().getNome() : "Não atribuído");
             return response;
         }).collect(Collectors.toList());
-    }
+    } // FEITO
 
     public List<ClienteResponse> listarPorAdvogado(Integer idAdvogado) {
         return clienteRepository.findByAdvogadoIdAdvogado(idAdvogado).stream().map(c -> {
@@ -120,7 +120,7 @@ public class ClienteService {
             );
             return response;
         }).collect(Collectors.toList());
-    }
+    } // FEITO
 
     public ClienteResponse buscarClienteComQuantidadeProcessos(Integer idCliente) {
         Cliente cliente = clienteRepository.findById(idCliente)
@@ -145,7 +145,7 @@ public class ClienteService {
         response.setQtdProcessos(qtdProcessos);
 
         return response;
-    }
+    } // FEITO
 
     private ClienteResponse mapToResponse(Cliente c) {
         ClienteResponse response = new ClienteResponse();
@@ -169,15 +169,15 @@ public class ClienteService {
 
     public List<ClienteResponse> listarOrdenadoPorNome(Integer idAdvogado) {
         return clienteRepository.findByAdvogadoIdAdvogadoOrderByNomeAsc(idAdvogado).stream().map(this::mapToResponse).collect(Collectors.toList());
-    }
+    } // FEITO
 
     public List<ClienteResponse> listarOrdenadoPorNaturalidade(Integer idAdvogado) {
         return clienteRepository.findByAdvogadoIdAdvogadoOrderByNaturalidadeAsc(idAdvogado).stream().map(this::mapToResponse).collect(Collectors.toList());
-    }
+    } // FEITO
 
     public List<ClienteResponse> listarOrdenadoPorDataNascimento(Integer idAdvogado) {
         return clienteRepository.findByAdvogadoIdAdvogadoOrderByDataNascimentoAsc(idAdvogado).stream().map(this::mapToResponse).collect(Collectors.toList());
-    }
+    } // FEITO
 
     public List<ClienteResponse> listarOrdenadoPorQuantidadeProcessos(Integer idAdvogado) {
         return clienteRepository.ordenarPorQuantidadeProcessos(idAdvogado).stream().map(cliente -> {
@@ -186,12 +186,12 @@ public class ClienteService {
             response.setQtdProcessos(qtd);
             return response;
         }).collect(Collectors.toList());
-    }
+    } // FEITO
 
     public List<ClienteResponse> buscarPorTexto(String termo, Integer idAvogado) {
         List<Cliente> clientes = clienteRepository.buscarPorNomeEmailTelefonePorAdvogado(termo, idAvogado);
         return clientes.stream().map(this::mapToResponse).collect(Collectors.toList());
-    }
+    } // FEITO
 
     public ClienteProcessoEventoResponse buscarDadosCliente(Integer idCliente) {
         Cliente cliente = clienteRepository.findById(idCliente)
@@ -266,12 +266,12 @@ public class ClienteService {
         eventPublisher.publishEvent(new ClienteCadastradoEvent(this, atualizado));
 
         return mapToResponse(atualizado);
-    }
+    } // FEITO
 
     public Long contarClientesPorAdvogado(Integer idAdvogado) {
         advogadoRepository.findById(idAdvogado)
                 .orElseThrow(() -> new RuntimeException("Advogado não encontrado."));
 
         return clienteRepository.countByAdvogadoIdAdvogado(idAdvogado);
-    }
+    } // FEITO
 }

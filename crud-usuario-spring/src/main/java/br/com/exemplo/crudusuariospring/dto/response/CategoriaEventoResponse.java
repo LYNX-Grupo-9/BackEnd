@@ -2,7 +2,7 @@ package br.com.exemplo.crudusuariospring.dto.response;
 
 import br.com.exemplo.crudusuariospring.model.CategoriaEvento;
 
-public class CategoriaEventoResponse {
+public class  CategoriaEventoResponse {
 
     private Long idCategoriaEvento;
     private String nomeEvento;
