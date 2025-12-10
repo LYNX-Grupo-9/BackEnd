@@ -14,6 +14,14 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v4
 
+      - name: Verificar estrutura do projeto
+        run: |
+          echo "=== ESTRUTURA DO PROJETO ==="
+          pwd
+          ls -la
+          echo "=== BUSCANDO POM.XML ==="
+          find . -name "pom.xml" -type f
+
       - name: Configurar JDK
         uses: actions/setup-java@v4
         with:
@@ -28,19 +36,54 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Build do projeto
-        run: mvn -B clean compile
+        run: |
+          # Encontrar o diretório com pom.xml
+          if [ -f "pom.xml" ]; then
+            echo "POM encontrado no diretório raiz"
+            mvn -B clean compile
+          elif [ -f "crud-usuario-spring/pom.xml" ]; then
+            echo "POM encontrado em crud-usuario-spring/"
+            cd crud-usuario-spring
+            mvn -B clean compile
+          elif [ -f "crud-advogado/pom.xml" ]; then
+            echo "POM encontrado em crud-advogado/"
+            cd crud-advogado
+            mvn -B clean compile
+          else
+            echo "ERRO: Não encontrou pom.xml"
+            exit 1
+          fi
 
       - name: Executar testes (excluindo o teste problemático)
         run: |
-          echo "Executando todos os testes EXCETO o que está falhando..."
-          mvn test -Dtest="!ProcessoServiceTest#deveListarProcessosAtivosPorAdvogado"
+          if [ -f "pom.xml" ]; then
+            mvn test -Dtest="!ProcessoServiceTest#deveListarProcessosAtivosPorAdvogado"
+          elif [ -f "crud-usuario-spring/pom.xml" ]; then
+            cd crud-usuario-spring
+            mvn test -Dtest="!ProcessoServiceTest#deveListarProcessosAtivosPorAdvogado"
+          elif [ -f "crud-advogado/pom.xml" ]; then
+            cd crud-advogado
+            mvn test -Dtest="!ProcessoServiceTest#deveListarProcessosAtivosPorAdvogado"
+          fi
 
       - name: Build JAR (incluindo testes ignorados)
-        run: mvn -B package -DskipTests
+        run: |
+          if [ -f "pom.xml" ]; then
+            mvn -B package -DskipTests
+          elif [ -f "crud-usuario-spring/pom.xml" ]; then
+            cd crud-usuario-spring
+            mvn -B package -DskipTests
+          elif [ -f "crud-advogado/pom.xml" ]; then
+            cd crud-advogado
+            mvn -B package -DskipTests
+          fi
 
       - name: Upload do artefato JAR
         uses: actions/upload-artifact@v4
         with:
           name: app-jar
-          path: target/*.jar
+          path: |
+            target/*.jar
+            crud-usuario-spring/target/*.jar
+            crud-advogado/target/*.jar
           if-no-files-found: error
